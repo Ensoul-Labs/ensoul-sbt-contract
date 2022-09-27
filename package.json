@@ -1,12 +1,13 @@
 {
-  "name": "hardhat-contract-example",
+  "name": "ensoul-sbt-contarct",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://github.com/33357/hardhat-contract-example.git",
+  "repository": "https://github.com/Ensoul-Labs/ensoul-sbt-contarct.git",
   "author": "33357 <43600005+33357@users.noreply.github.com>",
   "license": "MIT",
   "scripts": {
-    "build": "hardhat typechain",
+    "i": "yarn && cd ./sdk && yarn",
+    "build": "hardhat typechain && cd ./sdk && yarn build",
     "test": "hardhat test",
     "test:cov": "hardhat coverage",
     "localhost": "yarn run hardhat node --network hardhat --no-deploy --show-accounts",
