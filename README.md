@@ -3,7 +3,7 @@
 ## Sample Scripts
 ### Install dependencies
 ```bash
-yarn
+yarn i
 ```
 
 ### Compile contracts
