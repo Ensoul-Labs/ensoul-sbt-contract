@@ -7,7 +7,8 @@
   "license": "MIT",
   "scripts": {
     "i": "yarn && cd ./sdk && yarn",
-    "build": "hardhat typechain && cd ./sdk && yarn build",
+    "build:all": "hardhat typechain && cd ./sdk && yarn build",
+    "build": "hardhat typechain",
     "test": "hardhat test",
     "test:cov": "hardhat coverage",
     "localhost": "yarn run hardhat node --network hardhat --no-deploy --show-accounts",
