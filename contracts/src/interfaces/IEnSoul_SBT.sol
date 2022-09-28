@@ -1,16 +1,9 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.12;
+pragma solidity ^0.8.17;
 
-interface IExample {
+interface IEnSoul_SBT {
     /* ================ EVENTS ================ */
-
     /* ================ VIEW FUNCTIONS ================ */
-
-    function viewIt() external pure returns (uint256);
-
     /* ================ TRANSACTION FUNCTIONS ================ */
-
-    function transaction() external;
-
     /* ================ ADMIN FUNCTIONS ================ */
 }

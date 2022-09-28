@@ -47,7 +47,7 @@ const config: HardhatUserConfig = {
       initialBaseFeePerGas: 0,
     },
     localhost: {
-      url: 'http://localhost:8545',
+      url: process.env.LOCALHOST_NETWORK!,
       accounts,
       timeout: 60000,
       blockGasLimit: 60000000,
@@ -55,32 +55,8 @@ const config: HardhatUserConfig = {
         .mul(10 ** 9)
         .toNumber(),
     },
-    1: {
-      url: `https://mainnet.infura.io/v3/${process.env.MAINNET_INFURA}`,
-      accounts,
-      timeout: 60000,
-      gasPrice: BigNumber.from(gasPrice)
-        .mul(10 ** 9)
-        .toNumber(),
-    },
-    4: {
-      url: `https://rinkeby.infura.io/v3/${process.env.RINKEBY_INFURA}`,
-      accounts,
-      timeout: 60000,
-      gasPrice: BigNumber.from(gasPrice)
-        .mul(10 ** 9)
-        .toNumber(),
-    },
-    56: {
-      url: `https://bsc-dataseed1.binance.org/`,
-      accounts,
-      timeout: 60000,
-      gasPrice: BigNumber.from(gasPrice)
-        .mul(10 ** 9)
-        .toNumber(),
-    },
-    97: {
-      url: `https://data-seed-prebsc-1-s1.binance.org:8545`,
+    89: {
+      url: process.env.POLYGON_NETWORK!,
       accounts,
       timeout: 60000,
       gasPrice: BigNumber.from(gasPrice)

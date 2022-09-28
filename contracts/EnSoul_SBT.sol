@@ -1,11 +1,11 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.17;
 
-import "./interfaces/IEnSoul_SBT.sol";
-import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
-import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Burnable.sol";
-import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Pausable.sol";
-import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
+import "./src/interfaces/IEnSoul_SBT.sol";
+import "./src/ERC1155/ERC1155.sol";
+import "./src/ERC1155/extensions/ERC1155Burnable.sol";
+import "./src/ERC1155/extensions/ERC1155Pausable.sol";
+import "./src/ERC1155/extensions/ERC1155Supply.sol";
 
 contract EnSoul_SBT is IEnSoul_SBT, ERC1155, ERC1155Burnable, ERC1155Pausable, ERC1155Supply {
     constructor(string memory url) ERC1155(url) {}
