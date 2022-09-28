@@ -5,10 +5,12 @@ pragma solidity ^0.8.17;
 contract ContractMetadata {
     string _contractURI;
 
+    // 暴露给opensea等平台
     function contractURI() public view returns (string memory) {
         return _contractURI;
     }
 
+    // 配置contractURI
     function _setContractURI(string memory contractURI_) internal {
         _contractURI = contractURI_;
     }

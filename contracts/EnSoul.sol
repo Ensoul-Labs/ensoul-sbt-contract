@@ -42,7 +42,7 @@ contract EnSoul_SBT is
         uint256 id,
         uint256 amount,
         bytes memory data
-    ) internal override(ERC1155, ERC1155Supply) {
+    ) internal onlyOrgAmin(id) override(ERC1155, ERC1155Supply) {
         super._mint(account, id, amount, data);
     }
 

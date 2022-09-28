@@ -15,7 +15,7 @@ contract Factory {
     }
 
     // 创建新组织
-    function newOrg(string memory _url, address _orgOwner) public {
+    function newOrg(string memory _url, address _orgOwner) public onlyEnsoulAdmin {
         EnSoul_SBT org = new EnSoul_SBT(_url, _orgOwner, this.getEnsoulAdmin());
         address orgAddress = address(org);
         orgs.push(orgAddress);
