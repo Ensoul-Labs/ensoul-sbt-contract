@@ -74,4 +74,8 @@ contract EnSoul_SBT is IEnSoul_SBT, ERC1155, ERC1155Burnable, ERC1155Pausable, E
     function unpause() external {
         super._unpause();
     }
+
+    function setURI(string memory newuri) external {
+        super._setURI(newuri);
+    }
 }
