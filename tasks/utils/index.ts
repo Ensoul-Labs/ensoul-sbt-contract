@@ -5,7 +5,7 @@ import pino from 'pino';
 const DEPLOYMENT_DIR = './deployment';
 const DEPLOYMENT_PATH = `${DEPLOYMENT_DIR}/deployment.json`;
 export const LOCK_DIR = './logs';
-export const RETRY_NUMBER = 1;
+export const RETRY_NUMBER = 100;
 
 export async function getDeployment(networkId: number): Promise<Deployment> {
   if (!fs.existsSync(DEPLOYMENT_DIR)) {
@@ -72,8 +72,7 @@ export interface ContractInfo {
 }
 
 export interface Deployment {
-  ExampleUpgradeable: ContractInfo;
-  Example: ContractInfo;
+  [contractName: string]: ContractInfo;
 }
 
 export interface DeploymentFull {

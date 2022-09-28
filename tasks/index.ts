@@ -1,5 +1,2 @@
-export * from './deploy/deployExampleUpgradeable';
-export * from './deploy/deployExample';
-
-export * from './verify/verifyExampleUpgradeable';
-export * from './verify/verifyExample';
+export * from './deploy/deployContract';
+export * from './verify/verifyContract';

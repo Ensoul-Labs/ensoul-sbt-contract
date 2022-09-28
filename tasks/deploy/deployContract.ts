@@ -11,20 +11,29 @@ import {
   log,
 } from '../utils';
 
-const contract = 'Example';
-const taskName = `${contract}:deploy`;
-
-task(taskName, `Deploy ${contract}`)
+task(`contract:deploy`, `Deploy contract`)
+  .addOptionalParam('contract', 'The contract name')
+  .addOptionalParam('args', 'The contract args')
   .addOptionalParam('waitNum', 'The waitNum to transaction')
   .addOptionalParam('gasPrice', 'The gasPrice to transaction')
   .setAction(async (args, hre: HardhatRuntimeEnvironment) => {
+    const chainId = Number(await hre.getChainId());
     const txConfig: PayableOverrides = {};
-    txConfig.gasPrice = args['gasPrice']
-      ? hre.ethers.utils.parseUnits(args['gasPrice'], 'gwei')
-      : undefined;
+    if (chainId == 1) {
+      txConfig.maxFeePerGas = args['gasPrice']
+        ? hre.ethers.utils.parseUnits(args['gasPrice'], 'gwei')
+        : undefined;
+      txConfig.maxPriorityFeePerGas = hre.ethers.utils.parseUnits('0.5', 'gwei');
+    } else {
+      txConfig.gasPrice = args['gasPrice']
+        ? hre.ethers.utils.parseUnits(args['gasPrice'], 'gwei')
+        : undefined;
+    }
+    const contractArgs = JSON.parse(args['args']);
     const waitNum = args['waitNum'] ? parseInt(args['waitNum']) : 1;
+    const contract = args['contract'];
     const ethersExecutionManager = new EthersExecutionManager(
-      `${LOCK_DIR}/${taskName}.lock`,
+      `${LOCK_DIR}/contract:deploy ${contract}.lock`,
       RETRY_NUMBER,
       waitNum
     );
@@ -33,11 +42,9 @@ task(taskName, `Deploy ${contract}`)
 
     log.info(`deploy ${contract}`);
     const Contract = await hre.ethers.getContractFactory(contract);
-    const chainId = Number(await hre.getChainId());
-
     const deployResult = await ethersExecutionManager.transaction(
       Contract.deploy.bind(Contract),
-      [],
+      contractArgs,
       ['contractAddress', 'blockNumber'],
       `deploy ${contract}`,
       txConfig
@@ -52,7 +59,7 @@ task(taskName, `Deploy ${contract}`)
 
     const deployment = await getDeployment(chainId);
 
-    deployment.Example = {
+    deployment[contract] = {
       proxyAddress: contractProxyAddress,
       implAddress: contractImplAddress,
       version: contractVersion,

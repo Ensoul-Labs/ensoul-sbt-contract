@@ -1,1 +1,12 @@
-{}
+{
+  "5": {
+    "EnSoul_SBT": {
+      "proxyAddress": "0x6854745d08c3B06652A1967B155bd0325e242332",
+      "implAddress": "0x6854745d08c3B06652A1967B155bd0325e242332",
+      "version": "1.0.0",
+      "contract": "EnSoul_SBT",
+      "operator": "0x8e9a781d6B89303c2FD71c861084078370282D1F",
+      "fromBlock": 7673819
+    }
+  }
+}
