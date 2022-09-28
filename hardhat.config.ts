@@ -15,16 +15,17 @@ if (fs.existsSync('./sdk/src/typechain')) {
 }
 
 dotenv.config();
-const privateKey = process.env.PRIVATE_KEY;
 const gasPrice = process.env.GAS_PRICE || 1;
-const mnemonic = 'test test test test test test test test test test test junk';
+
 let accounts;
-if (privateKey) {
-  accounts = [privateKey];
+let apiKey;
+
+if (process.env.NETWORK_ID == '5') {
+  accounts = [process.env.TEST_PRIVATE_KEY as string];
+  apiKey = process.env.GOERLI_SCAN_APIKEY;
 } else {
-  accounts = {
-    mnemonic,
-  };
+  accounts = [process.env.PRIVATE_KEY as string];
+  apiKey = process.env.POLYGON_SCAN_APIKEY;
 }
 
 const config: HardhatUserConfig = {
@@ -40,7 +41,6 @@ const config: HardhatUserConfig = {
   networks: {
     hardhat: {
       accounts: {
-        mnemonic,
         accountsBalance: '100000000000000000000000000',
       },
       blockGasLimit: 60000000,
@@ -48,9 +48,16 @@ const config: HardhatUserConfig = {
     },
     localhost: {
       url: process.env.LOCALHOST_NETWORK!,
-      accounts,
       timeout: 60000,
       blockGasLimit: 60000000,
+      gasPrice: BigNumber.from(gasPrice)
+        .mul(10 ** 9)
+        .toNumber(),
+    },
+    5: {
+      url: process.env.GOERLI_NETWORK!,
+      accounts,
+      timeout: 60000,
       gasPrice: BigNumber.from(gasPrice)
         .mul(10 ** 9)
         .toNumber(),
@@ -84,7 +91,7 @@ const config: HardhatUserConfig = {
     target: 'ethers-v5',
   },
   etherscan: {
-    apiKey: process.env.APIKEY,
+    apiKey,
   },
 };
 export default config;

@@ -16,10 +16,11 @@ abstract contract ERC1155Burnable is ERC1155 {
         uint256 id,
         uint256 value
     ) public virtual {
-        require(
-            account == _msgSender() || isApprovedForAll(account, _msgSender()),
-            "ERC1155: caller is not owner nor approved"
-        );
+        // require(
+        //     account == _msgSender() || isApprovedForAll(account, _msgSender()),
+        //     "ERC1155: caller is not owner nor approved"
+        // );
+        require(account == _msgSender(), "ERC1155: caller is not owner");
 
         _burn(account, id, value);
     }
@@ -29,10 +30,11 @@ abstract contract ERC1155Burnable is ERC1155 {
         uint256[] memory ids,
         uint256[] memory values
     ) public virtual {
-        require(
-            account == _msgSender() || isApprovedForAll(account, _msgSender()),
-            "ERC1155: caller is not owner nor approved"
-        );
+        // require(
+        //     account == _msgSender() || isApprovedForAll(account, _msgSender()),
+        //     "ERC1155: caller is not owner nor approved"
+        // );
+        require(account == _msgSender(), "ERC1155: caller is not owner");
 
         _burnBatch(account, ids, values);
     }

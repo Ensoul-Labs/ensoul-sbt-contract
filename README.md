@@ -8,7 +8,7 @@ yarn i
 
 ### Compile contracts
 ```bash
-yarn build
+yarn build:all
 ```
 
 ### Hardhat test
@@ -27,39 +27,30 @@ yarn test:cov
 ``` bash
 yarn localhost
 
-export ENV_FILE='./envs/env.localhost'
-export NETWORK='localhost'
-export WAIT_NUM=1
+export NETWORK_ID='localhost'
 export GAS_PRICE=1
 ```
 
-#### rinkeby
+#### Goerli
 ``` bash
-export ENV_FILE='./envs/env.rinkeby'
-export NETWORK_ID=4
-export WAIT_NUM=1
+export NETWORK_ID=5
 export GAS_PRICE=3
 ```
 
-#### eth
+#### Matic
 ``` bash
-export ENV_FILE='./envs/env.eth'
-export NETWORK_ID=1
-export WAIT_NUM=3
-export GAS_PRICE=30
+export NETWORK_ID=89
+export GAS_PRICE=3
 ```
 
 ### script
 
 #### deploy script
 ```bash
-yarn run env-cmd -f $ENV_FILE yarn run hardhat Example:deploy --gas-price $GAS_PRICE --wait-num $WAIT_NUM --network $NETWORK_ID
-
-yarn run env-cmd -f $ENV_FILE yarn run hardhat ExampleUpgradeable:deploy --gas-price $GAS_PRICE --wait-num $WAIT_NUM --network $NETWORK_ID
+yarn run hardhat contract:deploy --contract EnSoul_SBT --gas-price $GAS_PRICE --args [\"https://\"] --network $NETWORK_ID
 ```
 
 #### verify contract
 ```bash
-yarn run env-cmd -f $ENV_FILE yarn run hardhat Example:verify --network $NETWORK_ID
-yarn run env-cmd -f $ENV_FILE yarn run hardhat ExampleUpgradeable:verify --network $NETWORK_ID
+yarn run hardhat contract:verify --contract EnSoul_SBT --args [\"https://\"] --network $NETWORK_ID
 ```
