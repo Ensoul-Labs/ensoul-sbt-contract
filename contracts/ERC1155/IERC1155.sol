@@ -32,7 +32,7 @@ interface IERC1155 is IERC165 {
      * @dev Emitted when `account` grants or revokes permission to `operator` to transfer their tokens, according to
      * `approved`.
      */
-    event ApprovalForAll(address indexed account, address indexed operator, bool approved);
+    // event ApprovalForAll(address indexed account, address indexed operator, bool approved);
 
     /**
      * @dev Emitted when the URI for token type `id` changes to `value`, if it is a non-programmatic URI.
