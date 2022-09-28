@@ -25,7 +25,7 @@ contract Factory {
 
     // 获取ensoul管理员地址
     function getEnsoulAdmin() external view returns (address) {
-        ensoulAdmin;
+        return ensoulAdmin;
     }
 
     // 设置ensoul管理员地址
