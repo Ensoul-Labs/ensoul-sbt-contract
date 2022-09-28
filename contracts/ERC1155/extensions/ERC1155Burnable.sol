@@ -20,10 +20,7 @@ abstract contract ERC1155Burnable is ERC1155 {
         //     account == _msgSender() || isApprovedForAll(account, _msgSender()),
         //     "ERC1155: caller is not owner nor approved"
         // );
-        require(
-            account == _msgSender(),
-            "ERC1155: caller is not owner"
-        );
+        require(account == _msgSender(), "ERC1155: caller is not owner");
 
         _burn(account, id, value);
     }
@@ -37,10 +34,7 @@ abstract contract ERC1155Burnable is ERC1155 {
         //     account == _msgSender() || isApprovedForAll(account, _msgSender()),
         //     "ERC1155: caller is not owner nor approved"
         // );
-        require(
-            account == _msgSender(),
-            "ERC1155: caller is not owner"
-        );
+        require(account == _msgSender(), "ERC1155: caller is not owner");
 
         _burnBatch(account, ids, values);
     }

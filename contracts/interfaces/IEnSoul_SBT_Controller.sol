@@ -12,9 +12,7 @@ interface IEnSoul_SBT_Controller {
 
     /* ================ TRANSACTION FUNCTIONS ================ */
 
-    /* ================ ADMIN FUNCTIONS ================ */
+    function allow(address to, uint256 tokenId) external;
 
-    function approve(address to, uint256 tokenId) external;
-
-    function unApprove(address to, uint256 tokenId) external;
+    function unAllow(address to, uint256 tokenId) external;
 }

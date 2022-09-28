@@ -1,13 +1,14 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.17;
 
-import "./src/interfaces/IEnSoul_SBT.sol";
-import "./src/ERC1155/ERC1155.sol";
-import "./src/ERC1155/extensions/ERC1155Burnable.sol";
-import "./src/ERC1155/extensions/ERC1155Pausable.sol";
-import "./src/ERC1155/extensions/ERC1155Supply.sol";
+import "./interfaces/IEnSoul_SBT.sol";
+import "./ERC1155/ERC1155.sol";
+import "./ERC1155/extensions/ERC1155Burnable.sol";
+import "./ERC1155/extensions/ERC1155Pausable.sol";
+import "./ERC1155/extensions/ERC1155Supply.sol";
+import "./EnSoul_SBT_Controller.sol";
 
-contract EnSoul_SBT is IEnSoul_SBT, ERC1155, ERC1155Burnable, ERC1155Pausable, ERC1155Supply {
+contract EnSoul_SBT is IEnSoul_SBT, ERC1155, ERC1155Burnable, ERC1155Pausable, ERC1155Supply, EnSoul_SBT_Controller {
     constructor(string memory url) ERC1155(url) {}
 
     /* ================ UTIL FUNCTIONS ================ */
@@ -65,17 +66,28 @@ contract EnSoul_SBT is IEnSoul_SBT, ERC1155, ERC1155Burnable, ERC1155Pausable, E
 
     /* ================ TRANSACTION FUNCTIONS ================ */
 
+    function mintToBatchAddress(
+        address[] memory toList,
+        uint256 tokenId,
+        uint256 amount,
+        bytes memory data
+    ) external _onlyAllow(_msgSender(), tokenId) {
+        for (uint256 i = 0; i < toList.length; i++) {
+            super._mint(toList[i], tokenId, amount, data);
+        }
+    }
+
     /* ================ ADMIN FUNCTIONS ================ */
 
-    function pause() external {
+    function pause() external onlyOwner {
         super._pause();
     }
 
-    function unpause() external {
+    function unpause() external onlyOwner {
         super._unpause();
     }
 
-    function setURI(string memory newuri) external {
+    function setURI(string memory newuri) external onlyOwner {
         super._setURI(newuri);
     }
 }
