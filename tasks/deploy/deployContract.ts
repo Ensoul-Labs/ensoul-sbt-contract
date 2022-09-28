@@ -23,7 +23,10 @@ task(`contract:deploy`, `Deploy contract`)
       txConfig.maxFeePerGas = args['gasPrice']
         ? hre.ethers.utils.parseUnits(args['gasPrice'], 'gwei')
         : undefined;
-      txConfig.maxPriorityFeePerGas = hre.ethers.utils.parseUnits('0.5', 'gwei');
+      txConfig.maxPriorityFeePerGas = hre.ethers.utils.parseUnits(
+        '0.5',
+        'gwei'
+      );
     } else {
       txConfig.gasPrice = args['gasPrice']
         ? hre.ethers.utils.parseUnits(args['gasPrice'], 'gwei')
