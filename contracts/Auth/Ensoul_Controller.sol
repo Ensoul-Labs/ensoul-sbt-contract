@@ -6,7 +6,7 @@ import "../interfaces/IEnsoul_Controller.sol";
 
 contract Ensoul_Controller is Ownable, IEnsoul_Controller {
     // 组织管理者们和其关系
-    mapping(address => mapping(uint256 => address)) private approver;
+    mapping(address => mapping(uint => address)) private approver;
     mapping(address => bool) public orgAdmins;
 
     constructor(address _owner) {
@@ -15,18 +15,18 @@ contract Ensoul_Controller is Ownable, IEnsoul_Controller {
 
     /* ================ UTIL FUNCTIONS ================ */
     // 仅有token权限的组织管理员，可调用
-    modifier onlyOrgAmin(uint256 tokenId) {
+    modifier onlyOrgAmin(uint tokenId) {
         require(this.isAllow(_msgSender(), tokenId), "ERR_NO_AUTH_OF_TOKEN");
         _;
     }
 
     /* ================ VIEW FUNCTIONS ================ */
     // 查询管理员是否具有操作某个tokenId的权限
-    function isAllow(address sender, uint256 tokenId) external view override returns (bool) {
+    function isAllow(address sender, uint tokenId) external view override returns (bool) {
         if (sender == owner() || orgAdmins[sender]) {
             return true;
         } else {
-            for (uint256 i = 0; ; i++) {
+            for (uint i = 0; ; i++) {
                 if (approver[sender][tokenId] == owner()) {
                     return true;
                 } else if (approver[sender][tokenId] == address(0)) {
@@ -47,15 +47,15 @@ contract Ensoul_Controller is Ownable, IEnsoul_Controller {
     }
 
     // 授权某个用户管理对应token
-    function allow(address to, uint256 tokenId) external override onlyOrgAmin(tokenId) {
+    function allow(address to, uint tokenId) external override onlyOrgAmin(tokenId) {
         approver[to][tokenId] = _msgSender();
         emit Allow(_msgSender(), to, tokenId);
     }
 
     /// 授权多个用户管理多个token
-    function allowBatch(address[] memory toList, uint256[] memory tokenIdList) external {
+    function allowBatch(address[] memory toList, uint[] memory tokenIdList) external {
         require(toList.length == tokenIdList.length, "allowBatch: not equal length");
-        for (uint256 i; i < toList.length; i++) {
+        for (uint i; i < toList.length; i++) {
             this.allow(toList[i], tokenIdList[i]);
         }
     }
@@ -67,16 +67,16 @@ contract Ensoul_Controller is Ownable, IEnsoul_Controller {
     }
 
     // 撤销管理员管理对应token的权力
-    function revokeAllow(address to, uint256 tokenId) external onlyOrgAmin(tokenId){
+    function revokeAllow(address to, uint tokenId) external onlyOrgAmin(tokenId){
         require(approver[to][tokenId] == _msgSender(), "unAllow: not approver");
         approver[to][tokenId] = address(0);
         emit RevokeAllow(_msgSender(), to, tokenId);
     }
 
     // 撤销管理员们管理对应一组token的权力
-    function revokeAllowBatch(address[] memory toList, uint256[] memory tokenIdList) external {
+    function revokeAllowBatch(address[] memory toList, uint[] memory tokenIdList) external {
         require(toList.length == tokenIdList.length, "revokeAllowBatch: not equal length");
-        for (uint256 i; i < toList.length; i++) {
+        for (uint i; i < toList.length; i++) {
             this.revokeAllow(toList[i], tokenIdList[i]);
         }
     }
