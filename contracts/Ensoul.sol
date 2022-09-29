@@ -1,28 +1,30 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.17;
 
-import "./interfaces/IEnSoul.sol";
+import "./interfaces/IEnsoul.sol";
 import "./ERC1155/ERC1155.sol";
 import "./ERC1155/extensions/ERC1155Burnable.sol";
 import "./ERC1155/extensions/ERC1155Pausable.sol";
 import "./ERC1155/extensions/ERC1155Supply.sol";
-import "./Auth/EnSoul_Controller.sol";
+import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol";
+import "./Auth/Ensoul_Controller.sol";
 import "./Data/ContractMetadata.sol";
 
-contract EnSoul_SBT is
-    IEnSoul,
+contract Ensoul is
+    IEnsoul,
     ERC1155,
     ERC1155Burnable,
     ERC1155Pausable,
     ERC1155Supply,
-    EnSoul_Controller,
-    ContractMetadata
+    Ensoul_Controller,
+    ContractMetadata,
+    EIP712
 {
-    constructor(
-        string memory _url,
-        address _owner,
-        address _factory
-    ) ERC1155(_url) EnSoul_Controller(_owner, _factory) {}
+    bytes32 public constant MINT_TO_BATCH_ADDRESS_TYPEHASH =
+        keccak256("mintToBatchAddress(address[] toList,uint256 tokenId,uint256 amount)");
+
+    constructor(string memory _url, address _owner) ERC1155(_url) Ensoul_Controller(_owner) EIP712("Ensoul", "1.0.0") {}
 
     /* ================ UTIL FUNCTIONS ================ */
 
@@ -42,7 +44,7 @@ contract EnSoul_SBT is
         uint256 id,
         uint256 amount,
         bytes memory data
-    ) internal onlyOrgAmin(id) override(ERC1155, ERC1155Supply) {
+    ) internal override(ERC1155, ERC1155Supply) onlyOrgAmin(id) {
         super._mint(account, id, amount, data);
     }
 
@@ -73,38 +75,57 @@ contract EnSoul_SBT is
 
     /* ================ VIEW FUNCTIONS ================ */
 
-    function uri(uint256 tokenId) public view override(ERC1155) returns (string memory) {
+    function uri(uint256 tokenId) public view override(ERC1155, IEnsoul) returns (string memory) {
         return string(abi.encode(super.uri(0), tokenId));
     }
 
     /* ================ TRANSACTION FUNCTIONS ================ */
 
-    function mintToBatchAddress(
+    function mintToBatchAddressBySignature(
         address[] memory toList,
         uint256 tokenId,
         uint256 amount,
-        bytes memory data
-    ) external onlyOrgAmin(tokenId) {
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) external override {
+        address signer = ECDSA.recover(
+            _hashTypedDataV4(keccak256(abi.encode(MINT_TO_BATCH_ADDRESS_TYPEHASH, toList, tokenId, amount))),
+            v,
+            r,
+            s
+        );
+        require(this.isAllow(signer, tokenId), "ERR_NO_AUTH_OF_TOKEN");
         for (uint256 i = 0; i < toList.length; i++) {
-            super._mint(toList[i], tokenId, amount, data);
+            super._mint(toList[i], tokenId, amount, "");
+        }
+    }
+
+    function mintToBatchAddress(
+        address[] memory toList,
+        uint256 tokenId,
+        uint256 amount
+    ) external override onlyOrgAmin(tokenId) {
+        for (uint256 i = 0; i < toList.length; i++) {
+            super._mint(toList[i], tokenId, amount, "");
         }
     }
 
     /* ================ ADMIN FUNCTIONS ================ */
 
-    function pause() external onlyOwner {
+    function pause() external override onlyOwner {
         super._pause();
     }
 
-    function unpause() external onlyOwner {
+    function unpause() external override onlyOwner {
         super._unpause();
     }
 
-    function setURI(string memory newuri) external onlyOwner {
+    function setURI(string memory newuri) external override onlyOwner {
         super._setURI(newuri);
     }
 
-    function setContractURI(string memory contractURI_) external onlyOwner {
+    function setContractURI(string memory contractURI_) external override onlyOwner {
         _setContractURI(contractURI_);
     }
 }

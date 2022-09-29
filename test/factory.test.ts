@@ -42,30 +42,29 @@ describe(`test ${contractName}`, function () {
     expect(await FactoryInstance.getEnsoulAdmin()).equal(otherAddress);
   });
 
-  it("可以通过Factory创建新的组织",async ()=>{
+  it('可以通过Factory创建新的组织', async () => {
     // 恢复到初始管理员
-    const deployerAddress = await deployer.getAddress()
+    const deployerAddress = await deployer.getAddress();
     await FactoryInstance.connect(accountA).setEnsoulAdmin(deployerAddress);
 
     const otherAddress = await accountA.getAddress();
-    await FactoryInstance.newOrg("this is url",otherAddress);
+    await FactoryInstance.newOrg('this is url', otherAddress);
 
-    const orgs = await FactoryInstance.orgs(0)
-    expect(orgs.toString().length).equal(42)
-  })
+    const orgs = await FactoryInstance.orgs(0);
+    expect(orgs.toString().length).equal(42);
+  });
 
-  it("新组织是全新的合约，合约不重复",async ()=>{
+  it('新组织是全新的合约，合约不重复', async () => {
     const otherAddress = await accountA.getAddress();
-    await FactoryInstance.newOrg("this is url",otherAddress);
-    await FactoryInstance.newOrg("this is url",otherAddress);
+    await FactoryInstance.newOrg('this is url', otherAddress);
+    await FactoryInstance.newOrg('this is url', otherAddress);
 
-    const orgsTemp1 = await FactoryInstance.orgs(0)
-    const orgsTemp2 = await FactoryInstance.orgs(1)
-    const orgsTemp3 = await FactoryInstance.orgs(2)
+    const orgsTemp1 = await FactoryInstance.orgs(0);
+    const orgsTemp2 = await FactoryInstance.orgs(1);
+    const orgsTemp3 = await FactoryInstance.orgs(2);
 
-    const orgs = [...new Set([orgsTemp1,orgsTemp2,orgsTemp3])]
-    
-    expect(orgs.length).equal(3)
-  })
+    const orgs = [...new Set([orgsTemp1, orgsTemp2, orgsTemp3])];
 
+    expect(orgs.length).equal(3);
+  });
 });
