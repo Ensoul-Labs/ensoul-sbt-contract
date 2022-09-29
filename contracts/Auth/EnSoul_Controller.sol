@@ -4,18 +4,18 @@ pragma solidity ^0.8.17;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 import "../interfaces/IEnSoul_Controller.sol";
-import "../interfaces/IFactory.sol";
+import "../interfaces/IEnSoul_Factory.sol";
 
 contract EnSoul_Controller is Ownable, IEnSoul_Controller {
     // ensoul工厂合约，用于同步工厂合约的最新配置
-    IFactory private factory;
+    IEnSoul_Factory private factory;
 
     // 组织管理者们和其关系
     mapping(address => mapping(uint256 => bool)) private _isAllow;
     mapping(address => address) private approver;
 
     constructor(address _owner, address _factory) {
-        factory = IFactory(_factory);
+        factory = IEnSoul_Factory(_factory);
         transferOwnership(_owner);
     }
 

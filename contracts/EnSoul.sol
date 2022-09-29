@@ -9,7 +9,7 @@ import "./ERC1155/extensions/ERC1155Supply.sol";
 import "./Auth/EnSoul_Controller.sol";
 import "./Data/ContractMetadata.sol";
 
-contract EnSoul_SBT is
+contract EnSoul is
     IEnSoul,
     ERC1155,
     ERC1155Burnable,

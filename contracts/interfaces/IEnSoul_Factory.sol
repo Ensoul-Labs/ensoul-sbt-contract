@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-interface IFactory {
+interface IEnSoul_Factory {
     function getEnsoulAdmin() external view returns (address);
 }

@@ -1,9 +1,9 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.17;
 
-import "../EnSoul.sol";
+import "./EnSoul.sol";
 
-contract Factory {
+contract EnSoul_Factory {
     // 当有新组织创建时，触发此事件记录
     event NewOrg(address indexed owner, address orgAddress);
 
@@ -16,7 +16,7 @@ contract Factory {
 
     // 创建新组织
     function newOrg(string memory _url, address _orgOwner) public onlyEnsoulAdmin {
-        EnSoul_SBT org = new EnSoul_SBT(_url, _orgOwner, this.getEnsoulAdmin());
+        EnSoul org = new EnSoul(_url, _orgOwner, this.getEnsoulAdmin());
         address orgAddress = address(org);
         orgs.push(orgAddress);
 
