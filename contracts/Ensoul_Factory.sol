@@ -3,7 +3,7 @@ pragma solidity ^0.8.17;
 
 import "./Ensoul.sol";
 
-contract Ensoul_Factory is Ownable {
+contract Ensoul_Factory {
     // 当有新组织创建时，触发此事件记录
     event NewOrg(address indexed owner, address orgAddress);
 
@@ -15,8 +15,13 @@ contract Ensoul_Factory is Ownable {
     }
 
     // 创建新组织
-    function newOrg(string memory _url, address _orgOwner) public onlyEnsoulAdmin {
-        Ensoul org = new Ensoul(_url, _orgOwner);
+    function newOrg(
+        address _orgOwner,
+        string memory _tokenURI,
+        string memory _contractURI
+    ) public onlyEnsoulAdmin {
+        Ensoul org = new Ensoul(_orgOwner, _tokenURI, _contractURI);
+
         address orgAddress = address(org);
         orgs.push(orgAddress);
 

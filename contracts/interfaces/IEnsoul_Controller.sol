@@ -7,6 +7,7 @@ interface IEnsoul_Controller {
     event RevokeAllow(address from, address to, uint256 tokenId);
     event AddOrgAdmin(address indexed owner, address admin);
     event RemoveOrgAdmin(address indexed owner, address admin);
+
     /* ================ VIEW FUNCTIONS ================ */
     function isAllow(address sender, uint256 tokenId) external view returns (bool);
 
