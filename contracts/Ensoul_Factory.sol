@@ -5,7 +5,7 @@ import "./Ensoul.sol";
 import "./interfaces/IEnsoul_Factory.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract Ensoul_Factory is Ownable,IEnsoul_Factory {
+contract Ensoul_Factory is Ownable, IEnsoul_Factory {
     // 当有新组织创建时，触发此事件记录
     event NewEnsoulOrg(string name, address indexed owner, address ensoulAddress);
 

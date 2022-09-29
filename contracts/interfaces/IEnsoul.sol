@@ -4,7 +4,7 @@ pragma solidity ^0.8.17;
 interface IEnsoul {
     /* ================ EVENTS ================ */
     /* ================ VIEW FUNCTIONS ================ */
-    
+
     function uri(uint256 tokenId) external view returns (string memory);
 
     /* ================ TRANSACTION FUNCTIONS ================ */

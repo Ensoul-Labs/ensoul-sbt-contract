@@ -5,7 +5,6 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "../interfaces/IEnsoul_Controller.sol";
 
 contract Ensoul_Controller is Ownable, IEnsoul_Controller {
-
     // 组织管理者们和其关系
     mapping(address => mapping(uint256 => address)) private approver;
 

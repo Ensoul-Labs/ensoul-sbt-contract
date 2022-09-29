@@ -24,10 +24,7 @@ contract Ensoul is
     bytes32 public constant MINT_TO_BATCH_ADDRESS_TYPEHASH =
         keccak256("mintToBatchAddress(address[] toList,uint256 tokenId,uint256 amount)");
 
-    constructor(
-        string memory _url,
-        address _owner
-    ) ERC1155(_url) Ensoul_Controller(_owner) EIP712("Ensoul", "1.0.0") {}
+    constructor(string memory _url, address _owner) ERC1155(_url) Ensoul_Controller(_owner) EIP712("Ensoul", "1.0.0") {}
 
     /* ================ UTIL FUNCTIONS ================ */
 
@@ -78,7 +75,7 @@ contract Ensoul is
 
     /* ================ VIEW FUNCTIONS ================ */
 
-    function uri(uint256 tokenId) public view override(ERC1155,IEnsoul) returns (string memory) {
+    function uri(uint256 tokenId) public view override(ERC1155, IEnsoul) returns (string memory) {
         return string(abi.encode(super.uri(0), tokenId));
     }
 
@@ -124,7 +121,7 @@ contract Ensoul is
         super._unpause();
     }
 
-    function setURI(string memory newuri) external override  onlyOwner {
+    function setURI(string memory newuri) external override onlyOwner {
         super._setURI(newuri);
     }
 
