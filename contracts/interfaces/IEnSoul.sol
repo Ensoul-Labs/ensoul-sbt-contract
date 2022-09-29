@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-interface IEnSoul_SBT {
+interface IEnSoul {
     /* ================ EVENTS ================ */
     /* ================ VIEW FUNCTIONS ================ */
     /* ================ TRANSACTION FUNCTIONS ================ */

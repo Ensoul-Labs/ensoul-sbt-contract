@@ -17,13 +17,10 @@ if (fs.existsSync('./sdk/src/typechain')) {
 dotenv.config();
 const gasPrice = process.env.GAS_PRICE || 1;
 
-let accounts;
-let apiKey;
+let accounts = [process.env.TEST_PRIVATE_KEY as string];
+let apiKey = process.env.GOERLI_SCAN_APIKEY;
 
-if (process.env.NETWORK_ID == '5') {
-  accounts = [process.env.TEST_PRIVATE_KEY as string];
-  apiKey = process.env.GOERLI_SCAN_APIKEY;
-} else {
+if (process.env.NETWORK_ID == '89') {
   accounts = [process.env.PRIVATE_KEY as string];
   apiKey = process.env.POLYGON_SCAN_APIKEY;
 }

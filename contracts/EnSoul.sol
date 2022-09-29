@@ -1,15 +1,28 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.17;
 
-import "./interfaces/IEnSoul_SBT.sol";
+import "./interfaces/IEnSoul.sol";
 import "./ERC1155/ERC1155.sol";
 import "./ERC1155/extensions/ERC1155Burnable.sol";
 import "./ERC1155/extensions/ERC1155Pausable.sol";
 import "./ERC1155/extensions/ERC1155Supply.sol";
-import "./EnSoul_SBT_Controller.sol";
+import "./Auth/EnSoul_Controller.sol";
+import "./Data/ContractMetadata.sol";
 
-contract EnSoul_SBT is IEnSoul_SBT, ERC1155, ERC1155Burnable, ERC1155Pausable, ERC1155Supply, EnSoul_SBT_Controller {
-    constructor(string memory url) ERC1155(url) {}
+contract EnSoul_SBT is
+    IEnSoul,
+    ERC1155,
+    ERC1155Burnable,
+    ERC1155Pausable,
+    ERC1155Supply,
+    EnSoul_Controller,
+    ContractMetadata
+{
+    constructor(
+        string memory _url,
+        address _owner,
+        address _factory
+    ) ERC1155(_url) EnSoul_Controller(_owner, _factory) {}
 
     /* ================ UTIL FUNCTIONS ================ */
 
@@ -29,7 +42,7 @@ contract EnSoul_SBT is IEnSoul_SBT, ERC1155, ERC1155Burnable, ERC1155Pausable, E
         uint256 id,
         uint256 amount,
         bytes memory data
-    ) internal override(ERC1155, ERC1155Supply) {
+    ) internal onlyOrgAmin(id) override(ERC1155, ERC1155Supply) {
         super._mint(account, id, amount, data);
     }
 
@@ -71,7 +84,7 @@ contract EnSoul_SBT is IEnSoul_SBT, ERC1155, ERC1155Burnable, ERC1155Pausable, E
         uint256 tokenId,
         uint256 amount,
         bytes memory data
-    ) external _onlyAllow(_msgSender(), tokenId) {
+    ) external onlyOrgAmin(tokenId) {
         for (uint256 i = 0; i < toList.length; i++) {
             super._mint(toList[i], tokenId, amount, data);
         }
@@ -89,5 +102,9 @@ contract EnSoul_SBT is IEnSoul_SBT, ERC1155, ERC1155Burnable, ERC1155Pausable, E
 
     function setURI(string memory newuri) external onlyOwner {
         super._setURI(newuri);
+    }
+
+    function setContractURI(string memory contractURI_) external onlyOwner {
+        _setContractURI(contractURI_);
     }
 }
