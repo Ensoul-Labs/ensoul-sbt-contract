@@ -13,3 +13,5 @@ sdk/tsconfig.tsbuildinfo
 sdk/dist/
 logs/
 envs/
+
+.DS_Store

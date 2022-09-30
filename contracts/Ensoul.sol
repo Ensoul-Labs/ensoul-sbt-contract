@@ -24,7 +24,13 @@ contract Ensoul is
     bytes32 public constant MINT_TO_BATCH_ADDRESS_TYPEHASH =
         keccak256("mintToBatchAddress(address[] toList,uint256 tokenId,uint256 amount)");
 
-    constructor(string memory _url, address _owner) ERC1155(_url) Ensoul_Controller(_owner) EIP712("Ensoul", "1.0.0") {}
+    constructor(
+        address _owner,
+        string memory _tokenURI,
+        string memory _contractURI
+    ) ERC1155(_tokenURI) Ensoul_Controller(_owner) EIP712("Ensoul", "1.0.0") {
+        _setContractURI(_contractURI);
+    }
 
     /* ================ UTIL FUNCTIONS ================ */
 
@@ -109,6 +115,11 @@ contract Ensoul is
         for (uint256 i = 0; i < toList.length; i++) {
             super._mint(toList[i], tokenId, amount, "");
         }
+    }
+
+    // 用户燃烧掉自己的sbt
+    function burn(uint tokenId) external {
+        _burn(msg.sender, tokenId, 1);
     }
 
     /* ================ ADMIN FUNCTIONS ================ */

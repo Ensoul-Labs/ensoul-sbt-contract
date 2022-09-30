@@ -3,7 +3,7 @@ import {expect} from 'chai';
 import {ethers, getNamedAccounts} from 'hardhat';
 import {BigNumber, Signer} from 'ethers';
 
-const contractName = 'Factory';
+const contractName = 'Ensoul_Factory';
 
 describe(`test ${contractName}`, function () {
   let deployer: Signer;

@@ -2,25 +2,45 @@
 pragma solidity ^0.8.17;
 
 import "./Ensoul.sol";
-import "./interfaces/IEnsoul_Factory.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract Ensoul_Factory is Ownable, IEnsoul_Factory {
+contract Ensoul_Factory {
     // 当有新组织创建时，触发此事件记录
-    event NewEnsoulOrg(string name, address indexed owner, address ensoulAddress);
+    event NewOrg(address indexed owner, address orgAddress);
 
-    mapping(string => address[]) public EnsoulListMap;
+    address private ensoulAdmin; // ensoul管理员
+    address[] public orgs; // 所有的组织-部署完成的ERC1155
 
-    constructor() {}
+    constructor() {
+        ensoulAdmin = msg.sender;
+    }
 
     // 创建新组织
-    function newEnsoulOrg(
-        string memory name,
-        string memory url,
-        address owner
-    ) public {
-        address ensoulAddress = address(new Ensoul(url, owner));
-        EnsoulListMap[name].push(ensoulAddress);
-        emit NewEnsoulOrg(name, owner, ensoulAddress);
+    function newOrg(
+        address _orgOwner,
+        string memory _tokenURI,
+        string memory _contractURI
+    ) public onlyEnsoulAdmin {
+        Ensoul org = new Ensoul(_orgOwner, _tokenURI, _contractURI);
+
+        address orgAddress = address(org);
+        orgs.push(orgAddress);
+
+        emit NewOrg(msg.sender, orgAddress);
+    }
+
+    // 获取ensoul管理员地址
+    function getEnsoulAdmin() external view returns (address) {
+        return ensoulAdmin;
+    }
+
+    // 设置ensoul管理员地址
+    function setEnsoulAdmin(address _ensoulAdmin) external onlyEnsoulAdmin {
+        ensoulAdmin = _ensoulAdmin;
+    }
+
+    // 基于ensoul管理员的拦截器
+    modifier onlyEnsoulAdmin() {
+        require(msg.sender == ensoulAdmin, "ERR_NOT_ENSOUL_ADMIN");
+        _;
     }
 }

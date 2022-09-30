@@ -7,6 +7,7 @@ import "../interfaces/IEnsoul_Controller.sol";
 contract Ensoul_Controller is Ownable, IEnsoul_Controller {
     // 组织管理者们和其关系
     mapping(address => mapping(uint256 => address)) private approver;
+    mapping(address => bool) public orgAdmins;
 
     constructor(address _owner) {
         transferOwnership(_owner);
@@ -22,7 +23,7 @@ contract Ensoul_Controller is Ownable, IEnsoul_Controller {
     /* ================ VIEW FUNCTIONS ================ */
     // 查询管理员是否具有操作某个tokenId的权限
     function isAllow(address sender, uint256 tokenId) external view override returns (bool) {
-        if (sender == owner()) {
+        if (sender == owner() || orgAdmins[sender]) {
             return true;
         } else {
             for (uint256 i = 0; ; i++) {
@@ -39,10 +40,16 @@ contract Ensoul_Controller is Ownable, IEnsoul_Controller {
     }
 
     /* ================ TRANSACTION FUNCTIONS ================ */
+    // 添加管理员
+    function addOrgAdmin(address admin) external onlyOwner {
+        orgAdmins[admin] = true;
+        emit AddOrgAdmin(owner(), admin);
+    }
+
     // 授权某个用户管理对应token
     function allow(address to, uint256 tokenId) external override onlyOrgAmin(tokenId) {
         approver[to][tokenId] = _msgSender();
-        emit Allow(_msgSender(), to, tokenId, true);
+        emit Allow(_msgSender(), to, tokenId);
     }
 
     /// 授权多个用户管理多个token
@@ -53,11 +60,17 @@ contract Ensoul_Controller is Ownable, IEnsoul_Controller {
         }
     }
 
+    // 移除管理员权限
+    function revokeOrgAdmin(address admin) external onlyOwner {
+        orgAdmins[admin] = false;
+        emit RemoveOrgAdmin(owner(), admin);
+    }
+
     // 撤销管理员管理对应token的权力
-    function revokeAllow(address to, uint256 tokenId) external {
+    function revokeAllow(address to, uint256 tokenId) external onlyOrgAmin(tokenId) {
         require(approver[to][tokenId] == _msgSender(), "unAllow: not approver");
         approver[to][tokenId] = address(0);
-        emit Allow(_msgSender(), to, tokenId, false);
+        emit RevokeAllow(_msgSender(), to, tokenId);
     }
 
     // 撤销管理员们管理对应一组token的权力
