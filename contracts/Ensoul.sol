@@ -122,6 +122,13 @@ contract Ensoul is
         _burn(msg.sender, tokenId, 1);
     }
 
+    function burnBatch(
+        uint256[] memory ids,
+        uint256[] memory values
+    ) external {
+        _burnBatch(msg.sender, ids, values);
+    }
+
     /* ================ ADMIN FUNCTIONS ================ */
 
     function pause() external override onlyOwner {
