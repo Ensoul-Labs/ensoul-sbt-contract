@@ -27,7 +27,7 @@ contract Ensoul_Controller is Ownable, IEnsoul_Controller {
             return true;
         } else {
             for (uint256 i = 0; ; i++) {
-                if (approver[sender][tokenId] == owner()) {
+                if (approver[sender][tokenId] == owner() || orgAdmins[approver[sender][tokenId]]) {
                     return true;
                 } else if (approver[sender][tokenId] == address(0)) {
                     return false;
