@@ -48,7 +48,7 @@ describe(`test ${contractName}`, function () {
     await FactoryInstance.connect(accountA).setEnsoulAdmin(deployerAddress);
 
     const otherAddress = await accountA.getAddress();
-    await FactoryInstance.newOrg('this is url', otherAddress);
+    await FactoryInstance.newOrg(otherAddress, 'this is url','this is url');
 
     const orgs = await FactoryInstance.orgs(0);
     expect(orgs.toString().length).equal(42);
@@ -56,8 +56,8 @@ describe(`test ${contractName}`, function () {
 
   it('新组织是全新的合约，合约不重复', async () => {
     const otherAddress = await accountA.getAddress();
-    await FactoryInstance.newOrg('this is url', otherAddress);
-    await FactoryInstance.newOrg('this is url', otherAddress);
+    await FactoryInstance.newOrg(otherAddress, 'this is url','this is url');
+    await FactoryInstance.newOrg(otherAddress, 'this is url','this is url');
 
     const orgsTemp1 = await FactoryInstance.orgs(0);
     const orgsTemp2 = await FactoryInstance.orgs(1);
