@@ -10,6 +10,7 @@ import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol";
 import "./Auth/Ensoul_Controller.sol";
 import "./Data/ContractMetadata.sol";
+import "./Auth/Ensoul_SuperController.sol";
 
 contract Ensoul is
     IEnsoul,
@@ -19,16 +20,18 @@ contract Ensoul is
     ERC1155Supply,
     Ensoul_Controller,
     ContractMetadata,
-    EIP712
+    EIP712,
+    Ensoul_SuperController
 {
     bytes32 public constant MINT_TO_BATCH_ADDRESS_TYPEHASH =
         keccak256("mintToBatchAddress(address[] toList,uint256 tokenId,uint256 amount)");
 
     constructor(
         address _owner,
+        address _facotry,
         string memory _tokenURI,
         string memory _contractURI
-    ) ERC1155(_tokenURI) Ensoul_Controller(_owner) EIP712("Ensoul", "1.0.0") {
+    ) ERC1155(_tokenURI) Ensoul_Controller(_owner) Ensoul_SuperController(_facotry) EIP712("Ensoul", "1.0.0") {
         _setContractURI(_contractURI);
     }
 
@@ -117,18 +120,13 @@ contract Ensoul is
         }
     }
 
-    // 用户燃烧掉自己的sbt
-    function burn(uint tokenId) external {
-        _burn(msg.sender, tokenId, 1);
-    }
-
     /* ================ ADMIN FUNCTIONS ================ */
 
-    function pause() external override onlyOwner {
+    function pause() external override onlySuperOwner {
         super._pause();
     }
 
-    function unpause() external override onlyOwner {
+    function unpause() external override onlySuperOwner {
         super._unpause();
     }
 
