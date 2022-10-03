@@ -9,6 +9,7 @@ import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol";
 import "./Auth/Ensoul_Controller.sol";
 import "./Data/ContractMetadata.sol";
+import "./Auth/Ensoul_SuperController.sol";
 
 contract Ensoul is
     IEnsoul,
@@ -17,16 +18,18 @@ contract Ensoul is
     ERC1155Supply,
     Ensoul_Controller,
     ContractMetadata,
-    EIP712
+    EIP712,
+    Ensoul_SuperController
 {
     bytes32 public constant MINT_TO_BATCH_ADDRESS_TYPEHASH =
         keccak256("mintToBatchAddress(address[] toList,uint256 tokenId)");
 
     constructor(
         address _owner,
+        address _facotry,
         string memory _tokenURI,
         string memory _contractURI
-    ) ERC1155(_tokenURI) Ensoul_Controller(_owner) EIP712("Ensoul", "1.0.0") {
+    ) ERC1155(_tokenURI) Ensoul_Controller(_owner) Ensoul_SuperController(_facotry) EIP712("Ensoul", "1.0.0") {
         _setContractURI(_contractURI);
     }
 
@@ -79,9 +82,6 @@ contract Ensoul is
 
     /* ================ VIEW FUNCTIONS ================ */
 
-    function uri(uint256 tokenId) public view override(ERC1155, IEnsoul) returns (string memory) {
-        return string(abi.encode(super.uri(0), tokenId));
-    }
 
     /* ================ TRANSACTION FUNCTIONS ================ */
 
@@ -104,34 +104,45 @@ contract Ensoul is
         }
     }
 
+    function mint(
+        address account,
+        uint256 id,
+        uint256 amount
+    ) external onlyOrgAmin(id) {
+        super._mint(account, id, amount, "");
+    }
+
     function mintToBatchAddress(
         address[] memory toList,
-        uint256 tokenId
+        uint256 tokenId,
+        uint amount
     ) external override onlyOrgAmin(tokenId) {
         for (uint256 i = 0; i < toList.length; i++) {
-            super._mint(toList[i], tokenId,1, "");
+            super._mint(toList[i], tokenId,amount, "");
         }
     }
 
-    // 用户燃烧掉自己的sbt
-    function burn(uint tokenId) external {
-        _burn(msg.sender, tokenId, 1);
+    function burn(
+        uint256 id,
+        uint256 value
+    ) public virtual {
+        _burn(_msgSender(), id, value);
     }
 
     function burnBatch(
         uint256[] memory ids,
         uint256[] memory values
-    ) external {
+    ) public virtual {
         _burnBatch(msg.sender, ids, values);
     }
 
     /* ================ ADMIN FUNCTIONS ================ */
 
-    function pause() external override onlyOwner {
+    function pause() external override onlySuperOwner {
         super._pause();
     }
 
-    function unpause() external override onlyOwner {
+    function unpause() external override onlySuperOwner {
         super._unpause();
     }
 

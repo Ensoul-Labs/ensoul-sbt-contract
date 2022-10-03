@@ -20,7 +20,7 @@ contract Ensoul_Factory {
         string memory _tokenURI,
         string memory _contractURI
     ) public onlyEnsoulAdmin {
-        Ensoul org = new Ensoul(_orgOwner, _tokenURI, _contractURI);
+        Ensoul org = new Ensoul(_orgOwner, address(this), _tokenURI, _contractURI);
 
         address orgAddress = address(org);
         orgs.push(orgAddress);

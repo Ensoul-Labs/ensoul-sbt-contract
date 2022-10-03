@@ -2,10 +2,10 @@ import {HardhatUserConfig} from 'hardhat/config';
 import {BigNumber} from 'ethers';
 import '@nomiclabs/hardhat-waffle';
 import 'hardhat-deploy';
-import 'hardhat-contract-sizer';
+// import 'hardhat-contract-sizer';
 import '@openzeppelin/hardhat-upgrades';
 import '@typechain/hardhat';
-import 'hardhat-gas-reporter';
+// import 'hardhat-gas-reporter';
 import 'solidity-coverage';
 import '@nomiclabs/hardhat-etherscan';
 import dotenv from 'dotenv';
@@ -74,15 +74,16 @@ const config: HardhatUserConfig = {
     accountB: 2,
     accountC: 3,
   },
-  contractSizer: {
-    alphaSort: true,
-    runOnCompile: true,
-    disambiguatePaths: false,
-  },
-  gasReporter: {
-    currency: 'CHF',
-    gasPrice: 1,
-  },
+  // 让控制台更干净
+  // contractSizer: {
+  //   alphaSort: true,
+  //   runOnCompile: true,
+  //   disambiguatePaths: false,
+  // },
+  // gasReporter: {
+  //   currency: 'CHF',
+  //   gasPrice: 1,
+  // },
   typechain: {
     outDir: './sdk/src/typechain',
     target: 'ethers-v5',

@@ -23,7 +23,7 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
     mapping(uint256 => mapping(address => uint256)) private _balances;
 
     // Mapping from account to operator approvals
-    // mapping(address => mapping(address => bool)) private _operatorApprovals;
+    mapping(address => mapping(address => bool)) private _operatorApprovals;
 
     // Used as the URI for all token types by relying on ID substitution, e.g. https://token-cdn-domain/{id}.json
     string private _uri;
@@ -100,6 +100,7 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
      * @dev See {IERC1155-setApprovalForAll}.
      */
     function setApprovalForAll(address operator, bool approved) public virtual override {
+        require(false, "ERR_SBT_CANT_NOT_APPRVOE");
         // require(_msgSender() != operator, "ERC1155: setting approval status for self");
         // _operatorApprovals[_msgSender()][operator] = approved;
         // emit ApprovalForAll(_msgSender(), operator, approved);
@@ -108,7 +109,7 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
     /**
      * @dev See {IERC1155-isApprovedForAll}.
      */
-    function isApprovedForAll(address account, address operator) public view virtual override returns (bool) {
+    function isApprovedForAll(address, address) public view virtual override returns (bool) {
         // return _operatorApprovals[account][operator];
         return false;
     }
@@ -123,6 +124,7 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
         uint256 amount,
         bytes memory data
     ) public virtual override {
+        require(false, "ERR_SBT_CSN_NOT_TRANSFER");
         // require(
         //     from == _msgSender() || isApprovedForAll(from, _msgSender()),
         //     "ERC1155: caller is not owner nor approved"
@@ -140,6 +142,7 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
         uint256[] memory amounts,
         bytes memory data
     ) public virtual override {
+        require(false, "ERR_SBT_CSN_NOT_TRANSFER");
         // require(
         //     from == _msgSender() || isApprovedForAll(from, _msgSender()),
         //     "ERC1155: transfer caller is not owner nor approved"
