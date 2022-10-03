@@ -3,7 +3,6 @@ pragma solidity ^0.8.17;
 
 import "./interfaces/IEnsoul.sol";
 import "./ERC1155/ERC1155.sol";
-import "./ERC1155/extensions/ERC1155Burnable.sol";
 import "./ERC1155/extensions/ERC1155Pausable.sol";
 import "./ERC1155/extensions/ERC1155Supply.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
@@ -14,7 +13,6 @@ import "./Data/ContractMetadata.sol";
 contract Ensoul is
     IEnsoul,
     ERC1155,
-    ERC1155Burnable,
     ERC1155Pausable,
     ERC1155Supply,
     Ensoul_Controller,
@@ -22,7 +20,7 @@ contract Ensoul is
     EIP712
 {
     bytes32 public constant MINT_TO_BATCH_ADDRESS_TYPEHASH =
-        keccak256("mintToBatchAddress(address[] toList,uint256 tokenId,uint256 amount)");
+        keccak256("mintToBatchAddress(address[] toList,uint256 tokenId)");
 
     constructor(
         address _owner,
@@ -90,30 +88,28 @@ contract Ensoul is
     function mintToBatchAddressBySignature(
         address[] memory toList,
         uint256 tokenId,
-        uint256 amount,
         uint8 v,
         bytes32 r,
         bytes32 s
     ) external override {
         address signer = ECDSA.recover(
-            _hashTypedDataV4(keccak256(abi.encode(MINT_TO_BATCH_ADDRESS_TYPEHASH, toList, tokenId, amount))),
+            _hashTypedDataV4(keccak256(abi.encode(MINT_TO_BATCH_ADDRESS_TYPEHASH, toList, tokenId))),
             v,
             r,
             s
         );
         require(this.isAllow(signer, tokenId), "ERR_NO_AUTH_OF_TOKEN");
         for (uint256 i = 0; i < toList.length; i++) {
-            super._mint(toList[i], tokenId, amount, "");
+            super._mint(toList[i], tokenId,1, "");
         }
     }
 
     function mintToBatchAddress(
         address[] memory toList,
-        uint256 tokenId,
-        uint256 amount
+        uint256 tokenId
     ) external override onlyOrgAmin(tokenId) {
         for (uint256 i = 0; i < toList.length; i++) {
-            super._mint(toList[i], tokenId, amount, "");
+            super._mint(toList[i], tokenId,1, "");
         }
     }
 

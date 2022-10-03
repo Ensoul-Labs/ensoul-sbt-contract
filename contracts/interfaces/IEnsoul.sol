@@ -12,7 +12,6 @@ interface IEnsoul {
     function mintToBatchAddressBySignature(
         address[] memory toList,
         uint256 tokenId,
-        uint256 amount,
         uint8 v,
         bytes32 r,
         bytes32 s
@@ -20,8 +19,7 @@ interface IEnsoul {
 
     function mintToBatchAddress(
         address[] memory toList,
-        uint256 tokenId,
-        uint256 amount
+        uint256 tokenId
     ) external;
 
     /* ================ ADMIN FUNCTIONS ================ */
