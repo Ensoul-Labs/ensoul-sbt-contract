@@ -3,7 +3,6 @@ pragma solidity ^0.8.17;
 
 import "./interfaces/IEnsoul.sol";
 import "./ERC1155/ERC1155.sol";
-import "./ERC1155/extensions/ERC1155Burnable.sol";
 import "./ERC1155/extensions/ERC1155Pausable.sol";
 import "./ERC1155/extensions/ERC1155Supply.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
@@ -15,7 +14,6 @@ import "./Auth/Ensoul_SuperController.sol";
 contract Ensoul is
     IEnsoul,
     ERC1155,
-    ERC1155Burnable,
     ERC1155Pausable,
     ERC1155Supply,
     Ensoul_Controller,
@@ -24,7 +22,7 @@ contract Ensoul is
     Ensoul_SuperController
 {
     bytes32 public constant MINT_TO_BATCH_ADDRESS_TYPEHASH =
-        keccak256("mintToBatchAddress(address[] toList,uint256 tokenId,uint256 amount)");
+        keccak256("mintToBatchAddress(address[] toList,uint256 tokenId)");
 
     constructor(
         address _owner,
@@ -84,30 +82,25 @@ contract Ensoul is
 
     /* ================ VIEW FUNCTIONS ================ */
 
-    // function uri(uint256 tokenId) public view override(ERC1155, IEnsoul) returns (string memory) {
-    //     // return string(abi.encode(super.uri(0), tokenId));
-    //     return super.uri(tokenId);
-    // }
 
     /* ================ TRANSACTION FUNCTIONS ================ */
 
     function mintToBatchAddressBySignature(
         address[] memory toList,
         uint256 tokenId,
-        uint256 amount,
         uint8 v,
         bytes32 r,
         bytes32 s
-    ) external {
+    ) external override {
         address signer = ECDSA.recover(
-            _hashTypedDataV4(keccak256(abi.encode(MINT_TO_BATCH_ADDRESS_TYPEHASH, toList, tokenId, amount))),
+            _hashTypedDataV4(keccak256(abi.encode(MINT_TO_BATCH_ADDRESS_TYPEHASH, toList, tokenId))),
             v,
             r,
             s
         );
         require(this.isAllow(signer, tokenId), "ERR_NO_AUTH_OF_TOKEN");
         for (uint256 i = 0; i < toList.length; i++) {
-            super._mint(toList[i], tokenId, amount, "");
+            super._mint(toList[i], tokenId,1, "");
         }
     }
 
@@ -122,11 +115,25 @@ contract Ensoul is
     function mintToBatchAddress(
         address[] memory toList,
         uint256 tokenId,
-        uint256 amount
-    ) external onlyOrgAmin(tokenId) {
+        uint amount
+    ) external override onlyOrgAmin(tokenId) {
         for (uint256 i = 0; i < toList.length; i++) {
-            super._mint(toList[i], tokenId, amount, "");
+            super._mint(toList[i], tokenId,amount, "");
         }
+    }
+
+    function burn(
+        uint256 id,
+        uint256 value
+    ) public virtual {
+        _burn(_msgSender(), id, value);
+    }
+
+    function burnBatch(
+        uint256[] memory ids,
+        uint256[] memory values
+    ) public virtual {
+        _burnBatch(msg.sender, ids, values);
     }
 
     /* ================ ADMIN FUNCTIONS ================ */
@@ -146,14 +153,4 @@ contract Ensoul is
     function setContractURI(string memory contractURI_) external override onlyOwner {
         _setContractURI(contractURI_);
     }
-
-    function mintToBatchAddressBySignature(
-        address[] memory toList,
-        uint256 tokenId,
-        uint8 v,
-        bytes32 r,
-        bytes32 s
-    ) external override {}
-
-   //function mintToBatchAddress(address[] memory toList, uint256 tokenId) external override {}
 }
