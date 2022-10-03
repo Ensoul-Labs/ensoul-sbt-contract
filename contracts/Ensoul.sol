@@ -129,6 +129,21 @@ contract Ensoul is
         }
     }
 
+<<<<<<< HEAD
+=======
+    // 用户燃烧掉自己的sbt
+    function burn(uint tokenId) external {
+        _burn(msg.sender, tokenId, 1);
+    }
+
+    function burnBatch(
+        uint256[] memory ids,
+        uint256[] memory values
+    ) external {
+        _burnBatch(msg.sender, ids, values);
+    }
+
+>>>>>>> 64ff25f (添加批量燃烧)
     /* ================ ADMIN FUNCTIONS ================ */
 
     function pause() external override onlySuperOwner {
