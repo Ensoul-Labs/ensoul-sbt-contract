@@ -111,6 +111,14 @@ contract Ensoul is
         }
     }
 
+    function mint(
+        address account,
+        uint256 id,
+        uint256 amount
+    ) external onlyOrgAmin(id) {
+        super._mint(account, id, amount, "");
+    }
+
     function mintToBatchAddress(
         address[] memory toList,
         uint256 tokenId,
