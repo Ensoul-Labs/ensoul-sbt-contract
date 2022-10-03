@@ -5,7 +5,7 @@ interface IEnsoul {
     /* ================ EVENTS ================ */
     /* ================ VIEW FUNCTIONS ================ */
 
-    function uri(uint256 tokenId) external view returns (string memory);
+    // function uri(uint256 tokenId) external view returns (string memory);
 
     /* ================ TRANSACTION FUNCTIONS ================ */
 
@@ -19,7 +19,8 @@ interface IEnsoul {
 
     function mintToBatchAddress(
         address[] memory toList,
-        uint256 tokenId
+        uint256 tokenId,
+        uint256 amount
     ) external;
 
     /* ================ ADMIN FUNCTIONS ================ */

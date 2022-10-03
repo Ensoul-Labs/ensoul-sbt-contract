@@ -84,10 +84,10 @@ contract Ensoul is
 
     /* ================ VIEW FUNCTIONS ================ */
 
-    function uri(uint256 tokenId) public view override(ERC1155, IEnsoul) returns (string memory) {
-        // return string(abi.encode(super.uri(0), tokenId));
-        return super.uri(tokenId);
-    }
+    // function uri(uint256 tokenId) public view override(ERC1155, IEnsoul) returns (string memory) {
+    //     // return string(abi.encode(super.uri(0), tokenId));
+    //     return super.uri(tokenId);
+    // }
 
     /* ================ TRANSACTION FUNCTIONS ================ */
 
@@ -98,7 +98,7 @@ contract Ensoul is
         uint8 v,
         bytes32 r,
         bytes32 s
-    ) external override {
+    ) external {
         address signer = ECDSA.recover(
             _hashTypedDataV4(keccak256(abi.encode(MINT_TO_BATCH_ADDRESS_TYPEHASH, toList, tokenId, amount))),
             v,
@@ -123,22 +123,10 @@ contract Ensoul is
         address[] memory toList,
         uint256 tokenId,
         uint256 amount
-    ) external override onlyOrgAmin(tokenId) {
+    ) external onlyOrgAmin(tokenId) {
         for (uint256 i = 0; i < toList.length; i++) {
             super._mint(toList[i], tokenId, amount, "");
         }
-    }
-
-    // 用户燃烧掉自己的sbt
-    function burn(uint tokenId) external {
-        _burn(msg.sender, tokenId, 1);
-    }
-
-    function burnBatch(
-        uint256[] memory ids,
-        uint256[] memory values
-    ) external {
-        _burnBatch(msg.sender, ids, values);
     }
 
     /* ================ ADMIN FUNCTIONS ================ */
@@ -158,4 +146,14 @@ contract Ensoul is
     function setContractURI(string memory contractURI_) external override onlyOwner {
         _setContractURI(contractURI_);
     }
+
+    function mintToBatchAddressBySignature(
+        address[] memory toList,
+        uint256 tokenId,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) external override {}
+
+   //function mintToBatchAddress(address[] memory toList, uint256 tokenId) external override {}
 }
