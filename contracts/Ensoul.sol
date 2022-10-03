@@ -85,7 +85,8 @@ contract Ensoul is
     /* ================ VIEW FUNCTIONS ================ */
 
     function uri(uint256 tokenId) public view override(ERC1155, IEnsoul) returns (string memory) {
-        return string(abi.encode(super.uri(0), tokenId));
+        // return string(abi.encode(super.uri(0), tokenId));
+        return super.uri(tokenId);
     }
 
     /* ================ TRANSACTION FUNCTIONS ================ */

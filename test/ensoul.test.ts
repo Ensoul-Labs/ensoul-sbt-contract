@@ -52,5 +52,17 @@ describe(`test ${contractName}`, function () {
     expect(deployerBalance2).equal(0);
  })
 
- it("当合约被暂停mint时，无法进行mint",()=>{})
+ it("当合约被暂停mint时，无法进行mint",async ()=>{
+    await EnsoulInstance.pause();
+
+    try {
+        await EnsoulInstance.mintToBatchAddress([deployer.getAddress()],1,10)
+        throw new Error("已经暂停mint，应为无法mint");
+    } catch (error) { }
+ })
+
+ it("当合约未暂停mint时，可以mint", async ()=>{
+    await EnsoulInstance.unpause();
+    await EnsoulInstance.mintToBatchAddress([deployer.getAddress()],1,10)
+ })
 });
