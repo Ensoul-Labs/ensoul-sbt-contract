@@ -1,8 +1,8 @@
 export * from './client';
 export * from './config';
 export {
-  ExampleUpgradeable,
-  ExampleUpgradeable__factory,
-  Example,
-  Example__factory
+  Ensoul,
+  Ensoul__factory,
+  EnsoulFactory,
+  EnsoulFactory__factory
 } from './typechain';
