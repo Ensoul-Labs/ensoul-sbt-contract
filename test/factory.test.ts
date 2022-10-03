@@ -57,7 +57,7 @@ describe(`test ${contractName}`, function () {
   it('新组织是全新的合约，合约不重复', async () => {
     const otherAddress = await accountA.getAddress();
     await FactoryInstance.newOrg(otherAddress, 'this is url','this is url');
-    await FactoryInstance.newOrg(otherAddress, 'this is url','this is url');
+    await FactoryInstance.newOrg(otherAddress, 'this is url','this is url 2');
 
     const orgsTemp1 = await FactoryInstance.orgs(0);
     const orgsTemp2 = await FactoryInstance.orgs(1);
@@ -67,4 +67,12 @@ describe(`test ${contractName}`, function () {
 
     expect(orgs.length).equal(3);
   });
+
+  it("创建后的集合和填入信息匹配",async () => {
+    const org3 = await FactoryInstance.orgs(2)
+    const EnsoulInstance = await ethers.getContractAt("Ensoul",org3,accountA)
+
+    expect(await EnsoulInstance.owner()).equal(await accountA.getAddress())
+    expect(await EnsoulInstance.contractURI()).equal("this is url 2")
+  })
 });
