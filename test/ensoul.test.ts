@@ -5,7 +5,7 @@ import {BigNumber, Signer} from 'ethers';
 
 const contractName = 'Ensoul_Factory';
 
-describe(`test ${contractName}`, function () {
+describe(`ERC1155主合约`, function () {
   let deployer: Signer;
   let accountA: Signer;
   let FactoryInstance: any;
