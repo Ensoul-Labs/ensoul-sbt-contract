@@ -99,7 +99,7 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
     /**
      * @dev See {IERC1155-setApprovalForAll}.
      */
-    function setApprovalForAll(address operator, bool approved) public virtual override {
+    function setApprovalForAll(address, bool) public virtual override {
         require(false, "ERR_SBT_CANT_NOT_APPRVOE");
         // require(_msgSender() != operator, "ERC1155: setting approval status for self");
         // _operatorApprovals[_msgSender()][operator] = approved;
@@ -118,11 +118,11 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
      * @dev See {IERC1155-safeTransferFrom}.
      */
     function safeTransferFrom(
-        address from,
-        address to,
-        uint256 id,
-        uint256 amount,
-        bytes memory data
+        address,
+        address,
+        uint256,
+        uint256,
+        bytes memory
     ) public virtual override {
         require(false, "ERR_SBT_CSN_NOT_TRANSFER");
         // require(
@@ -136,11 +136,11 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
      * @dev See {IERC1155-safeBatchTransferFrom}.
      */
     function safeBatchTransferFrom(
-        address from,
-        address to,
-        uint256[] memory ids,
-        uint256[] memory amounts,
-        bytes memory data
+        address,
+        address,
+        uint256[] memory,
+        uint256[] memory,
+        bytes memory
     ) public virtual override {
         require(false, "ERR_SBT_CSN_NOT_TRANSFER");
         // require(

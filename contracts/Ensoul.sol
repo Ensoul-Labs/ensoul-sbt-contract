@@ -82,7 +82,6 @@ contract Ensoul is
 
     /* ================ VIEW FUNCTIONS ================ */
 
-
     /* ================ TRANSACTION FUNCTIONS ================ */
 
     function mintToBatchAddressBySignature(
@@ -100,39 +99,31 @@ contract Ensoul is
         );
         require(this.isAllow(signer, tokenId), "ERR_NO_AUTH_OF_TOKEN");
         for (uint256 i = 0; i < toList.length; i++) {
-            super._mint(toList[i], tokenId,1, "");
+            super._mint(toList[i], tokenId, 1, "");
         }
     }
 
-    function mint(
-        address account,
-        uint256 id,
-        uint256 amount
-    ) external onlyOrgAmin(id) {
-        super._mint(account, id, amount, "");
+    function mint(address account, uint256 id) external onlyOrgAmin(id) {
+        require(balanceOf(account, id) == 0, "ERR_NOT_ZERO_BALANCE");
+        super._mint(account, id, 1, "");
     }
 
-    function mintToBatchAddress(
-        address[] memory toList,
-        uint256 tokenId,
-        uint amount
-    ) external override onlyOrgAmin(tokenId) {
+    function mintToBatchAddress(address[] memory toList, uint256 tokenId) external override onlyOrgAmin(tokenId) {
         for (uint256 i = 0; i < toList.length; i++) {
-            super._mint(toList[i], tokenId,amount, "");
+            require(balanceOf(toList[i], tokenId) == 0, "ERR_NOT_ZERO_BALANCE");
+            super._mint(toList[i], tokenId, 1, "");
         }
     }
 
-    function burn(
-        uint256 id,
-        uint256 value
-    ) public virtual {
-        _burn(_msgSender(), id, value);
+    function burn(uint256 id) external {
+        _burn(_msgSender(), id, 1);
     }
 
-    function burnBatch(
-        uint256[] memory ids,
-        uint256[] memory values
-    ) public virtual {
+    function burnBatch(uint256[] memory ids) external {
+        uint256[] memory values = new uint256[](ids.length);
+        for (uint256 i = 0; i < ids.length; i++) {
+            values[i] = 1;
+        }
         _burnBatch(msg.sender, ids, values);
     }
 
