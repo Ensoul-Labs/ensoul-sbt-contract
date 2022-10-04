@@ -22,12 +22,12 @@ describe(`SBT特征`, function () {
     await FactoryInstance.newOrg(deployer.getAddress(),"this is tokenURI", "this is ContractURI")
     const ensoulAddress = await FactoryInstance.orgs(0);
     EnsoulInstance = await ethers.getContractAt("Ensoul", ensoulAddress);
-    await EnsoulInstance.mintToBatchAddress([deployer.getAddress(),accountA.getAddress()],1,1)
+    await EnsoulInstance.mintToBatchAddress([deployer.getAddress(),accountA.getAddress()],1)
   });
 
   it('sbt不可对第三方授权', async () => {
     try {
-        await EnsoulInstance.mintToBatchAddress([deployer.getAddress(),accountA.getAddress()],1,1) 
+        await EnsoulInstance.mintToBatchAddress([deployer.getAddress(),accountA.getAddress()],1) 
         throw new Error("SBT不可授权");
     } catch (error) { }
   });
