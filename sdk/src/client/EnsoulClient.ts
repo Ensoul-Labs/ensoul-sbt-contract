@@ -70,7 +70,6 @@ export interface EnsoulClient {
 
   burnBatch(
     tokenIds: BigNumberish[],
-    values: BigNumberish[],
     config?: PayableOverrides,
     callback?: Function
   ): Promise<void>;
@@ -117,4 +116,31 @@ export interface EnsoulClient {
     config?: PayableOverrides,
     callback?: Function
   ): Promise<void>;
+
+  setContractURI(
+    contractURI: string,
+    config?: PayableOverrides,
+    callback?: Function
+  ): Promise<void>;
+
+  setURI(
+    URI: string,
+    config?: PayableOverrides,
+    callback?: Function
+  ): Promise<void>;
+  pause(
+    config?: PayableOverrides,
+    callback?: Function
+  ): Promise<void> ;
+
+  unpause(
+    config?: PayableOverrides,
+    callback?: Function
+  ): Promise<void>;
+
+  transferOwnership(
+    newOwner: string,
+    config?: PayableOverrides,
+    callback?: Function
+  ): Promise<void> ;
 }

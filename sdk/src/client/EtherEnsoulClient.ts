@@ -232,7 +232,6 @@ export class EtherEnsoulClient implements EnsoulClient {
 
   public async burnBatch(
     tokenIds: BigNumberish[],
-    values: BigNumberish[],
     config?: PayableOverrides,
     callback?: Function
   ): Promise<void> {
@@ -245,10 +244,10 @@ export class EtherEnsoulClient implements EnsoulClient {
     }
     const gas = await this._ensoul
       .connect(this._provider)
-      .estimateGas.burnBatch(tokenIds, values, config);
+      .estimateGas.burnBatch(tokenIds, config);
     const transaction = await this._ensoul
       .connect(this._provider)
-      .burnBatch(tokenIds, values, {
+      .burnBatch(tokenIds, {
         gasLimit: gas.mul(13).div(10),
         ...config
       });
