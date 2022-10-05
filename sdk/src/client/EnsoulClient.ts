@@ -128,19 +128,13 @@ export interface EnsoulClient {
     config?: PayableOverrides,
     callback?: Function
   ): Promise<void>;
-  pause(
-    config?: PayableOverrides,
-    callback?: Function
-  ): Promise<void> ;
+  pause(config?: PayableOverrides, callback?: Function): Promise<void>;
 
-  unpause(
-    config?: PayableOverrides,
-    callback?: Function
-  ): Promise<void>;
+  unpause(config?: PayableOverrides, callback?: Function): Promise<void>;
 
   transferOwnership(
     newOwner: string,
     config?: PayableOverrides,
     callback?: Function
-  ): Promise<void> ;
+  ): Promise<void>;
 }

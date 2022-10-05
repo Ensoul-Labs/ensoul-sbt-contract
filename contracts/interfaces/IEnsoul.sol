@@ -17,10 +17,7 @@ interface IEnsoul {
         bytes32 s
     ) external;
 
-    function mintToBatchAddress(
-        address[] memory toList,
-        uint256 tokenId
-    ) external;
+    function mintToBatchAddress(address[] memory toList, uint256 tokenId) external;
 
     /* ================ ADMIN FUNCTIONS ================ */
 

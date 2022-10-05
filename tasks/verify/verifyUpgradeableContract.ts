@@ -18,7 +18,7 @@ task(`upgradeableContract:verify`, `verify upgradeableContract`)
       : deployment[contract].implAddress;
     utils.log.info(`verify ${contract}, address: ${address}`);
     await hre.run('verify:verify', {
-        address: deployment[contract].implAddress,
-        constructorArguments: contractArgs,
-      });
+      address: deployment[contract].implAddress,
+      constructorArguments: contractArgs,
+    });
   });

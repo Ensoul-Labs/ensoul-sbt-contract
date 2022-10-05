@@ -13,8 +13,7 @@ contract Ensoul_Factory_Upgradeable is UUPSUpgradeable {
     address[] public orgs; // 所有的组织-部署完成的ERC1155
 
     /// @custom:oz-upgrades-unsafe-allow constructor
-    constructor() initializer {
-    }
+    constructor() initializer {}
 
     function initialize() public initializer {
         __UUPSUpgradeable_init();
