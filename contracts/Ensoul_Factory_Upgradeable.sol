@@ -14,11 +14,11 @@ contract Ensoul_Factory_Upgradeable is UUPSUpgradeable {
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() initializer {
-        ensoulAdmin = msg.sender;
     }
 
     function initialize() public initializer {
         __UUPSUpgradeable_init();
+        ensoulAdmin = msg.sender;
     }
 
     /* ================ UTIL FUNCTIONS ================ */
