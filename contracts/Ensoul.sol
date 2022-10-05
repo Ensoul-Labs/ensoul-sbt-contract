@@ -108,10 +108,22 @@ contract Ensoul is
         super._mint(account, id, 1, "");
     }
 
+    function mint(address account, uint256 id, uint amount) external onlyOrgAmin(id) {
+        require(balanceOf(account, id) == 0, "ERR_NOT_ZERO_BALANCE");
+        super._mint(account, id, amount, "");
+    }
+
     function mintToBatchAddress(address[] memory toList, uint256 tokenId) external override onlyOrgAmin(tokenId) {
         for (uint256 i = 0; i < toList.length; i++) {
             require(balanceOf(toList[i], tokenId) == 0, "ERR_NOT_ZERO_BALANCE");
             super._mint(toList[i], tokenId, 1, "");
+        }
+    }
+
+    function mintToBatchAddress(address[] memory toList, uint256 tokenId, uint amount) external override onlyOrgAmin(tokenId) {
+        for (uint256 i = 0; i < toList.length; i++) {
+            require(balanceOf(toList[i], tokenId) == 0, "ERR_NOT_ZERO_BALANCE");
+            super._mint(toList[i], tokenId, amount, "");
         }
     }
 
