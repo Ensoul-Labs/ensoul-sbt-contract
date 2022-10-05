@@ -100,7 +100,7 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
      * @dev See {IERC1155-setApprovalForAll}.
      */
     function setApprovalForAll(address, bool) public virtual override {
-        require(false, "ERR_SBT_CANT_NOT_APPRVOE");
+        require(false, "ERR_SBT_CANT_NOT_APPROVE");
         // require(_msgSender() != operator, "ERC1155: setting approval status for self");
         // _operatorApprovals[_msgSender()][operator] = approved;
         // emit ApprovalForAll(_msgSender(), operator, approved);

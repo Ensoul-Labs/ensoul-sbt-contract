@@ -42,25 +42,19 @@ describe(`SBT特征`, function () {
   });
 
   it('sbt不可对第三方授权', async () => {
-    try {
-      await EnsoulInstance.mintToBatchAddress(
-        [await deployer.getAddress(), await accountA.getAddress()],
-        1
-      );
-      throw new Error('SBT不可授权');
-    } catch (error) {}
+    await expect(
+      EnsoulInstance.setApprovalForAll(EnsoulInstance.address, true)
+    ).revertedWith('ERR_SBT_CANT_NOT_APPROVE');
   });
 
   it('sbt不可对第三方转让', async () => {
-    try {
-      await EnsoulInstance.safeTransferFrom(
+    await expect(
+       EnsoulInstance.safeTransferFrom(
         await deployer.getAddress(),
         await accountA.getAddress(),
         1,
         1,
         []
-      );
-      throw new Error('SBT不可转让');
-    } catch (error) {}
+      )).revertedWith("ERR_SBT_CSN_NOT_TRANSFER")
   });
 });

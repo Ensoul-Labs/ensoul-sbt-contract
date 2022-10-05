@@ -36,13 +36,9 @@ describe(`工厂合约`, function () {
   it('非Factory管理员不可设置管理地址', async () => {
     const otherAddress = await accountA.getAddress();
 
-    try {
-      await FactoryInstance.connect(accountA).setEnsoulAdmin(otherAddress);
-      throw Error();
-    } catch (error: any) {
-      if (error.toString().includes('ERR_NOT_ENSOUL_ADMIN')) return;
-      throw Error();
-    }
+    await expect(
+      FactoryInstance.connect(accountA).setEnsoulAdmin(otherAddress)
+    ).revertedWith('ERR_NOT_ENSOUL_ADMIN');
   });
 
   it('Factory管理员可设置管理地址', async () => {

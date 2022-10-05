@@ -85,11 +85,9 @@ describe(`ERC1155主合约`, function () {
 
   it('当合约被暂停mint时，无法进行mint', async () => {
     await EnsoulInstance.pause();
-
-    try {
-      await EnsoulInstance.mintToBatchAddress([await deployer.getAddress()], 1);
-      throw new Error('已经暂停mint，应为无法mint');
-    } catch (error) {}
+    await expect(
+      EnsoulInstance.mintToBatchAddress([await deployer.getAddress()], 1)
+    ).revertedWith('ERC1155Pausable: token transfer while paused');
   });
 
   it('当合约未暂停mint时，可以mint', async () => {

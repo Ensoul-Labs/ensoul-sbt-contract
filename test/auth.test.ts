@@ -39,23 +39,15 @@ describe(`权限管理合约`, function () {
 
   it('onlyOwner的有效性', async () => {
     await EnsoulInstance.setContractURI('http://baidu.com');
-    try {
-      await EnsoulInstance.connect(accountA).setContractURI(
-        'http://tencent.com'
-      );
-      throw new Error('操作者必须为管理员地址');
-    } catch (error) {}
+    expect(
+      EnsoulInstance.connect(accountA).setContractURI('http://tencent.com')
+    ).revertedWith('Ownable: caller is not the owner');
   });
 
   it('onlyOrgAmin的有效性', async () => {
-    try {
-      await EnsoulInstance.connect(accountA).allow(
-        await accountA.getAddress(),
-        1
-      );
-      throw new Error('操作者必须为管理员地址');
-    } catch (error) {}
-
+    await expect(
+      EnsoulInstance.connect(accountA).allow(await accountA.getAddress(), 1)
+    ).revertedWith('ERR_NO_AUTH_OF_TOKEN');
     await EnsoulInstance.addOrgAdmin(await accountA.getAddress());
     await EnsoulInstance.connect(accountA).allow(
       await accountA.getAddress(),
@@ -64,21 +56,17 @@ describe(`权限管理合约`, function () {
   });
 
   it('onlySuperOwner的有效性', async () => {
-    try {
-      await EnsoulInstance.connect(accountA).pause();
-      throw new Error('操作者必须为管理员地址');
-    } catch (error) {}
+    await expect(EnsoulInstance.connect(accountA).pause()).revertedWith(
+      'ERR_NOT_SUPER_ADMIN'
+    );
     await EnsoulInstance.pause();
   });
 
   it('移交owner权限', async () => {
     await EnsoulInstance.transferOwnership(await accountA.getAddress());
-
-    try {
-      await EnsoulInstance.transferOwnership(await deployer.getAddress());
-      throw new Error('操作者必须为管理员地址');
-    } catch (error) {}
-
+    await expect(
+      EnsoulInstance.transferOwnership(await deployer.getAddress())
+    ).revertedWith('Ownable: caller is not the owner');
     await EnsoulInstance.connect(accountA).transferOwnership(
       await deployer.getAddress()
     );
@@ -86,12 +74,9 @@ describe(`权限管理合约`, function () {
 
   it('移交superOwner权限', async () => {
     await FactoryInstance.setEnsoulAdmin(await accountA.getAddress());
-
-    try {
-      await FactoryInstance.setEnsoulAdmin(await deployer.getAddress());
-      throw new Error('操作者必须为管理员地址');
-    } catch (error) {}
-
+    await expect(
+      FactoryInstance.setEnsoulAdmin(await deployer.getAddress())
+    ).revertedWith('ERR_NOT_ENSOUL_ADMIN');
     await FactoryInstance.connect(accountA).setEnsoulAdmin(
       await deployer.getAddress()
     );
@@ -133,6 +118,7 @@ describe(`权限管理合约`, function () {
         }
       )
     ).revertedWith('ERR_NOT_ENSOUL_ADMIN');
+
     await upgrades.upgradeProxy(
       FactoryInstance.address,
       Factory.connect(deployer),
