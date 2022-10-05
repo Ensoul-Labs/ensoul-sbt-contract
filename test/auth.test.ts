@@ -121,4 +121,24 @@ describe(`权限管理合约`, function () {
   });
 
   it('跨级tokenID取消中间人权限', async () => {});
+
+  it('可升级测试', async function () {
+    const Factory = await ethers.getContractFactory(`${contractName}`);
+    await expect(
+      upgrades.upgradeProxy(
+        FactoryInstance.address,
+        Factory.connect(accountA),
+        {
+          kind: 'uups',
+        }
+      )
+    ).revertedWith('ERR_NOT_ENSOUL_ADMIN');
+    await upgrades.upgradeProxy(
+      FactoryInstance.address,
+      Factory.connect(deployer),
+      {
+        kind: 'uups',
+      }
+    );
+  });
 });
