@@ -7,5 +7,6 @@ interface IEnsoul_Factory {
         string memory url,
         address owner
     ) external;
-    function getEnsoulAdmin() external returns(address);
+
+    function getEnsoulAdmin() external returns (address);
 }

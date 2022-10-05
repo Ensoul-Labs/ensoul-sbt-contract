@@ -1,14 +1,15 @@
 // 工厂合约测试案例
 import {expect} from 'chai';
-import {ethers, getNamedAccounts} from 'hardhat';
+import {ethers, getNamedAccounts, upgrades} from 'hardhat';
 import {BigNumber, Signer} from 'ethers';
+import {EnsoulFactoryUpgradeable} from '../sdk/src/typechain';
 
-const contractName = 'Ensoul_Factory';
+const contractName = 'Ensoul_Factory_Upgradeable';
 
 describe(`工厂合约`, function () {
   let deployer: Signer;
   let accountA: Signer;
-  let FactoryInstance: any;
+  let FactoryInstance: EnsoulFactoryUpgradeable;
 
   before('setup accounts', async () => {
     const NamedAccounts = await getNamedAccounts();
@@ -16,7 +17,15 @@ describe(`工厂合约`, function () {
 
     deployer = await ethers.getSigner(NamedAccounts.deployer);
     accountA = await ethers.getSigner(NamedAccounts.accountA);
-    FactoryInstance = await Factory.deploy();
+    // FactoryInstance = await Factory.deploy();
+
+    FactoryInstance = (await upgrades.deployProxy(
+      Factory.connect(deployer),
+      [],
+      {
+        kind: 'uups',
+      }
+    )) as EnsoulFactoryUpgradeable;
   });
 
   it('Factory部署完毕后, 管理员为部署人', async () => {

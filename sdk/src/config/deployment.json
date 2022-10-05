@@ -1,12 +1,12 @@
 {
   "5": {
     "Ensoul_Factory": {
-      "proxyAddress": "0x51ad13aDc02561F2Cf86DA0d49e344c574d59d84",
-      "implAddress": "0x51ad13aDc02561F2Cf86DA0d49e344c574d59d84",
+      "proxyAddress": "0x7a26f682eBAf25F05De60655a5BA50D7fCbAC348",
+      "implAddress": "0x7a26f682eBAf25F05De60655a5BA50D7fCbAC348",
       "version": "1.0.0",
       "contract": "Ensoul_Factory",
       "operator": "0x8e9a781d6B89303c2FD71c861084078370282D1F",
-      "fromBlock": 7703437
+      "fromBlock": 7707751
     }
   }
 }
