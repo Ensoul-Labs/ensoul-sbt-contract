@@ -291,6 +291,7 @@ export class EtherEnsoulClient implements EnsoulClient {
   public async mintToBatchAddress(
     toList: string[],
     tokenId: BigNumberish,
+    amount: BigNumberish,
     config?: PayableOverrides,
     callback?: Function
   ): Promise<void> {
@@ -303,10 +304,79 @@ export class EtherEnsoulClient implements EnsoulClient {
     }
     const gas = await this._ensoul
       .connect(this._provider)
-      .estimateGas.mintToBatchAddress(toList, tokenId, config);
+      .estimateGas.mintToBatchAddress(toList, tokenId, amount, config);
     const transaction = await this._ensoul
       .connect(this._provider)
-      .mintToBatchAddress(toList, tokenId, {
+      .mintToBatchAddress(toList, tokenId, amount, {
+        gasLimit: gas.mul(13).div(10),
+        ...config
+      });
+    await transaction.wait(this._waitConfirmations);
+    if (callback) {
+      callback(transaction);
+    }
+    const receipt = await transaction.wait(this._waitConfirmations);
+    if (callback) {
+      callback(receipt);
+    }
+  }
+
+  public async mint(
+    to: string,
+    tokenId: BigNumberish,
+    amount: BigNumberish,
+    config?: PayableOverrides,
+    callback?: Function
+  ): Promise<void> {
+    if (
+      !this._provider ||
+      !this._ensoul ||
+      this._provider instanceof Provider
+    ) {
+      throw new Error(`${this._errorTitle}: no singer`);
+    }
+    const gas = await this._ensoul
+      .connect(this._provider)
+      .estimateGas.mint(to, tokenId, amount, config);
+    const transaction = await this._ensoul
+      .connect(this._provider)
+      .mint(to, tokenId, amount, {
+        gasLimit: gas.mul(13).div(10),
+        ...config
+      });
+    await transaction.wait(this._waitConfirmations);
+    if (callback) {
+      callback(transaction);
+    }
+    const receipt = await transaction.wait(this._waitConfirmations);
+    if (callback) {
+      callback(receipt);
+    }
+  }
+
+  public async mintBySignature(
+    to: string,
+    tokenId: BigNumberish,
+    amount: BigNumberish,
+    v: BigNumberish,
+    r: BytesLike,
+    s: BytesLike,
+    config?: PayableOverrides,
+    callback?: Function
+  ): Promise<void> {
+    if (
+      !this._provider ||
+      !this._ensoul ||
+      this._provider instanceof Provider
+    ) {
+      throw new Error(`${this._errorTitle}: no singer`);
+    }
+    const gas = await this._ensoul
+      .connect(this._provider)
+      .estimateGas.mintBySignature(to, tokenId, amount, v, r, s, config);
+    const transaction = await this._ensoul
+      .connect(this._provider)
+      .mintBySignature(to, tokenId, amount, v, r, s, {
         gasLimit: gas.mul(13).div(10),
         ...config
       });
@@ -323,6 +393,7 @@ export class EtherEnsoulClient implements EnsoulClient {
   public async mintToBatchAddressBySignature(
     toList: string[],
     tokenId: BigNumberish,
+    amount: BigNumberish,
     v: BigNumberish,
     r: BytesLike,
     s: BytesLike,
@@ -341,6 +412,7 @@ export class EtherEnsoulClient implements EnsoulClient {
       .estimateGas.mintToBatchAddressBySignature(
         toList,
         tokenId,
+        amount,
         v,
         r,
         s,
@@ -348,7 +420,7 @@ export class EtherEnsoulClient implements EnsoulClient {
       );
     const transaction = await this._ensoul
       .connect(this._provider)
-      .mintToBatchAddressBySignature(toList, tokenId, v, r, s, {
+      .mintToBatchAddressBySignature(toList, tokenId, amount, v, r, s, {
         gasLimit: gas.mul(13).div(10),
         ...config
       });

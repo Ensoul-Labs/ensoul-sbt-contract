@@ -37,6 +37,7 @@ describe(`SBT特征`, function () {
     EnsoulInstance = await ethers.getContractAt('Ensoul', ensoulAddress);
     await EnsoulInstance.mintToBatchAddress(
       [await deployer.getAddress(), await accountA.getAddress()],
+      1,
       1
     );
   });
@@ -49,12 +50,13 @@ describe(`SBT特征`, function () {
 
   it('sbt不可对第三方转让', async () => {
     await expect(
-       EnsoulInstance.safeTransferFrom(
+      EnsoulInstance.safeTransferFrom(
         await deployer.getAddress(),
         await accountA.getAddress(),
         1,
         1,
         []
-      )).revertedWith("ERR_SBT_CSN_NOT_TRANSFER")
+      )
+    ).revertedWith('ERR_SBT_CSN_NOT_TRANSFER');
   });
 });

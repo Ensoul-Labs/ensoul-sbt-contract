@@ -40,6 +40,7 @@ describe(`ERC1155主合约`, function () {
   it('可对一组地址进行批量铸造', async () => {
     await EnsoulInstance.mintToBatchAddress(
       [await deployer.getAddress(), await accountA.getAddress()],
+      1,
       1
     );
 
@@ -66,8 +67,16 @@ describe(`ERC1155主合约`, function () {
   });
 
   it('用户可以批量销毁SBT', async () => {
-    await EnsoulInstance.mintToBatchAddress([await deployer.getAddress()], 1);
-    await EnsoulInstance.mintToBatchAddress([await deployer.getAddress()], 2);
+    await EnsoulInstance.mintToBatchAddress(
+      [await deployer.getAddress()],
+      1,
+      1
+    );
+    await EnsoulInstance.mintToBatchAddress(
+      [await deployer.getAddress()],
+      2,
+      1
+    );
     await EnsoulInstance.burnBatch([1, 2]);
 
     const deployerBalance1 = await EnsoulInstance.balanceOf(
@@ -86,12 +95,16 @@ describe(`ERC1155主合约`, function () {
   it('当合约被暂停mint时，无法进行mint', async () => {
     await EnsoulInstance.pause();
     await expect(
-      EnsoulInstance.mintToBatchAddress([await deployer.getAddress()], 1)
+      EnsoulInstance.mintToBatchAddress([await deployer.getAddress()], 1, 1)
     ).revertedWith('ERC1155Pausable: token transfer while paused');
   });
 
   it('当合约未暂停mint时，可以mint', async () => {
     await EnsoulInstance.unpause();
-    await EnsoulInstance.mintToBatchAddress([await deployer.getAddress()], 1);
+    await EnsoulInstance.mintToBatchAddress(
+      [await deployer.getAddress()],
+      1,
+      1
+    );
   });
 });
