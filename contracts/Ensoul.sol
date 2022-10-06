@@ -28,10 +28,10 @@ contract Ensoul is
 
     constructor(
         address _owner,
-        address _facotry,
+        address _factory,
         string memory _tokenURI,
         string memory _contractURI
-    ) ERC1155(_tokenURI) Ensoul_Controller(_owner) Ensoul_SuperController(_facotry) EIP712("Ensoul", "1.0.0") {
+    ) ERC1155(_tokenURI) Ensoul_Controller(_owner) Ensoul_SuperController(_factory) EIP712("Ensoul", "1.0.0") {
         _setContractURI(_contractURI);
     }
 

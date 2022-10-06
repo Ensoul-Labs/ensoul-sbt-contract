@@ -5,7 +5,6 @@ import pino from 'pino';
 import {EtherEnsoulFactoryClient} from '../sdk/dist';
 import {EnsoulFactoryUpgradeable} from '../sdk/src/typechain';
 
-const Logger = pino();
 const contractName = 'Ensoul_Factory_Upgradeable';
 
 describe(`test ${contractName}`, function () {
@@ -46,7 +45,7 @@ describe(`test ${contractName}`, function () {
         'https://',
         'https://'
       );
-      expect(contractClient.orgs(0)).eq(newOrgEvent.orgAddress);
+      expect(await contractClient.orgs(0)).eq(newOrgEvent.orgAddress);
       contractClient.connect(accountA, contractClient.address());
       await expect(
         contractClient.newOrg(
