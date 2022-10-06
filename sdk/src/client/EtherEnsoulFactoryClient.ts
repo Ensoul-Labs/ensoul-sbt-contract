@@ -1,5 +1,6 @@
 import { Provider } from '@ethersproject/providers';
 import { BigNumberish, CallOverrides, PayableOverrides, Signer } from 'ethers';
+import { EnsoulFactoryModel } from 'src/model';
 import { EnsoulFactoryClient } from '..';
 import { EnsoulFactoryUpgradeable, EnsoulFactoryUpgradeable__factory } from '../typechain';
 
@@ -62,7 +63,7 @@ export class EtherEnsoulFactoryClient implements EnsoulFactoryClient {
     contractURI: string,
     config?: PayableOverrides,
     callback?: Function
-  ): Promise<void> {
+  ): Promise<EnsoulFactoryModel.NewOrgEvent> {
     if (
       !this._provider ||
       !this._ensoulFactory ||
@@ -85,6 +86,19 @@ export class EtherEnsoulFactoryClient implements EnsoulFactoryClient {
     const receipt = await transaction.wait(this._waitConfirmations);
     if (callback) {
       callback(receipt);
+    }
+    let newOrgEvent:EnsoulFactoryModel.NewOrgEvent|undefined;
+    if (receipt.events) {
+      receipt.events
+        .filter(event => event.event === 'NewOrg' && event.args)
+        .map(event => {
+          newOrgEvent = (event.args as unknown) as EnsoulFactoryModel.NewOrgEvent;
+        });
+    }
+    if (newOrgEvent) {
+      return newOrgEvent;
+    }else{
+      throw new Error('no event');
     }
   }
 
