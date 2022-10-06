@@ -22,6 +22,8 @@ export interface EnsoulFactoryClient {
 
   getEnsoulAdmin(config?: CallOverrides): Promise<string>;
 
+  implementationVersion(config?: CallOverrides): Promise<string>;
+
   /* ================ TRANSACTION FUNCTIONS ================ */
 
   newOrg(

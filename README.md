@@ -34,7 +34,7 @@ export GAS_PRICE=1
 #### Goerli
 ``` bash
 export NETWORK_ID=5
-export GAS_PRICE=3
+export GAS_PRICE=1
 ```
 
 #### Matic

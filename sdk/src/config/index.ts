@@ -8,7 +8,7 @@ export interface ContractInfo {
 }
 
 export interface Deployment {
-  Ensoul_Factory: ContractInfo;
+  Ensoul_Factory_Upgradeable: ContractInfo;
 }
 
 export interface DeploymentFull {
