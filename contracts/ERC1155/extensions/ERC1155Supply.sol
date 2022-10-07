@@ -43,21 +43,6 @@ abstract contract ERC1155Supply is ERC1155 {
     }
 
     /**
-     * @dev See {ERC1155-_mintBatch}.
-     */
-    function _mintBatch(
-        address to,
-        uint256[] memory ids,
-        uint256[] memory amounts,
-        bytes memory data
-    ) internal virtual override {
-        super._mintBatch(to, ids, amounts, data);
-        for (uint256 i = 0; i < ids.length; ++i) {
-            _totalSupply[ids[i]] += amounts[i];
-        }
-    }
-
-    /**
      * @dev See {ERC1155-_burn}.
      */
     function _burn(
