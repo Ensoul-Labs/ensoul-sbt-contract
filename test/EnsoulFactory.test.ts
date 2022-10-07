@@ -1,7 +1,6 @@
 import {expect} from 'chai';
 import {ethers, getNamedAccounts, upgrades} from 'hardhat';
 import {Signer} from 'ethers';
-import pino from 'pino';
 import {EtherEnsoulFactoryClient} from '../sdk/dist';
 import {EnsoulFactoryUpgradeable} from '../sdk/src/typechain';
 
