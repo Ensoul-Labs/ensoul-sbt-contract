@@ -47,14 +47,10 @@ export GAS_PRICE=3
 
 #### deploy script
 ```bash
-yarn run hardhat contract:deploy --contract Ensoul_Factory --gas-price $GAS_PRICE --args [] --network $NETWORK_ID
-
 yarn run hardhat upgradeableContract:deploy --contract Ensoul_Factory_Upgradeable --gas-price $GAS_PRICE --args [] --network $NETWORK_ID
 ```
 
 #### verify contract
 ```bash
-yarn run hardhat contract:verify --contract Ensoul_Factory --args [] --network $NETWORK_ID
-
 yarn run hardhat upgradeableContract:verify --contract Ensoul_Factory_Upgradeable --args [] --network $NETWORK_ID
 ```

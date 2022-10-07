@@ -10,6 +10,7 @@ import "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol";
 import "./Auth/Ensoul_Controller.sol";
 import "./Data/ContractMetadata.sol";
 import "./Auth/Ensoul_SuperController.sol";
+import "hardhat/console.sol";
 
 contract Ensoul is
     IEnsoul,
@@ -22,17 +23,26 @@ contract Ensoul is
     Ensoul_SuperController
 {
     bytes32 public constant MINT_TO_BATCH_ADDRESS_TYPEHASH =
-        keccak256("mintToBatchAddressBySignature(address[] toList,uint256 tokenId,uint256 amount)");
+        keccak256("mintToBatchAddressBySignature(address[] toList,uint256 tokenId,uint256 amount,uint256 expiration)");
 
-    bytes32 public constant MINT_TYPEHASH = keccak256("mintBySignature(address to,uint256 tokenId,uint256 amount)");
+    bytes32 public constant MINT_TYPEHASH = keccak256("mintBySignature(address to,uint256 tokenId,uint256 amount,uint256 expiration)");
+
+    mapping(bytes32 => bool) usedSignatureHash;
+
+    string public name;
+    string public version;
 
     constructor(
         address _owner,
         address _factory,
         string memory _tokenURI,
-        string memory _contractURI
-    ) ERC1155(_tokenURI) Ensoul_Controller(_owner) Ensoul_SuperController(_factory) EIP712("Ensoul", "1.0.0") {
+        string memory _contractURI,
+        string memory _name,
+        string memory _version
+    ) ERC1155(_tokenURI) Ensoul_Controller(_owner) Ensoul_SuperController(_factory) EIP712(_name, _version) {
         _setContractURI(_contractURI);
+        version = _version;
+        name = _name;
     }
 
     /* ================ UTIL FUNCTIONS ================ */
@@ -53,7 +63,7 @@ contract Ensoul is
         uint256 id,
         uint256 amount,
         bytes memory data
-    ) internal override(ERC1155, ERC1155Supply) onlyOrgAmin(id) {
+    ) internal override(ERC1155, ERC1155Supply) {
         super._mint(account, id, amount, data);
     }
 
@@ -84,25 +94,38 @@ contract Ensoul is
 
     /* ================ VIEW FUNCTIONS ================ */
 
+    function usedSignature(
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) public view returns (bool) {
+        return usedSignatureHash[keccak256(abi.encode(v, r, s))];
+    }
+
     /* ================ TRANSACTION FUNCTIONS ================ */
 
     function mintToBatchAddressBySignature(
         address[] memory toList,
         uint256 tokenId,
         uint256 amount,
+        uint256 expiration,
         uint8 v,
         bytes32 r,
         bytes32 s
     ) external override {
+        require(expiration >= block.timestamp, "ERR_OVER_TIME");
+        require(!usedSignature(v, r, s), "ERR_USED_SIFNATURE");
         address signer = ECDSA.recover(
-            _hashTypedDataV4(keccak256(abi.encode(MINT_TO_BATCH_ADDRESS_TYPEHASH, toList, tokenId, amount))),
+            _hashTypedDataV4(keccak256(abi.encode(MINT_TO_BATCH_ADDRESS_TYPEHASH, toList, tokenId, amount, expiration))),
             v,
             r,
             s
         );
+        console.log(signer);
         require(this.isAllow(signer, tokenId), "ERR_NO_AUTH_OF_TOKEN");
+        usedSignatureHash[keccak256(abi.encode(v, r, s))] = true;
         for (uint256 i = 0; i < toList.length; i++) {
-            super._mint(toList[i], tokenId, amount, "");
+            _mint(toList[i], tokenId, amount, "");
         }
     }
 
@@ -110,18 +133,22 @@ contract Ensoul is
         address to,
         uint256 tokenId,
         uint256 amount,
+        uint256 expiration,
         uint8 v,
         bytes32 r,
         bytes32 s
     ) external override {
+        require(expiration >= block.timestamp, "ERR_OVER_TIME");
+        require(!usedSignature(v, r, s), "ERR_USED_SIFNATURE");
         address signer = ECDSA.recover(
-            _hashTypedDataV4(keccak256(abi.encode(MINT_TYPEHASH, to, tokenId, amount))),
+            _hashTypedDataV4(keccak256(abi.encode(MINT_TYPEHASH, to, tokenId, amount,expiration))),
             v,
             r,
             s
         );
         require(this.isAllow(signer, tokenId), "ERR_NO_AUTH_OF_TOKEN");
-        super._mint(to, tokenId, amount, "");
+        usedSignatureHash[keccak256(abi.encode(v, r, s))] = true;
+        _mint(to, tokenId, amount, "");
     }
 
     function mint(
@@ -129,7 +156,7 @@ contract Ensoul is
         uint256 id,
         uint256 amount
     ) external override onlyOrgAmin(id) {
-        super._mint(account, id, amount, "");
+        _mint(account, id, amount, "");
     }
 
     function mintToBatchAddress(
@@ -138,7 +165,7 @@ contract Ensoul is
         uint256 amount
     ) external override onlyOrgAmin(tokenId) {
         for (uint256 i = 0; i < toList.length; i++) {
-            super._mint(toList[i], tokenId, amount, "");
+            _mint(toList[i], tokenId, amount, "");
         }
     }
 
