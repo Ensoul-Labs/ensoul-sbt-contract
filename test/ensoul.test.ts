@@ -107,4 +107,8 @@ describe(`ERC1155主合约`, function () {
       1
     );
   });
+
+  it('配置项目的tokenURI', async () => {
+    await EnsoulInstance.setURI("http://baidu.com")
+  });
 });

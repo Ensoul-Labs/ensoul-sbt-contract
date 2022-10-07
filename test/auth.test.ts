@@ -9,6 +9,7 @@ const contractName = 'Ensoul_Factory_Upgradeable';
 describe(`权限管理合约`, function () {
   let deployer: Signer;
   let accountA: Signer;
+  let accountB: Signer;
   let FactoryInstance: EnsoulFactoryUpgradeable;
   let EnsoulInstance: Ensoul;
 
@@ -18,6 +19,7 @@ describe(`权限管理合约`, function () {
 
     deployer = await ethers.getSigner(NamedAccounts.deployer);
     accountA = await ethers.getSigner(NamedAccounts.accountA);
+    accountB = await ethers.getSigner(NamedAccounts.accountB);
     // FactoryInstance = await Factory.deploy();
 
     FactoryInstance = (await upgrades.deployProxy(
@@ -131,4 +133,15 @@ describe(`权限管理合约`, function () {
       }
     );
   });
+  it("查询是否有某个tokenID的权限",async () => {
+    await EnsoulInstance.connect(accountA).allow(await accountB.getAddress(),1)
+    await EnsoulInstance.revokeAllowBatch([await accountA.getAddress()],[1])
+
+    const isAllow =  await EnsoulInstance.isAllow(await accountB.getAddress(),1)
+
+    expect(isAllow).equal(false)
+  })
+  it("批量授权单用户多token", async () =>{
+    await EnsoulInstance.allowBatch([await accountB.getAddress()],[2])
+  })
 });
