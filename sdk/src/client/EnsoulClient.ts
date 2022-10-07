@@ -4,6 +4,7 @@ import {
   BytesLike,
   CallOverrides,
   PayableOverrides,
+  Signature,
   Signer
 } from 'ethers';
 import { Provider } from '@ethersproject/providers';
@@ -88,10 +89,31 @@ export interface EnsoulClient {
     callback?: Function
   ): Promise<void>;
 
+  mint(
+    to: string,
+    tokenId: BigNumberish,
+    amount: BigNumberish,
+    config?: PayableOverrides,
+    callback?: Function
+  ): Promise<void>;
+
+  mintBySignature(
+    to: string,
+    tokenId: BigNumberish,
+    amount: BigNumberish,
+    expiration: BigNumberish,
+    v: BigNumberish,
+    r: BytesLike,
+    s: BytesLike,
+    config?: PayableOverrides,
+    callback?: Function
+  ): Promise<void>;
+
   mintToBatchAddressBySignature(
     toList: string[],
     tokenId: BigNumberish,
     amount: BigNumberish,
+    expiration: BigNumberish,
     v: BigNumberish,
     r: BytesLike,
     s: BytesLike,
@@ -139,4 +161,22 @@ export interface EnsoulClient {
     config?: PayableOverrides,
     callback?: Function
   ): Promise<void>;
+
+  /* ================ UTILS FUNCTIONS ================ */
+
+  signMintToBatchAddressBySignature(
+    signer: Signer,
+    toList: string[],
+    tokenId: BigNumberish,
+    amount: BigNumberish,
+    expiration: BigNumberish
+  ): Promise<Signature>;
+
+  signMintBySignature(
+    signer: Signer,
+    to: string,
+    tokenId: BigNumberish,
+    amount: BigNumberish,
+    expiration: BigNumberish
+  ): Promise<Signature>;
 }
