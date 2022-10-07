@@ -47,16 +47,16 @@ contract Ensoul_Controller is Ownable, IEnsoul_Controller {
     }
 
     // 授权某个用户管理对应token
-    function allow(address to, uint256 tokenId) external override onlyOrgAmin(tokenId) {
+    function allow(address to, uint256 tokenId) public override onlyOrgAmin(tokenId) {
         approver[to][tokenId] = _msgSender();
         emit Allow(_msgSender(), to, tokenId);
     }
 
     /// 授权多个用户管理多个token
     function allowBatch(address[] memory toList, uint256[] memory tokenIdList) external {
-        require(toList.length == tokenIdList.length, "allowBatch: not equal length");
+        require(toList.length == tokenIdList.length, "ERR_NOT_EQUAL_LENGTH");
         for (uint256 i; i < toList.length; i++) {
-            this.allow(toList[i], tokenIdList[i]);
+            allow(toList[i], tokenIdList[i]);
         }
     }
 
@@ -67,17 +67,17 @@ contract Ensoul_Controller is Ownable, IEnsoul_Controller {
     }
 
     // 撤销管理员管理对应token的权力
-    function revokeAllow(address to, uint256 tokenId) external onlyOrgAmin(tokenId) {
-        require(approver[to][tokenId] == _msgSender(), "unAllow: not approver");
+    function revokeAllow(address to, uint256 tokenId) public {
+        require(approver[to][tokenId] == _msgSender(), "ERR_NOT_APPROVER");
         approver[to][tokenId] = address(0);
         emit RevokeAllow(_msgSender(), to, tokenId);
     }
 
     // 撤销管理员们管理对应一组token的权力
     function revokeAllowBatch(address[] memory toList, uint256[] memory tokenIdList) external {
-        require(toList.length == tokenIdList.length, "revokeAllowBatch: not equal length");
+        require(toList.length == tokenIdList.length, "ERR_NOT_EQUAL_LENGTH");
         for (uint256 i; i < toList.length; i++) {
-            this.revokeAllow(toList[i], tokenIdList[i]);
+            revokeAllow(toList[i], tokenIdList[i]);
         }
     }
 }

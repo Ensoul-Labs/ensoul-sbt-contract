@@ -4,9 +4,12 @@ pragma solidity ^0.8.17;
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/StringsUpgradeable.sol";
 import "./Ensoul.sol";
 
 contract Ensoul_Factory_Upgradeable is UUPSUpgradeable {
+    using StringsUpgradeable for uint256;
+
     event NewOrg(address indexed owner, address orgAddress);
 
     address private ensoulAdmin; // ensoul管理员
@@ -44,7 +47,14 @@ contract Ensoul_Factory_Upgradeable is UUPSUpgradeable {
         string memory _tokenURI,
         string memory _contractURI
     ) public onlyEnsoulAdmin {
-        Ensoul org = new Ensoul(_orgOwner, address(this), _tokenURI, _contractURI);
+        Ensoul org = new Ensoul(
+            _orgOwner,
+            address(this),
+            _tokenURI,
+            _contractURI,
+            string(abi.encodePacked("Ensoul-",orgs.length.toString())),
+            implementationVersion()
+        );
 
         address orgAddress = address(org);
         orgs.push(orgAddress);

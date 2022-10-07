@@ -3,9 +3,14 @@ pragma solidity ^0.8.17;
 
 interface IEnsoul {
     /* ================ EVENTS ================ */
+
     /* ================ VIEW FUNCTIONS ================ */
 
-    // function uri(uint256 tokenId) external view returns (string memory);
+    function usedSignature(
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) external view returns (bool);
 
     /* ================ TRANSACTION FUNCTIONS ================ */
 
@@ -13,15 +18,23 @@ interface IEnsoul {
         address[] memory toList,
         uint256 tokenId,
         uint256 amount,
+        uint256 expiration,
         uint8 v,
         bytes32 r,
         bytes32 s
     ) external;
 
-    function mintBySignature(
+    function mintToBatchAddress(
+        address[] memory toList,
+        uint256 tokenId,
+        uint256 amount
+    ) external;
+
+     function mintBySignature(
         address to,
         uint256 tokenId,
         uint256 amount,
+        uint256 expiration,
         uint8 v,
         bytes32 r,
         bytes32 s
@@ -30,12 +43,6 @@ interface IEnsoul {
     function mint(
         address account,
         uint256 id,
-        uint256 amount
-    ) external;
-
-    function mintToBatchAddress(
-        address[] memory toList,
-        uint256 tokenId,
         uint256 amount
     ) external;
 
