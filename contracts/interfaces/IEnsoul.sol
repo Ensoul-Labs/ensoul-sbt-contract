@@ -12,12 +12,36 @@ interface IEnsoul {
     function mintToBatchAddressBySignature(
         address[] memory toList,
         uint256 tokenId,
+        uint256 amount,
         uint8 v,
         bytes32 r,
         bytes32 s
     ) external;
 
-    function mintToBatchAddress(address[] memory toList, uint256 tokenId) external;
+    function mintBySignature(
+        address to,
+        uint256 tokenId,
+        uint256 amount,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) external;
+
+    function mint(
+        address account,
+        uint256 id,
+        uint256 amount
+    ) external;
+
+    function mintToBatchAddress(
+        address[] memory toList,
+        uint256 tokenId,
+        uint256 amount
+    ) external;
+
+    function burn(uint256 id) external;
+
+    function burnBatch(uint256[] memory ids) external;
 
     /* ================ ADMIN FUNCTIONS ================ */
 

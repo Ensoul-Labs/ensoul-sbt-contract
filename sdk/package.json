@@ -1,6 +1,6 @@
 {
   "name": "ensoul-sbt-contract-sdk",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "main": "dist/index.js",
   "author": "33357 <43600005+33357@users.noreply.github.com>",
   "license": "MIT",

@@ -83,6 +83,7 @@ export interface EnsoulClient {
   mintToBatchAddress(
     toList: string[],
     tokenId: BigNumberish,
+    amount: BigNumberish,
     config?: PayableOverrides,
     callback?: Function
   ): Promise<void>;
@@ -90,6 +91,7 @@ export interface EnsoulClient {
   mintToBatchAddressBySignature(
     toList: string[],
     tokenId: BigNumberish,
+    amount: BigNumberish,
     v: BigNumberish,
     r: BytesLike,
     s: BytesLike,

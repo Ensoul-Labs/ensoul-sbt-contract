@@ -102,7 +102,11 @@ describe(`权限管理合约`, function () {
   it('单独tokenID权限管理', async () => {
     await EnsoulInstance.unpause();
     await EnsoulInstance.allow(await accountA.getAddress(), 1);
-    await EnsoulInstance.connect(accountA).mint(await accountA.getAddress(), 1);
+    await EnsoulInstance.connect(accountA).mint(
+      await accountA.getAddress(),
+      1,
+      1
+    );
   });
 
   it('跨级tokenID取消中间人权限', async () => {});

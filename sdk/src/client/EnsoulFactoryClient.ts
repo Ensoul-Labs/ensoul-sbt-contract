@@ -6,6 +6,7 @@ import {
   Signer
 } from 'ethers';
 import { Provider } from '@ethersproject/providers';
+import { EnsoulFactoryModel } from 'src/model';
 
 export interface EnsoulFactoryClient {
   connect(
@@ -22,6 +23,8 @@ export interface EnsoulFactoryClient {
 
   getEnsoulAdmin(config?: CallOverrides): Promise<string>;
 
+  implementationVersion(config?: CallOverrides): Promise<string>;
+
   /* ================ TRANSACTION FUNCTIONS ================ */
 
   newOrg(
@@ -30,7 +33,7 @@ export interface EnsoulFactoryClient {
     contractURI: string,
     config?: PayableOverrides,
     callback?: Function
-  ): Promise<void>;
+  ): Promise<EnsoulFactoryModel.NewOrgEvent>
 
   setEnsoulAdmin(
     ensoulAdmin: string,

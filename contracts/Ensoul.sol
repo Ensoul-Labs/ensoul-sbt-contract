@@ -22,14 +22,16 @@ contract Ensoul is
     Ensoul_SuperController
 {
     bytes32 public constant MINT_TO_BATCH_ADDRESS_TYPEHASH =
-        keccak256("mintToBatchAddress(address[] toList,uint256 tokenId)");
+        keccak256("mintToBatchAddressBySignature(address[] toList,uint256 tokenId,uint256 amount)");
+
+    bytes32 public constant MINT_TYPEHASH = keccak256("mintBySignature(address to,uint256 tokenId,uint256 amount)");
 
     constructor(
         address _owner,
-        address _facotry,
+        address _factory,
         string memory _tokenURI,
         string memory _contractURI
-    ) ERC1155(_tokenURI) Ensoul_Controller(_owner) Ensoul_SuperController(_facotry) EIP712("Ensoul", "1.0.0") {
+    ) ERC1155(_tokenURI) Ensoul_Controller(_owner) Ensoul_SuperController(_factory) EIP712("Ensoul", "1.0.0") {
         _setContractURI(_contractURI);
     }
 
@@ -87,51 +89,64 @@ contract Ensoul is
     function mintToBatchAddressBySignature(
         address[] memory toList,
         uint256 tokenId,
+        uint256 amount,
         uint8 v,
         bytes32 r,
         bytes32 s
     ) external override {
         address signer = ECDSA.recover(
-            _hashTypedDataV4(keccak256(abi.encode(MINT_TO_BATCH_ADDRESS_TYPEHASH, toList, tokenId))),
+            _hashTypedDataV4(keccak256(abi.encode(MINT_TO_BATCH_ADDRESS_TYPEHASH, toList, tokenId, amount))),
             v,
             r,
             s
         );
         require(this.isAllow(signer, tokenId), "ERR_NO_AUTH_OF_TOKEN");
         for (uint256 i = 0; i < toList.length; i++) {
-            super._mint(toList[i], tokenId, 1, "");
-        }
-    }
-
-    function mint(address account, uint256 id) external onlyOrgAmin(id) {
-        require(balanceOf(account, id) == 0, "ERR_NOT_ZERO_BALANCE");
-        super._mint(account, id, 1, "");
-    }
-
-    function mint(address account, uint256 id, uint amount) external onlyOrgAmin(id) {
-        require(balanceOf(account, id) == 0, "ERR_NOT_ZERO_BALANCE");
-        super._mint(account, id, amount, "");
-    }
-
-    function mintToBatchAddress(address[] memory toList, uint256 tokenId) external override onlyOrgAmin(tokenId) {
-        for (uint256 i = 0; i < toList.length; i++) {
-            require(balanceOf(toList[i], tokenId) == 0, "ERR_NOT_ZERO_BALANCE");
-            super._mint(toList[i], tokenId, 1, "");
-        }
-    }
-
-    function mintToBatchAddress(address[] memory toList, uint256 tokenId, uint amount) external override onlyOrgAmin(tokenId) {
-        for (uint256 i = 0; i < toList.length; i++) {
-            require(balanceOf(toList[i], tokenId) == 0, "ERR_NOT_ZERO_BALANCE");
             super._mint(toList[i], tokenId, amount, "");
         }
     }
 
-    function burn(uint256 id) external {
+    function mintBySignature(
+        address to,
+        uint256 tokenId,
+        uint256 amount,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) external override {
+        address signer = ECDSA.recover(
+            _hashTypedDataV4(keccak256(abi.encode(MINT_TYPEHASH, to, tokenId, amount))),
+            v,
+            r,
+            s
+        );
+        require(this.isAllow(signer, tokenId), "ERR_NO_AUTH_OF_TOKEN");
+        super._mint(to, tokenId, amount, "");
+    }
+
+    function mint(
+        address account,
+        uint256 id,
+        uint256 amount
+    ) external override onlyOrgAmin(id) {
+        super._mint(account, id, amount, "");
+    }
+
+    function mintToBatchAddress(
+        address[] memory toList,
+        uint256 tokenId,
+        uint256 amount
+    ) external override onlyOrgAmin(tokenId) {
+        for (uint256 i = 0; i < toList.length; i++) {
+            super._mint(toList[i], tokenId, amount, "");
+        }
+    }
+
+    function burn(uint256 id) external override {
         _burn(_msgSender(), id, 1);
     }
 
-    function burnBatch(uint256[] memory ids) external {
+    function burnBatch(uint256[] memory ids) external override {
         uint256[] memory values = new uint256[](ids.length);
         for (uint256 i = 0; i < ids.length; i++) {
             values[i] = 1;
