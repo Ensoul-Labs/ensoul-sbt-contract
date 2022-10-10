@@ -67,15 +67,6 @@ contract Ensoul is
         super._mint(account, id, amount, data);
     }
 
-    function _mintBatch(
-        address to,
-        uint256[] memory ids,
-        uint256[] memory amounts,
-        bytes memory data
-    ) internal override(ERC1155, ERC1155Supply) {
-        super._mintBatch(to, ids, amounts, data);
-    }
-
     function _burn(
         address account,
         uint256 id,
