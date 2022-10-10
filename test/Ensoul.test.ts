@@ -159,13 +159,13 @@ describe(`test ${contractName}`, function () {
     });
 
     it('check mintToBatchAddressBySignature', async function () {
-      const signData = {
+      let signData = {
         toList: [await accountA.getAddress()],
         tokenId: 1,
         amount: 1,
         expiration: Math.ceil(new Date().getTime() / 1000) + 10000,
       };
-      const vrs = await contractClient.signMintToBatchAddressBySignature(
+      let vrs = await contractClient.signMintToBatchAddressBySignature(
         deployer,
         signData.toList,
         signData.tokenId,
@@ -173,8 +173,6 @@ describe(`test ${contractName}`, function () {
         signData.expiration
       );
       contractClient.connect(accountA, contractClient.address());
-      console.log(await deployer.getAddress())
-      console.log(await accountA.getAddress())
       await contractClient.mintToBatchAddressBySignature(
         signData.toList,
         signData.tokenId,
@@ -184,7 +182,62 @@ describe(`test ${contractName}`, function () {
         vrs.r,
         vrs.s
       );
-      expect(contractClient.balanceOf(await accountA.getAddress(), 1)).eq(1);
+      expect(await contractClient.balanceOf(await accountA.getAddress(), 1)).eq(1);
+      await expect( contractClient.mintToBatchAddressBySignature(
+        signData.toList,
+        signData.tokenId,
+        signData.amount,
+        signData.expiration,
+        vrs.v,
+        vrs.r,
+        vrs.s
+      )).revertedWith('ERR_USED_SIFNATURE');
+
+      signData = {
+        toList: [await accountA.getAddress()],
+        tokenId: 1,
+        amount: 1,
+        expiration: Math.ceil(new Date().getTime() / 1000) - 10000,
+      };
+      vrs = await contractClient.signMintToBatchAddressBySignature(
+        deployer,
+        signData.toList,
+        signData.tokenId,
+        signData.amount,
+        signData.expiration
+      );
+      await expect( contractClient.mintToBatchAddressBySignature(
+        signData.toList,
+        signData.tokenId,
+        signData.amount,
+        signData.expiration,
+        vrs.v,
+        vrs.r,
+        vrs.s
+      )).revertedWith('ERR_OVER_TIME');
+
+      signData = {
+        toList:  [await accountA.getAddress()],
+        tokenId: 1,
+        amount: 1,
+        expiration: Math.ceil(new Date().getTime() / 1000) + 10000,
+      };
+      vrs = await contractClient.signMintToBatchAddressBySignature(
+        accountA,
+        signData.toList,
+        signData.tokenId,
+        signData.amount,
+        signData.expiration
+      );
+      await expect(contractClient.mintToBatchAddressBySignature(
+        signData.toList,
+        signData.tokenId,
+        signData.amount,
+        signData.expiration,
+        vrs.v,
+        vrs.r,
+        vrs.s
+      )).revertedWith('ERR_NO_AUTH_OF_TOKEN');
     });
 
     it('check mintBySignature', async function () {
@@ -397,23 +450,4 @@ describe(`test ${contractName}`, function () {
       );
     });
   });
-
-  // describe(`test contract`, function () {
-  //   let contract: Ensoul;
-  //   let factory: EnsoulFactoryUpgradeable;
-
-  //   beforeEach('deploy and init contract', async () => {
-  //     const factoryContract = await ethers.getContractFactory(
-  //       factoryContractName
-  //     );
-  //     factory = (await upgrades.deployProxy(
-  //       factoryContract.connect(deployer),
-  //       [],
-  //       {
-  //         kind: 'uups',
-  //       }
-  //     )) as EnsoulFactoryUpgradeable;
-  //     await factory.newOrg(await deployer.getAddress(), 'https://', 'https://');
-  //   });
-  // });
 });

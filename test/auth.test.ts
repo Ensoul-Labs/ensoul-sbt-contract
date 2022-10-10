@@ -20,7 +20,6 @@ describe(`权限管理合约`, function () {
     deployer = await ethers.getSigner(NamedAccounts.deployer);
     accountA = await ethers.getSigner(NamedAccounts.accountA);
     accountB = await ethers.getSigner(NamedAccounts.accountB);
-    // FactoryInstance = await Factory.deploy();
 
     FactoryInstance = (await upgrades.deployProxy(
       Factory.connect(deployer),
