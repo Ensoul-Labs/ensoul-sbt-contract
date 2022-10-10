@@ -10,7 +10,6 @@ import "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol";
 import "./Auth/Ensoul_Controller.sol";
 import "./Data/ContractMetadata.sol";
 import "./Auth/Ensoul_SuperController.sol";
-import "hardhat/console.sol";
 
 contract Ensoul is
     IEnsoul,
@@ -107,12 +106,11 @@ contract Ensoul is
         require(expiration >= block.timestamp, "ERR_OVER_TIME");
         require(!usedSignature(v, r, s), "ERR_USED_SIFNATURE");
         address signer = ECDSA.recover(
-            _hashTypedDataV4(keccak256(abi.encode(MINT_TO_BATCH_ADDRESS_TYPEHASH, toList, tokenId, amount, expiration))),
+            _hashTypedDataV4(keccak256(abi.encode(MINT_TO_BATCH_ADDRESS_TYPEHASH, keccak256(abi.encodePacked(toList)), tokenId, amount, expiration))),
             v,
             r,
             s
         );
-        console.log(signer);
         require(this.isAllow(signer, tokenId), "ERR_NO_AUTH_OF_TOKEN");
         usedSignatureHash[keccak256(abi.encode(v, r, s))] = true;
         for (uint256 i = 0; i < toList.length; i++) {
