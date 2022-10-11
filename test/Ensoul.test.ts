@@ -9,11 +9,13 @@ const contractName = 'Ensoul';
 describe(`test ${contractName}`, function () {
   let deployer: Signer;
   let accountA: Signer;
+  let accountB: Signer;
 
   before('setup accounts', async () => {
     const NamedAccounts = await getNamedAccounts();
     deployer = await ethers.getSigner(NamedAccounts.deployer);
     accountA = await ethers.getSigner(NamedAccounts.accountA);
+    accountB = await ethers.getSigner(NamedAccounts.accountB);
   });
 
   describe(`test sdk`, function () {
@@ -437,6 +439,9 @@ describe(`test ${contractName}`, function () {
       expect(await contractClient.isAllow(await accountA.getAddress(), 1)).eq(
         false
       );
+      expect(await contractClient.isAllow(await accountB.getAddress(), 1)).eq(
+        false
+      );
       await contractClient.allow(await accountA.getAddress(), 1);
       expect(await contractClient.isAllow(await accountA.getAddress(), 1)).eq(
         true
@@ -444,6 +449,14 @@ describe(`test ${contractName}`, function () {
       expect(await contractClient.isAllow(await accountA.getAddress(), 2)).eq(
         false
       );
+    
+      await contractClient.connect(accountA,contractClient.address());
+      await contractClient.allow(await accountB.getAddress(), 1);
+      expect(await contractClient.isAllow(await accountB.getAddress(), 1)).eq(
+        true
+      );
+      await contractClient.connect(deployer,contractClient.address());
+
       await contractClient.addOrgAdmin(await accountA.getAddress());
       expect(await contractClient.isAllow(await accountA.getAddress(), 2)).eq(
         true
