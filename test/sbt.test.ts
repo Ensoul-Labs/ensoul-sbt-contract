@@ -18,7 +18,6 @@ describe(`SBT特征`, function () {
 
     deployer = await ethers.getSigner(NamedAccounts.deployer);
     accountA = await ethers.getSigner(NamedAccounts.accountA);
-    // FactoryInstance = await Factory.deploy();
 
     FactoryInstance = (await upgrades.deployProxy(
       Factory.connect(deployer),
