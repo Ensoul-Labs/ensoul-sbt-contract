@@ -1,6 +1,6 @@
 import { Provider } from '@ethersproject/providers';
 import { BigNumberish, CallOverrides, PayableOverrides, Signer } from 'ethers';
-import { EnsoulFactoryModel } from 'src/model';
+import { EnsoulFactoryModel } from '../model';
 import { EnsoulFactoryClient } from '..';
 import { EnsoulFactoryUpgradeable, EnsoulFactoryUpgradeable__factory } from '../typechain';
 
