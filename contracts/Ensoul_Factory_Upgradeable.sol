@@ -59,7 +59,7 @@ contract Ensoul_Factory_Upgradeable is UUPSUpgradeable {
         address orgAddress = address(org);
         orgs.push(orgAddress);
 
-        emit NewOrg(msg.sender, orgAddress);
+        emit NewOrg(_orgOwner, orgAddress);
     }
 
     // 获取ensoul管理员地址
