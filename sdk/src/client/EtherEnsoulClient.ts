@@ -219,7 +219,6 @@ export class EtherEnsoulClient implements EnsoulClient {
         gasLimit: gas.mul(13).div(10),
         ...config
       });
-    await transaction.wait(this._waitConfirmations);
     if (callback) {
       callback(transaction);
     }
@@ -250,7 +249,6 @@ export class EtherEnsoulClient implements EnsoulClient {
         gasLimit: gas.mul(13).div(10),
         ...config
       });
-    await transaction.wait(this._waitConfirmations);
     if (callback) {
       callback(transaction);
     }
@@ -281,7 +279,6 @@ export class EtherEnsoulClient implements EnsoulClient {
         gasLimit: gas.mul(13).div(10),
         ...config
       });
-    await transaction.wait(this._waitConfirmations);
     if (callback) {
       callback(transaction);
     }
@@ -314,7 +311,6 @@ export class EtherEnsoulClient implements EnsoulClient {
         gasLimit: gas.mul(13).div(10),
         ...config
       });
-    await transaction.wait(this._waitConfirmations);
     if (callback) {
       callback(transaction);
     }
@@ -360,7 +356,6 @@ export class EtherEnsoulClient implements EnsoulClient {
         gasLimit: gas.mul(13).div(10),
         ...config
       });
-    await transaction.wait(this._waitConfirmations);
     if (callback) {
       callback(transaction);
     }
@@ -406,7 +401,6 @@ export class EtherEnsoulClient implements EnsoulClient {
         gasLimit: gas.mul(13).div(10),
         ...config
       });
-    await transaction.wait(this._waitConfirmations);
     if (callback) {
       callback(transaction);
     }
@@ -439,7 +433,6 @@ export class EtherEnsoulClient implements EnsoulClient {
         gasLimit: gas.mul(13).div(10),
         ...config
       });
-    await transaction.wait(this._waitConfirmations);
     if (callback) {
       callback(transaction);
     }
@@ -471,7 +464,6 @@ export class EtherEnsoulClient implements EnsoulClient {
         gasLimit: gas.mul(13).div(10),
         ...config
       });
-    await transaction.wait(this._waitConfirmations);
     if (callback) {
       callback(transaction);
     }
@@ -503,7 +495,6 @@ export class EtherEnsoulClient implements EnsoulClient {
         gasLimit: gas.mul(13).div(10),
         ...config
       });
-    await transaction.wait(this._waitConfirmations);
     if (callback) {
       callback(transaction);
     }
@@ -534,7 +525,6 @@ export class EtherEnsoulClient implements EnsoulClient {
         gasLimit: gas.mul(13).div(10),
         ...config
       });
-    await transaction.wait(this._waitConfirmations);
     if (callback) {
       callback(transaction);
     }
@@ -565,7 +555,6 @@ export class EtherEnsoulClient implements EnsoulClient {
         gasLimit: gas.mul(13).div(10),
         ...config
       });
-    await transaction.wait(this._waitConfirmations);
     if (callback) {
       callback(transaction);
     }
@@ -594,7 +583,6 @@ export class EtherEnsoulClient implements EnsoulClient {
       gasLimit: gas.mul(13).div(10),
       ...config
     });
-    await transaction.wait(this._waitConfirmations);
     if (callback) {
       callback(transaction);
     }
@@ -620,7 +608,6 @@ export class EtherEnsoulClient implements EnsoulClient {
       gasLimit: gas.mul(13).div(10),
       ...config
     });
-    await transaction.wait(this._waitConfirmations);
     if (callback) {
       callback(transaction);
     }
@@ -648,7 +635,6 @@ export class EtherEnsoulClient implements EnsoulClient {
       gasLimit: gas.mul(13).div(10),
       ...config
     });
-    await transaction.wait(this._waitConfirmations);
     if (callback) {
       callback(transaction);
     }
@@ -679,7 +665,6 @@ export class EtherEnsoulClient implements EnsoulClient {
         gasLimit: gas.mul(13).div(10),
         ...config
       });
-    await transaction.wait(this._waitConfirmations);
     if (callback) {
       callback(transaction);
     }
