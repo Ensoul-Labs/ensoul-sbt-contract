@@ -52,7 +52,7 @@ describe(`工厂合约`, function () {
     await FactoryInstance.connect(accountA).setEnsoulAdmin(deployerAddress);
 
     const otherAddress = await accountA.getAddress();
-    await FactoryInstance.newOrg(otherAddress, 'this is url', 'this is url');
+    await FactoryInstance.newOrg(otherAddress, 'this is url', 'this is url',"ensoul");
 
     const orgs = await FactoryInstance.orgs(0);
     expect(orgs.toString().length).equal(42);
@@ -60,11 +60,12 @@ describe(`工厂合约`, function () {
 
   it('新组织是全新的合约，合约不重复', async () => {
     const otherAddress = await accountA.getAddress();
-    await FactoryInstance.newOrg(otherAddress, 'this is url', 'this is url');
+    await FactoryInstance.newOrg(otherAddress, 'this is url', 'this is url',"ensoul");
     await FactoryInstance.newOrg(
       otherAddress,
       'https://raw.githubusercontent.com/kasoqian/resume-medata/main/json/{id}.json',
-      'this is url 2'
+      'this is url 2',
+      "ensoul"
     );
 
     const orgsTemp1 = await FactoryInstance.orgs(0);

@@ -42,7 +42,8 @@ describe(`test ${contractName}`, function () {
       const newOrgEvent = await contractClient.newOrg(
         await deployer.getAddress(),
         'https://',
-        'https://'
+        'https://',
+        "ensoul"
       );
       expect(await contractClient.orgs(0)).eq(newOrgEvent.orgAddress);
       contractClient.connect(accountA, contractClient.address());
@@ -50,7 +51,8 @@ describe(`test ${contractName}`, function () {
         contractClient.newOrg(
           await deployer.getAddress(),
           'https://',
-          'https://'
+          'https://',
+          "ensoul"
         )
       ).revertedWith(`ERR_NOT_ENSOUL_ADMIN`);
     });

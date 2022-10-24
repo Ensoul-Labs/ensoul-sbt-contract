@@ -2,7 +2,10 @@ import { Provider } from '@ethersproject/providers';
 import { BigNumberish, CallOverrides, PayableOverrides, Signer } from 'ethers';
 import { EnsoulFactoryModel } from '../model';
 import { EnsoulFactoryClient } from '..';
-import { EnsoulFactoryUpgradeable, EnsoulFactoryUpgradeable__factory } from '../typechain';
+import {
+  EnsoulFactoryUpgradeable,
+  EnsoulFactoryUpgradeable__factory
+} from '../typechain';
 
 export class EtherEnsoulFactoryClient implements EnsoulFactoryClient {
   private _ensoulFactory: EnsoulFactoryUpgradeable | undefined;
@@ -15,7 +18,10 @@ export class EtherEnsoulFactoryClient implements EnsoulFactoryClient {
     address: string,
     waitConfirmations?: number
   ) {
-    this._ensoulFactory = EnsoulFactoryUpgradeable__factory.connect(address, provider);
+    this._ensoulFactory = EnsoulFactoryUpgradeable__factory.connect(
+      address,
+      provider
+    );
     if (waitConfirmations) {
       this._waitConfirmations = waitConfirmations;
     }
@@ -38,21 +44,21 @@ export class EtherEnsoulFactoryClient implements EnsoulFactoryClient {
     if (!this._provider || !this._ensoulFactory) {
       throw new Error(`${this._errorTitle}: no provider`);
     }
-    return await this._ensoulFactory.orgs(index, {...config});
+    return await this._ensoulFactory.orgs(index, { ...config });
   }
 
   public async getEnsoulAdmin(config?: CallOverrides): Promise<string> {
     if (!this._provider || !this._ensoulFactory) {
       throw new Error(`${this._errorTitle}: no provider`);
     }
-    return await this._ensoulFactory.getEnsoulAdmin({...config});
+    return await this._ensoulFactory.getEnsoulAdmin({ ...config });
   }
 
   public async implementationVersion(config?: CallOverrides): Promise<string> {
     if (!this._provider || !this._ensoulFactory) {
       throw new Error(`${this._errorTitle}: no provider`);
     }
-    return await this._ensoulFactory.implementationVersion({...config});
+    return await this._ensoulFactory.implementationVersion({ ...config });
   }
 
   /* ================ TRANSACTION FUNCTIONS ================ */
@@ -61,6 +67,7 @@ export class EtherEnsoulFactoryClient implements EnsoulFactoryClient {
     orgOwner: string,
     tokenURI: string,
     contractURI: string,
+    name: string,
     config?: PayableOverrides,
     callback?: Function
   ): Promise<EnsoulFactoryModel.NewOrgEvent> {
@@ -73,10 +80,10 @@ export class EtherEnsoulFactoryClient implements EnsoulFactoryClient {
     }
     const gas = await this._ensoulFactory
       .connect(this._provider)
-      .estimateGas.newOrg(orgOwner, tokenURI, contractURI, {...config});
+      .estimateGas.newOrg(orgOwner, tokenURI, contractURI, name, { ...config });
     const transaction = await this._ensoulFactory
       .connect(this._provider)
-      .newOrg(orgOwner, tokenURI, contractURI, {
+      .newOrg(orgOwner, tokenURI, contractURI, name, {
         gasLimit: gas.mul(13).div(10),
         ...config
       });
@@ -87,7 +94,7 @@ export class EtherEnsoulFactoryClient implements EnsoulFactoryClient {
     if (callback) {
       callback(receipt);
     }
-    let newOrgEvent:EnsoulFactoryModel.NewOrgEvent|undefined;
+    let newOrgEvent: EnsoulFactoryModel.NewOrgEvent | undefined;
     if (receipt.events) {
       receipt.events
         .filter(event => event.event === 'NewOrg' && event.args)
@@ -97,7 +104,7 @@ export class EtherEnsoulFactoryClient implements EnsoulFactoryClient {
     }
     if (newOrgEvent) {
       return newOrgEvent;
-    }else{
+    } else {
       throw new Error('no event');
     }
   }
@@ -116,7 +123,7 @@ export class EtherEnsoulFactoryClient implements EnsoulFactoryClient {
     }
     const gas = await this._ensoulFactory
       .connect(this._provider)
-      .estimateGas.setEnsoulAdmin(ensoulAdmin, {...config});
+      .estimateGas.setEnsoulAdmin(ensoulAdmin, { ...config });
     const transaction = await this._ensoulFactory
       .connect(this._provider)
       .setEnsoulAdmin(ensoulAdmin, {

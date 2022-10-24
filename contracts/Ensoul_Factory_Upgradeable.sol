@@ -45,16 +45,10 @@ contract Ensoul_Factory_Upgradeable is UUPSUpgradeable {
     function newOrg(
         address _orgOwner,
         string memory _tokenURI,
-        string memory _contractURI
+        string memory _contractURI,
+        string memory _name
     ) public onlyEnsoulAdmin {
-        Ensoul org = new Ensoul(
-            _orgOwner,
-            address(this),
-            _tokenURI,
-            _contractURI,
-            string(abi.encodePacked("Ensoul-",orgs.length.toString())),
-            implementationVersion()
-        );
+        Ensoul org = new Ensoul(_orgOwner, address(this), _tokenURI, _contractURI, _name, implementationVersion());
 
         address orgAddress = address(org);
         orgs.push(orgAddress);

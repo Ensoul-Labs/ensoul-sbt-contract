@@ -66,7 +66,7 @@ const config: HardhatUserConfig = {
       gasPrice: BigNumber.from(gasPrice)
         .mul(10 ** 9)
         .toNumber(),
-    }
+    },
   },
   namedAccounts: {
     deployer: 0,
