@@ -756,10 +756,10 @@ export class EtherEnsoulClient implements EnsoulClient {
       throw new Error(`${this._errorTitle}: no ensoul`);
     }
     const domain = {
-      name: await this._ensoul.name(),
-      version: await this._ensoul.version(),
+      name: await this.name(),
+      version: await this.version(),
       chainId: await signer.getChainId(),
-      verifyingContract: this._ensoul.address
+      verifyingContract: this.address()
     };
     const types = {
       mintToBatchAddressBySignature: [
@@ -795,10 +795,10 @@ export class EtherEnsoulClient implements EnsoulClient {
       throw new Error(`${this._errorTitle}: no ensoul`);
     }
     const domain = {
-      name: await this._ensoul.name(),
-      version: await this._ensoul.version(),
+      name: await this.name(),
+      version: await this.version(),
       chainId: await signer.getChainId(),
-      verifyingContract: this._ensoul.address
+      verifyingContract: this.address()
     };
     const types = {
       mintBySignature: [

@@ -8,5 +8,15 @@
       "operator": "0x8e9a781d6B89303c2FD71c861084078370282D1F",
       "fromBlock": 7766947
     }
+  },
+  "137": {
+    "Ensoul_Factory_Upgradeable": {
+      "proxyAddress": "0xE292195A8dF802A748C205A2cE8433BA97817960",
+      "implAddress": "0x8c98F92793d6F6Ad069beD3B55908A49eF80Fe5B",
+      "version": "1.0.0",
+      "contract": "Ensoul_Factory_Upgradeable",
+      "operator": "0xC653c441d23aB3cacc1698dbc1A5B1Cf8Fa4A6EC",
+      "fromBlock": 34735808
+    }
   }
 }
