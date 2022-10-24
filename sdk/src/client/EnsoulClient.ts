@@ -20,6 +20,30 @@ export interface EnsoulClient {
 
   /* ================ VIEW FUNCTIONS ================ */
 
+  name(config?: CallOverrides): Promise<string>;
+
+  version(config?: CallOverrides): Promise<string>;
+
+  exists(tokenId: BigNumberish, config?: CallOverrides): Promise<boolean>;
+
+  orgAdmins(address: string, config?: CallOverrides): Promise<boolean>;
+
+  owner(config?: CallOverrides): Promise<string>;
+
+  paused(config?: CallOverrides): Promise<boolean>;
+
+  usedSignature(
+    v: BigNumberish,
+    r: BytesLike,
+    s: BytesLike,
+    config?: CallOverrides
+  ): Promise<boolean>;
+
+  supportsInterface(
+    interfaceId: BytesLike,
+    config?: CallOverrides
+  ): Promise<boolean>;
+
   balanceOfBatch(
     accounts: string[],
     tokenIds: BigNumberish[],
@@ -158,6 +182,11 @@ export interface EnsoulClient {
 
   transferOwnership(
     newOwner: string,
+    config?: PayableOverrides,
+    callback?: Function
+  ): Promise<void>;
+
+  renounceOwnership(
     config?: PayableOverrides,
     callback?: Function
   ): Promise<void>;

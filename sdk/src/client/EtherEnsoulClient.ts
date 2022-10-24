@@ -48,7 +48,43 @@ export class EtherEnsoulClient implements EnsoulClient {
     if (!this._provider || !this._ensoul) {
       throw new Error(`${this._errorTitle}: no provider`);
     }
-    return await this._ensoul.balanceOfBatch(accounts, tokenIds, {...config});
+    return await this._ensoul.balanceOfBatch(accounts, tokenIds, { ...config });
+  }
+
+  public async name(config?: CallOverrides): Promise<string> {
+    if (!this._provider || !this._ensoul) {
+      throw new Error(`${this._errorTitle}: no provider`);
+    }
+    return await this._ensoul.name({ ...config });
+  }
+
+  public async version(config?: CallOverrides): Promise<string> {
+    if (!this._provider || !this._ensoul) {
+      throw new Error(`${this._errorTitle}: no provider`);
+    }
+    return await this._ensoul.version({ ...config });
+  }
+
+  public async usedSignature(
+    v: BigNumberish,
+    r: BytesLike,
+    s: BytesLike,
+    config?: CallOverrides
+  ): Promise<boolean> {
+    if (!this._provider || !this._ensoul) {
+      throw new Error(`${this._errorTitle}: no provider`);
+    }
+    return await this._ensoul.usedSignature(v, r, s, { ...config });
+  }
+
+  public async supportsInterface(
+    interfaceId: BytesLike,
+    config?: CallOverrides
+  ): Promise<boolean> {
+    if (!this._provider || !this._ensoul) {
+      throw new Error(`${this._errorTitle}: no provider`);
+    }
+    return await this._ensoul.supportsInterface(interfaceId, { ...config });
   }
 
   public async balanceOf(
@@ -69,7 +105,7 @@ export class EtherEnsoulClient implements EnsoulClient {
     if (!this._provider || !this._ensoul) {
       throw new Error(`${this._errorTitle}: no provider`);
     }
-    return await this._ensoul.totalSupply(tokenId, {...config});
+    return await this._ensoul.totalSupply(tokenId, { ...config });
   }
 
   public async isAllow(
@@ -80,14 +116,14 @@ export class EtherEnsoulClient implements EnsoulClient {
     if (!this._provider || !this._ensoul) {
       throw new Error(`${this._errorTitle}: no provider`);
     }
-    return await this._ensoul.isAllow(sender, tokenId, {...config});
+    return await this._ensoul.isAllow(sender, tokenId, { ...config });
   }
 
   public async contractURI(config?: CallOverrides): Promise<string> {
     if (!this._provider || !this._ensoul) {
       throw new Error(`${this._errorTitle}: no provider`);
     }
-    return await this._ensoul.contractURI({...config});
+    return await this._ensoul.contractURI({ ...config });
   }
 
   public async uri(
@@ -97,21 +133,21 @@ export class EtherEnsoulClient implements EnsoulClient {
     if (!this._provider || !this._ensoul) {
       throw new Error(`${this._errorTitle}: no provider`);
     }
-    return await this._ensoul.uri(tokenId, {...config});
+    return await this._ensoul.uri(tokenId, { ...config });
   }
 
   public async owner(config?: CallOverrides): Promise<string> {
     if (!this._provider || !this._ensoul) {
       throw new Error(`${this._errorTitle}: no provider`);
     }
-    return await this._ensoul.owner({...config});
+    return await this._ensoul.owner({ ...config });
   }
 
   public async paused(config?: CallOverrides): Promise<boolean> {
     if (!this._provider || !this._ensoul) {
       throw new Error(`${this._errorTitle}: no provider`);
     }
-    return await this._ensoul.paused({...config});
+    return await this._ensoul.paused({ ...config });
   }
 
   public async exists(
@@ -121,7 +157,7 @@ export class EtherEnsoulClient implements EnsoulClient {
     if (!this._provider || !this._ensoul) {
       throw new Error(`${this._errorTitle}: no provider`);
     }
-    return await this._ensoul.exists(tokenId, {...config});
+    return await this._ensoul.exists(tokenId, { ...config });
   }
 
   public async orgAdmins(
@@ -131,7 +167,7 @@ export class EtherEnsoulClient implements EnsoulClient {
     if (!this._provider || !this._ensoul) {
       throw new Error(`${this._errorTitle}: no provider`);
     }
-    return await this._ensoul.orgAdmins(address, {...config});
+    return await this._ensoul.orgAdmins(address, { ...config });
   }
 
   /* ================ TRANSACTION FUNCTIONS ================ */
@@ -242,7 +278,7 @@ export class EtherEnsoulClient implements EnsoulClient {
     }
     const gas = await this._ensoul
       .connect(this._provider)
-      .estimateGas.burnBatch(tokenIds, {...config});
+      .estimateGas.burnBatch(tokenIds, { ...config });
     const transaction = await this._ensoul
       .connect(this._provider)
       .burnBatch(tokenIds, {
@@ -272,7 +308,7 @@ export class EtherEnsoulClient implements EnsoulClient {
     }
     const gas = await this._ensoul
       .connect(this._provider)
-      .estimateGas.addOrgAdmin(admin, {...config});
+      .estimateGas.addOrgAdmin(admin, { ...config });
     const transaction = await this._ensoul
       .connect(this._provider)
       .addOrgAdmin(admin, {
@@ -304,7 +340,7 @@ export class EtherEnsoulClient implements EnsoulClient {
     }
     const gas = await this._ensoul
       .connect(this._provider)
-      .estimateGas.mintToBatchAddress(toList, tokenId, amount, {...config});
+      .estimateGas.mintToBatchAddress(toList, tokenId, amount, { ...config });
     const transaction = await this._ensoul
       .connect(this._provider)
       .mintToBatchAddress(toList, tokenId, amount, {
@@ -348,14 +384,23 @@ export class EtherEnsoulClient implements EnsoulClient {
         v,
         r,
         s,
-        {...config}
+        { ...config }
       );
     const transaction = await this._ensoul
       .connect(this._provider)
-      .mintToBatchAddressBySignature(toList, tokenId, amount,expiration, v, r, s, {
-        gasLimit: gas.mul(13).div(10),
-        ...config
-      });
+      .mintToBatchAddressBySignature(
+        toList,
+        tokenId,
+        amount,
+        expiration,
+        v,
+        r,
+        s,
+        {
+          gasLimit: gas.mul(13).div(10),
+          ...config
+        }
+      );
     if (callback) {
       callback(transaction);
     }
@@ -385,19 +430,12 @@ export class EtherEnsoulClient implements EnsoulClient {
     }
     const gas = await this._ensoul
       .connect(this._provider)
-      .estimateGas.mintBySignature(
-        to,
-        tokenId,
-        amount,
-        expiration,
-        v,
-        r,
-        s,
-        {...config}
-      );
+      .estimateGas.mintBySignature(to, tokenId, amount, expiration, v, r, s, {
+        ...config
+      });
     const transaction = await this._ensoul
       .connect(this._provider)
-      .mintBySignature(to, tokenId, amount,expiration, v, r, s, {
+      .mintBySignature(to, tokenId, amount, expiration, v, r, s, {
         gasLimit: gas.mul(13).div(10),
         ...config
       });
@@ -426,7 +464,7 @@ export class EtherEnsoulClient implements EnsoulClient {
     }
     const gas = await this._ensoul
       .connect(this._provider)
-      .estimateGas.mint(to, tokenId, amount, {...config});
+      .estimateGas.mint(to, tokenId, amount, { ...config });
     const transaction = await this._ensoul
       .connect(this._provider)
       .mint(to, tokenId, amount, {
@@ -457,7 +495,7 @@ export class EtherEnsoulClient implements EnsoulClient {
     }
     const gas = await this._ensoul
       .connect(this._provider)
-      .estimateGas.revokeAllow(to, tokenId, {...config});
+      .estimateGas.revokeAllow(to, tokenId, { ...config });
     const transaction = await this._ensoul
       .connect(this._provider)
       .revokeAllow(to, tokenId, {
@@ -488,7 +526,7 @@ export class EtherEnsoulClient implements EnsoulClient {
     }
     const gas = await this._ensoul
       .connect(this._provider)
-      .estimateGas.revokeAllowBatch(toList, tokenIdList, {...config});
+      .estimateGas.revokeAllowBatch(toList, tokenIdList, { ...config });
     const transaction = await this._ensoul
       .connect(this._provider)
       .revokeAllowBatch(toList, tokenIdList, {
@@ -518,7 +556,7 @@ export class EtherEnsoulClient implements EnsoulClient {
     }
     const gas = await this._ensoul
       .connect(this._provider)
-      .estimateGas.revokeOrgAdmin(admin, {...config});
+      .estimateGas.revokeOrgAdmin(admin, { ...config });
     const transaction = await this._ensoul
       .connect(this._provider)
       .revokeOrgAdmin(admin, {
@@ -548,7 +586,7 @@ export class EtherEnsoulClient implements EnsoulClient {
     }
     const gas = await this._ensoul
       .connect(this._provider)
-      .estimateGas.setContractURI(contractURI, {...config});
+      .estimateGas.setContractURI(contractURI, { ...config });
     const transaction = await this._ensoul
       .connect(this._provider)
       .setContractURI(contractURI, {
@@ -578,7 +616,7 @@ export class EtherEnsoulClient implements EnsoulClient {
     }
     const gas = await this._ensoul
       .connect(this._provider)
-      .estimateGas.setURI(URI, {...config});
+      .estimateGas.setURI(URI, { ...config });
     const transaction = await this._ensoul.connect(this._provider).setURI(URI, {
       gasLimit: gas.mul(13).div(10),
       ...config
@@ -603,7 +641,9 @@ export class EtherEnsoulClient implements EnsoulClient {
     ) {
       throw new Error(`${this._errorTitle}: no singer`);
     }
-    const gas = await this._ensoul.connect(this._provider).estimateGas.pause({...config});
+    const gas = await this._ensoul
+      .connect(this._provider)
+      .estimateGas.pause({ ...config });
     const transaction = await this._ensoul.connect(this._provider).pause({
       gasLimit: gas.mul(13).div(10),
       ...config
@@ -630,7 +670,7 @@ export class EtherEnsoulClient implements EnsoulClient {
     }
     const gas = await this._ensoul
       .connect(this._provider)
-      .estimateGas.unpause({...config});
+      .estimateGas.unpause({ ...config });
     const transaction = await this._ensoul.connect(this._provider).unpause({
       gasLimit: gas.mul(13).div(10),
       ...config
@@ -658,7 +698,7 @@ export class EtherEnsoulClient implements EnsoulClient {
     }
     const gas = await this._ensoul
       .connect(this._provider)
-      .estimateGas.transferOwnership(newOwner,{...config});
+      .estimateGas.transferOwnership(newOwner, { ...config });
     const transaction = await this._ensoul
       .connect(this._provider)
       .transferOwnership(newOwner, {
@@ -674,8 +714,37 @@ export class EtherEnsoulClient implements EnsoulClient {
     }
   }
 
+  public async renounceOwnership(
+    config?: PayableOverrides,
+    callback?: Function
+  ): Promise<void> {
+    if (
+      !this._provider ||
+      !this._ensoul ||
+      this._provider instanceof Provider
+    ) {
+      throw new Error(`${this._errorTitle}: no singer`);
+    }
+    const gas = await this._ensoul
+      .connect(this._provider)
+      .estimateGas.renounceOwnership({ ...config });
+    const transaction = await this._ensoul
+      .connect(this._provider)
+      .renounceOwnership({
+        gasLimit: gas.mul(13).div(10),
+        ...config
+      });
+    if (callback) {
+      callback(transaction);
+    }
+    const receipt = await transaction.wait(this._waitConfirmations);
+    if (callback) {
+      callback(receipt);
+    }
+  }
+
   /* ================ UTILS FUNCTIONS ================ */
-  
+
   public async signMintToBatchAddressBySignature(
     signer: Signer,
     toList: string[],
@@ -687,17 +756,17 @@ export class EtherEnsoulClient implements EnsoulClient {
       throw new Error(`${this._errorTitle}: no ensoul`);
     }
     const domain = {
-      name: await this._ensoul.name(),
-      version: await this._ensoul.version(),
+      name: await this.name(),
+      version: await this.version(),
       chainId: await signer.getChainId(),
-      verifyingContract: this._ensoul.address
+      verifyingContract: this.address()
     };
     const types = {
       mintToBatchAddressBySignature: [
         { name: 'toList', type: 'address[]' },
         { name: 'tokenId', type: 'uint256' },
         { name: 'amount', type: 'uint256' },
-        { name: 'expiration', type: 'uint256' },
+        { name: 'expiration', type: 'uint256' }
       ]
     };
     const value = {
@@ -726,17 +795,17 @@ export class EtherEnsoulClient implements EnsoulClient {
       throw new Error(`${this._errorTitle}: no ensoul`);
     }
     const domain = {
-      name: await this._ensoul.name(),
-      version: await this._ensoul.version(),
+      name: await this.name(),
+      version: await this.version(),
       chainId: await signer.getChainId(),
-      verifyingContract: this._ensoul.address
+      verifyingContract: this.address()
     };
     const types = {
       mintBySignature: [
         { name: 'to', type: 'address' },
         { name: 'tokenId', type: 'uint256' },
         { name: 'amount', type: 'uint256' },
-        { name: 'expiration', type: 'uint256' },
+        { name: 'expiration', type: 'uint256' }
       ]
     };
     const value = {

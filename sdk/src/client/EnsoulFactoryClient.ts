@@ -31,9 +31,10 @@ export interface EnsoulFactoryClient {
     orgOwner: string,
     tokenURI: string,
     contractURI: string,
+    name: string,
     config?: PayableOverrides,
     callback?: Function
-  ): Promise<EnsoulFactoryModel.NewOrgEvent>
+  ): Promise<EnsoulFactoryModel.NewOrgEvent>;
 
   setEnsoulAdmin(
     ensoulAdmin: string,

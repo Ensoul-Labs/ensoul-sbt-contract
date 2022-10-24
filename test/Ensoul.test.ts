@@ -37,7 +37,8 @@ describe(`test ${contractName}`, function () {
       const newOrgEvent = await factoryClient.newOrg(
         await deployer.getAddress(),
         'https://',
-        'https://'
+        'https://',
+        'ensoul'
       );
       contractClient.connect(deployer, newOrgEvent.orgAddress, 1);
     });
@@ -94,19 +95,11 @@ describe(`test ${contractName}`, function () {
     it('check mint', async function () {
       contractClient.connect(accountA, contractClient.address());
       await expect(
-        contractClient.mint(
-          await deployer.getAddress(),
-          1,
-          1
-        )
+        contractClient.mint(await deployer.getAddress(), 1, 1)
       ).revertedWith('ERR_NO_AUTH_OF_TOKEN');
 
       contractClient.connect(deployer, contractClient.address());
-      await contractClient.mint(
-        await deployer.getAddress(),
-        1,
-        1
-      );
+      await contractClient.mint(await deployer.getAddress(), 1, 1);
       expect(await contractClient.balanceOf(await deployer.getAddress(), 1)).eq(
         1
       );
@@ -184,16 +177,20 @@ describe(`test ${contractName}`, function () {
         vrs.r,
         vrs.s
       );
-      expect(await contractClient.balanceOf(await accountA.getAddress(), 1)).eq(1);
-      await expect( contractClient.mintToBatchAddressBySignature(
-        signData.toList,
-        signData.tokenId,
-        signData.amount,
-        signData.expiration,
-        vrs.v,
-        vrs.r,
-        vrs.s
-      )).revertedWith('ERR_USED_SIFNATURE');
+      expect(await contractClient.balanceOf(await accountA.getAddress(), 1)).eq(
+        1
+      );
+      await expect(
+        contractClient.mintToBatchAddressBySignature(
+          signData.toList,
+          signData.tokenId,
+          signData.amount,
+          signData.expiration,
+          vrs.v,
+          vrs.r,
+          vrs.s
+        )
+      ).revertedWith('ERR_USED_SIFNATURE');
 
       signData = {
         toList: [await accountA.getAddress()],
@@ -208,18 +205,20 @@ describe(`test ${contractName}`, function () {
         signData.amount,
         signData.expiration
       );
-      await expect( contractClient.mintToBatchAddressBySignature(
-        signData.toList,
-        signData.tokenId,
-        signData.amount,
-        signData.expiration,
-        vrs.v,
-        vrs.r,
-        vrs.s
-      )).revertedWith('ERR_OVER_TIME');
+      await expect(
+        contractClient.mintToBatchAddressBySignature(
+          signData.toList,
+          signData.tokenId,
+          signData.amount,
+          signData.expiration,
+          vrs.v,
+          vrs.r,
+          vrs.s
+        )
+      ).revertedWith('ERR_OVER_TIME');
 
       signData = {
-        toList:  [await accountA.getAddress()],
+        toList: [await accountA.getAddress()],
         tokenId: 1,
         amount: 1,
         expiration: Math.ceil(new Date().getTime() / 1000) + 10000,
@@ -231,15 +230,17 @@ describe(`test ${contractName}`, function () {
         signData.amount,
         signData.expiration
       );
-      await expect(contractClient.mintToBatchAddressBySignature(
-        signData.toList,
-        signData.tokenId,
-        signData.amount,
-        signData.expiration,
-        vrs.v,
-        vrs.r,
-        vrs.s
-      )).revertedWith('ERR_NO_AUTH_OF_TOKEN');
+      await expect(
+        contractClient.mintToBatchAddressBySignature(
+          signData.toList,
+          signData.tokenId,
+          signData.amount,
+          signData.expiration,
+          vrs.v,
+          vrs.r,
+          vrs.s
+        )
+      ).revertedWith('ERR_NO_AUTH_OF_TOKEN');
     });
 
     it('check mintBySignature', async function () {
@@ -266,16 +267,20 @@ describe(`test ${contractName}`, function () {
         vrs.r,
         vrs.s
       );
-      expect(await contractClient.balanceOf(await accountA.getAddress(), 1)).eq(1);
-      await expect( contractClient.mintBySignature(
-        signData.to,
-        signData.tokenId,
-        signData.amount,
-        signData.expiration,
-        vrs.v,
-        vrs.r,
-        vrs.s
-      )).revertedWith('ERR_USED_SIFNATURE');
+      expect(await contractClient.balanceOf(await accountA.getAddress(), 1)).eq(
+        1
+      );
+      await expect(
+        contractClient.mintBySignature(
+          signData.to,
+          signData.tokenId,
+          signData.amount,
+          signData.expiration,
+          vrs.v,
+          vrs.r,
+          vrs.s
+        )
+      ).revertedWith('ERR_USED_SIFNATURE');
 
       signData = {
         to: await accountA.getAddress(),
@@ -290,15 +295,17 @@ describe(`test ${contractName}`, function () {
         signData.amount,
         signData.expiration
       );
-      await expect( contractClient.mintBySignature(
-        signData.to,
-        signData.tokenId,
-        signData.amount,
-        signData.expiration,
-        vrs.v,
-        vrs.r,
-        vrs.s
-      )).revertedWith('ERR_OVER_TIME');
+      await expect(
+        contractClient.mintBySignature(
+          signData.to,
+          signData.tokenId,
+          signData.amount,
+          signData.expiration,
+          vrs.v,
+          vrs.r,
+          vrs.s
+        )
+      ).revertedWith('ERR_OVER_TIME');
 
       signData = {
         to: await accountA.getAddress(),
@@ -313,15 +320,17 @@ describe(`test ${contractName}`, function () {
         signData.amount,
         signData.expiration
       );
-      await expect(contractClient.mintBySignature(
-        signData.to,
-        signData.tokenId,
-        signData.amount,
-        signData.expiration,
-        vrs.v,
-        vrs.r,
-        vrs.s
-      )).revertedWith('ERR_NO_AUTH_OF_TOKEN');
+      await expect(
+        contractClient.mintBySignature(
+          signData.to,
+          signData.tokenId,
+          signData.amount,
+          signData.expiration,
+          vrs.v,
+          vrs.r,
+          vrs.s
+        )
+      ).revertedWith('ERR_NO_AUTH_OF_TOKEN');
     });
 
     it('check addOrgAdmin', async function () {
@@ -449,13 +458,13 @@ describe(`test ${contractName}`, function () {
       expect(await contractClient.isAllow(await accountA.getAddress(), 2)).eq(
         false
       );
-    
-      await contractClient.connect(accountA,contractClient.address());
+
+      await contractClient.connect(accountA, contractClient.address());
       await contractClient.allow(await accountB.getAddress(), 1);
       expect(await contractClient.isAllow(await accountB.getAddress(), 1)).eq(
         true
       );
-      await contractClient.connect(deployer,contractClient.address());
+      await contractClient.connect(deployer, contractClient.address());
 
       await contractClient.addOrgAdmin(await accountA.getAddress());
       expect(await contractClient.isAllow(await accountA.getAddress(), 2)).eq(

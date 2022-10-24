@@ -32,7 +32,8 @@ describe(`权限管理合约`, function () {
     await FactoryInstance.newOrg(
       await deployer.getAddress(),
       'this is tokenURI',
-      'this is ContractURI'
+      'this is ContractURI',
+      'ensoul'
     );
     const ensoulAddress = await FactoryInstance.orgs(0);
     EnsoulInstance = await ethers.getContractAt('Ensoul', ensoulAddress);
@@ -132,15 +133,21 @@ describe(`权限管理合约`, function () {
       }
     );
   });
-  it("查询是否有某个tokenID的权限",async () => {
-    await EnsoulInstance.connect(accountA).allow(await accountB.getAddress(),1)
-    await EnsoulInstance.revokeAllowBatch([await accountA.getAddress()],[1])
+  it('查询是否有某个tokenID的权限', async () => {
+    await EnsoulInstance.connect(accountA).allow(
+      await accountB.getAddress(),
+      1
+    );
+    await EnsoulInstance.revokeAllowBatch([await accountA.getAddress()], [1]);
 
-    const isAllow =  await EnsoulInstance.isAllow(await accountB.getAddress(),1)
+    const isAllow = await EnsoulInstance.isAllow(
+      await accountB.getAddress(),
+      1
+    );
 
-    expect(isAllow).equal(false)
-  })
-  it("批量授权单用户多token", async () =>{
-    await EnsoulInstance.allowBatch([await accountB.getAddress()],[2])
-  })
+    expect(isAllow).equal(false);
+  });
+  it('批量授权单用户多token', async () => {
+    await EnsoulInstance.allowBatch([await accountB.getAddress()], [2]);
+  });
 });

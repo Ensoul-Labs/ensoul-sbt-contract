@@ -24,7 +24,8 @@ contract Ensoul is
     bytes32 public constant MINT_TO_BATCH_ADDRESS_TYPEHASH =
         keccak256("mintToBatchAddressBySignature(address[] toList,uint256 tokenId,uint256 amount,uint256 expiration)");
 
-    bytes32 public constant MINT_TYPEHASH = keccak256("mintBySignature(address to,uint256 tokenId,uint256 amount,uint256 expiration)");
+    bytes32 public constant MINT_TYPEHASH =
+        keccak256("mintBySignature(address to,uint256 tokenId,uint256 amount,uint256 expiration)");
 
     mapping(bytes32 => bool) usedSignatureHash;
 
@@ -106,7 +107,17 @@ contract Ensoul is
         require(expiration >= block.timestamp, "ERR_OVER_TIME");
         require(!usedSignature(v, r, s), "ERR_USED_SIFNATURE");
         address signer = ECDSA.recover(
-            _hashTypedDataV4(keccak256(abi.encode(MINT_TO_BATCH_ADDRESS_TYPEHASH, keccak256(abi.encodePacked(toList)), tokenId, amount, expiration))),
+            _hashTypedDataV4(
+                keccak256(
+                    abi.encode(
+                        MINT_TO_BATCH_ADDRESS_TYPEHASH,
+                        keccak256(abi.encodePacked(toList)),
+                        tokenId,
+                        amount,
+                        expiration
+                    )
+                )
+            ),
             v,
             r,
             s
@@ -130,7 +141,7 @@ contract Ensoul is
         require(expiration >= block.timestamp, "ERR_OVER_TIME");
         require(!usedSignature(v, r, s), "ERR_USED_SIFNATURE");
         address signer = ECDSA.recover(
-            _hashTypedDataV4(keccak256(abi.encode(MINT_TYPEHASH, to, tokenId, amount,expiration))),
+            _hashTypedDataV4(keccak256(abi.encode(MINT_TYPEHASH, to, tokenId, amount, expiration))),
             v,
             r,
             s

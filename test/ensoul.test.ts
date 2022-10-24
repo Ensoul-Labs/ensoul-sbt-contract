@@ -30,7 +30,8 @@ describe(`ERC1155主合约`, function () {
     await FactoryInstance.newOrg(
       await deployer.getAddress(),
       'this is tokenURI',
-      'this is ContractURI'
+      'this is ContractURI',
+      'ensoul'
     );
     const ensoulAddress = await FactoryInstance.orgs(0);
     EnsoulInstance = await ethers.getContractAt('Ensoul', ensoulAddress);
@@ -108,6 +109,6 @@ describe(`ERC1155主合约`, function () {
   });
 
   it('配置项目的tokenURI', async () => {
-    await EnsoulInstance.setURI("http://baidu.com")
+    await EnsoulInstance.setURI('http://baidu.com');
   });
 });

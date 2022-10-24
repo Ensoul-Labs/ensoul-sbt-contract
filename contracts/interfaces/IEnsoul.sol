@@ -30,7 +30,7 @@ interface IEnsoul {
         uint256 amount
     ) external;
 
-     function mintBySignature(
+    function mintBySignature(
         address to,
         uint256 tokenId,
         uint256 amount,

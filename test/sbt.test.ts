@@ -30,7 +30,8 @@ describe(`SBT特征`, function () {
     await FactoryInstance.newOrg(
       await deployer.getAddress(),
       'this is tokenURI',
-      'this is ContractURI'
+      'this is ContractURI',
+      'ensoul'
     );
     const ensoulAddress = await FactoryInstance.orgs(0);
     EnsoulInstance = await ethers.getContractAt('Ensoul', ensoulAddress);
