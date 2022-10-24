@@ -38,7 +38,7 @@ describe(`test ${contractName}`, function () {
         await deployer.getAddress(),
         'https://',
         'https://',
-        "ensoul"
+        'ensoul'
       );
       contractClient.connect(deployer, newOrgEvent.orgAddress, 1);
     });

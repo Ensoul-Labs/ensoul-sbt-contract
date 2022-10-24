@@ -43,7 +43,7 @@ describe(`test ${contractName}`, function () {
         await deployer.getAddress(),
         'https://',
         'https://',
-        "ensoul"
+        'ensoul'
       );
       expect(await contractClient.orgs(0)).eq(newOrgEvent.orgAddress);
       contractClient.connect(accountA, contractClient.address());
@@ -52,7 +52,7 @@ describe(`test ${contractName}`, function () {
           await deployer.getAddress(),
           'https://',
           'https://',
-          "ensoul"
+          'ensoul'
         )
       ).revertedWith(`ERR_NOT_ENSOUL_ADMIN`);
     });
