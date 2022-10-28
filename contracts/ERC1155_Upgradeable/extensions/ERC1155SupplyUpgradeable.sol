@@ -2,7 +2,8 @@
 
 pragma solidity ^0.8.0;
 
-import "../ERC1155.sol";
+import "../ERC1155Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
 /**
  * @dev Extension of ERC1155 that adds tracking of total supply per id.
@@ -12,7 +13,15 @@ import "../ERC1155.sol";
  * corresponding is an NFT, there is no guarantees that no other token with the
  * same id are not going to be minted.
  */
-abstract contract ERC1155Supply is ERC1155 {
+abstract contract ERC1155SupplyUpgradeable is Initializable, ERC1155Upgradeable {
+    function __ERC1155Supply_init() internal initializer {
+        __Context_init_unchained();
+        __ERC165_init_unchained();
+        __ERC1155Supply_init_unchained();
+    }
+
+    function __ERC1155Supply_init_unchained() internal initializer {
+    }
     mapping(uint256 => uint256) private _totalSupply;
 
     /**
@@ -26,7 +35,7 @@ abstract contract ERC1155Supply is ERC1155 {
      * @dev Indicates weither any token exist with a given id, or not.
      */
     function exists(uint256 id) public view virtual returns (bool) {
-        return ERC1155Supply.totalSupply(id) > 0;
+        return ERC1155SupplyUpgradeable.totalSupply(id) > 0;
     }
 
     /**
@@ -82,4 +91,5 @@ abstract contract ERC1155Supply is ERC1155 {
             _totalSupply[ids[i]] -= amounts[i];
         }
     }
+    uint256[49] private __gap;
 }

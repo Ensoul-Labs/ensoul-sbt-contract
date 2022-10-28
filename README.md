@@ -34,7 +34,7 @@ export GAS_PRICE=1
 #### Goerli
 ``` bash
 export NETWORK_ID=5
-export GAS_PRICE=1
+export GAS_PRICE=10
 ```
 
 #### Matic
@@ -54,4 +54,6 @@ yarn run hardhat upgradeableContract:deploy --contract Ensoul_Factory_Upgradeabl
 #### verify contract
 ```bash
 yarn run hardhat upgradeableContract:verify --contract Ensoul_Factory_Upgradeable --args [] --network $NETWORK_ID
+
+yarn run hardhat contract:verify --contract Ensoul --args ["0xC653c441d23aB3cacc1698dbc1A5B1Cf8Fa4A6EC","0xE292195A8dF802A748C205A2cE8433BA97817960","''","''","ensoul","1.0.0"] --network $NETWORK_ID --address 0x38Db9b633F8197d36Dc86fEbaA86A34AaBC528C6
 ```
