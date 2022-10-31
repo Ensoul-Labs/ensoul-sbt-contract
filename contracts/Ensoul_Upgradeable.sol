@@ -31,7 +31,6 @@ contract Ensoul_Upgradeable is
     mapping(bytes32 => bool) usedSignatureHash;
 
     string public name;
-    string public version;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() initializer {}
@@ -46,9 +45,10 @@ contract Ensoul_Upgradeable is
         __ERC1155_init(_tokenURI);
         __ERC1155Pausable_init();
         __ERC1155Supply_init();
-        __EIP712_init(_name, implementationVersion());
+        __EIP712_init(_name, version());
         __Ensoul_Controller_Upgradeable_init(_owner);
         _setContractURI(_contractURI);
+        name = _name;
     }
 
     /* ================ UTIL FUNCTIONS ================ */
@@ -101,7 +101,7 @@ contract Ensoul_Upgradeable is
         return usedSignatureHash[keccak256(abi.encode(v, r, s))];
     }
 
-    function implementationVersion() public pure returns (string memory) {
+    function version() public pure returns (string memory) {
         return "1.0.0";
     }
 
@@ -181,16 +181,12 @@ contract Ensoul_Upgradeable is
         }
     }
 
-    function burn(uint256 id) external override {
-        _burn(_msgSender(), id, 1);
+    function burn(uint256 id, uint256 amount) external override {
+        _burn(msg.sender, id, amount);
     }
 
-    function burnBatch(uint256[] memory ids) external override {
-        uint256[] memory values = new uint256[](ids.length);
-        for (uint256 i = 0; i < ids.length; i++) {
-            values[i] = 1;
-        }
-        _burnBatch(msg.sender, ids, values);
+    function burnBatch(uint256[] memory ids,uint256[] memory amounts) external override {
+        _burnBatch(msg.sender, ids, amounts);
     }
 
     /* ================ ADMIN FUNCTIONS ================ */
@@ -205,6 +201,10 @@ contract Ensoul_Upgradeable is
 
     function setURI(string memory newuri) external override onlyOwner {
         super._setURI(newuri);
+    }
+
+    function setName(string memory newName) external override onlyOwner {
+        name = newName;
     }
 
     function setContractURI(string memory contractURI_) external override onlyOwner {

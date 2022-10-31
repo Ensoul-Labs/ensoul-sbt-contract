@@ -169,16 +169,12 @@ contract Ensoul is
         }
     }
 
-    function burn(uint256 id) external override {
-        _burn(_msgSender(), id, 1);
+    function burn(uint256 id, uint256 amount) external override {
+        _burn(_msgSender(), id, amount);
     }
 
-    function burnBatch(uint256[] memory ids) external override {
-        uint256[] memory values = new uint256[](ids.length);
-        for (uint256 i = 0; i < ids.length; i++) {
-            values[i] = 1;
-        }
-        _burnBatch(msg.sender, ids, values);
+     function burnBatch(uint256[] memory ids,uint256[] memory amounts) external override {
+        _burnBatch(msg.sender, ids, amounts);
     }
 
     /* ================ ADMIN FUNCTIONS ================ */
@@ -193,6 +189,10 @@ contract Ensoul is
 
     function setURI(string memory newuri) external override onlyOwner {
         super._setURI(newuri);
+    }
+
+    function setName(string memory newName) external override onlyOwner {
+        name = newName;
     }
 
     function setContractURI(string memory contractURI_) external override onlyOwner {

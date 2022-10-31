@@ -89,12 +89,14 @@ export interface EnsoulClient {
 
   burn(
     tokenId: BigNumberish,
+    amount: BigNumberish,
     config?: PayableOverrides,
     callback?: Function
   ): Promise<void>;
 
   burnBatch(
     tokenIds: BigNumberish[],
+    amounts: BigNumberish[],
     config?: PayableOverrides,
     callback?: Function
   ): Promise<void>;
@@ -187,6 +189,12 @@ export interface EnsoulClient {
   ): Promise<void>;
 
   renounceOwnership(
+    config?: PayableOverrides,
+    callback?: Function
+  ): Promise<void>;
+
+  setName(
+    newName:string,
     config?: PayableOverrides,
     callback?: Function
   ): Promise<void>;
