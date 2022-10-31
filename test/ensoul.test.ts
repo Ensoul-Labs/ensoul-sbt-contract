@@ -1,7 +1,7 @@
 // 工厂合约测试案例
 import {expect} from 'chai';
 import {ethers, getNamedAccounts, upgrades} from 'hardhat';
-import {BigNumber, Signer} from 'ethers';
+import {Signer} from 'ethers';
 import {Ensoul, EnsoulFactoryUpgradeable} from '../sdk/src/typechain';
 
 const contractName = 'Ensoul_Factory_Upgradeable';
@@ -58,7 +58,7 @@ describe(`ERC1155主合约`, function () {
   });
 
   it('用户可以主动销毁单个SBT', async () => {
-    await EnsoulInstance.burn(1);
+    await EnsoulInstance.burn(1,1);
     const deployerBalance = await EnsoulInstance.balanceOf(
       await deployer.getAddress(),
       1
@@ -77,7 +77,7 @@ describe(`ERC1155主合约`, function () {
       2,
       1
     );
-    await EnsoulInstance.burnBatch([1, 2]);
+    await EnsoulInstance.burnBatch([1, 2],[1,1]);
 
     const deployerBalance1 = await EnsoulInstance.balanceOf(
       await deployer.getAddress(),

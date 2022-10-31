@@ -20,7 +20,7 @@ describe(`test ${contractName}`, function () {
     const contractClient = new EtherEnsoulFactoryClient();
 
     beforeEach(`deploy and init ${contractName}`, async () => {
-      const Contract = await ethers.getContractFactory(`${contractName}`);
+      const Contract = await ethers.getContractFactory(contractName);
       const contractResult = await upgrades.deployProxy(
         Contract.connect(deployer),
         [],
