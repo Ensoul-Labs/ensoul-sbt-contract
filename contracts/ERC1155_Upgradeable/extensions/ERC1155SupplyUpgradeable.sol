@@ -20,8 +20,8 @@ abstract contract ERC1155SupplyUpgradeable is Initializable, ERC1155Upgradeable 
         __ERC1155Supply_init_unchained();
     }
 
-    function __ERC1155Supply_init_unchained() internal initializer {
-    }
+    function __ERC1155Supply_init_unchained() internal initializer {}
+
     mapping(uint256 => uint256) private _totalSupply;
 
     /**
@@ -91,5 +91,6 @@ abstract contract ERC1155SupplyUpgradeable is Initializable, ERC1155Upgradeable 
             _totalSupply[ids[i]] -= amounts[i];
         }
     }
+
     uint256[49] private __gap;
 }

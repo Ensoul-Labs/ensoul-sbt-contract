@@ -17,7 +17,13 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
  *
  * _Available since v3.1._
  */
-contract ERC1155Upgradeable is Initializable, ContextUpgradeable, ERC165Upgradeable, IERC1155Upgradeable, IERC1155MetadataURIUpgradeable {
+contract ERC1155Upgradeable is
+    Initializable,
+    ContextUpgradeable,
+    ERC165Upgradeable,
+    IERC1155Upgradeable,
+    IERC1155MetadataURIUpgradeable
+{
     using AddressUpgradeable for address;
 
     // Mapping from token ID to account balances
@@ -45,7 +51,13 @@ contract ERC1155Upgradeable is Initializable, ContextUpgradeable, ERC165Upgradea
     /**
      * @dev See {IERC165-supportsInterface}.
      */
-    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165Upgradeable, IERC165Upgradeable) returns (bool) {
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        virtual
+        override(ERC165Upgradeable, IERC165Upgradeable)
+        returns (bool)
+    {
         return
             interfaceId == type(IERC1155Upgradeable).interfaceId ||
             interfaceId == type(IERC1155MetadataURIUpgradeable).interfaceId ||
@@ -418,7 +430,9 @@ contract ERC1155Upgradeable is Initializable, ContextUpgradeable, ERC165Upgradea
         bytes memory data
     ) private {
         if (to.isContract()) {
-            try IERC1155ReceiverUpgradeable(to).onERC1155Received(operator, from, id, amount, data) returns (bytes4 response) {
+            try IERC1155ReceiverUpgradeable(to).onERC1155Received(operator, from, id, amount, data) returns (
+                bytes4 response
+            ) {
                 if (response != IERC1155ReceiverUpgradeable.onERC1155Received.selector) {
                     revert("ERC1155: ERC1155Receiver rejected tokens");
                 }
@@ -459,5 +473,6 @@ contract ERC1155Upgradeable is Initializable, ContextUpgradeable, ERC165Upgradea
 
         return array;
     }
+
     uint256[47] private __gap;
 }

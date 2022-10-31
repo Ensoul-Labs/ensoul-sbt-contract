@@ -236,6 +236,7 @@ export class EtherEnsoulClient implements EnsoulClient {
 
   public async burn(
     tokenId: BigNumberish,
+    amount: BigNumberish,
     config?: PayableOverrides,
     callback?: Function
   ): Promise<void> {
@@ -248,10 +249,10 @@ export class EtherEnsoulClient implements EnsoulClient {
     }
     const gas = await this._ensoul
       .connect(this._provider)
-      .estimateGas.burn(tokenId, { ...config });
+      .estimateGas.burn(tokenId, amount, { ...config });
     const transaction = await this._ensoul
       .connect(this._provider)
-      .burn(tokenId, {
+      .burn(tokenId, amount, {
         gasLimit: gas.mul(13).div(10),
         ...config
       });
@@ -266,6 +267,7 @@ export class EtherEnsoulClient implements EnsoulClient {
 
   public async burnBatch(
     tokenIds: BigNumberish[],
+    amounts: BigNumberish[],
     config?: PayableOverrides,
     callback?: Function
   ): Promise<void> {
@@ -278,10 +280,10 @@ export class EtherEnsoulClient implements EnsoulClient {
     }
     const gas = await this._ensoul
       .connect(this._provider)
-      .estimateGas.burnBatch(tokenIds, { ...config });
+      .estimateGas.burnBatch(tokenIds, amounts, { ...config });
     const transaction = await this._ensoul
       .connect(this._provider)
-      .burnBatch(tokenIds, {
+      .burnBatch(tokenIds, amounts, {
         gasLimit: gas.mul(13).div(10),
         ...config
       });
@@ -731,6 +733,36 @@ export class EtherEnsoulClient implements EnsoulClient {
     const transaction = await this._ensoul
       .connect(this._provider)
       .renounceOwnership({
+        gasLimit: gas.mul(13).div(10),
+        ...config
+      });
+    if (callback) {
+      callback(transaction);
+    }
+    const receipt = await transaction.wait(this._waitConfirmations);
+    if (callback) {
+      callback(receipt);
+    }
+  }
+
+  public async setName(
+    newName: string,
+    config?: PayableOverrides,
+    callback?: Function
+  ): Promise<void> {
+    if (
+      !this._provider ||
+      !this._ensoul ||
+      this._provider instanceof Provider
+    ) {
+      throw new Error(`${this._errorTitle}: no singer`);
+    }
+    const gas = await this._ensoul
+      .connect(this._provider)
+      .estimateGas.setName(newName, { ...config });
+    const transaction = await this._ensoul
+      .connect(this._provider)
+      .setName(newName, {
         gasLimit: gas.mul(13).div(10),
         ...config
       });

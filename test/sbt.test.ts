@@ -1,7 +1,7 @@
 // 工厂合约测试案例
 import {expect} from 'chai';
 import {ethers, getNamedAccounts, upgrades} from 'hardhat';
-import {BigNumber, Signer} from 'ethers';
+import {Signer} from 'ethers';
 import {Ensoul, EnsoulFactoryUpgradeable} from '../sdk/src/typechain';
 
 const contractName = 'Ensoul_Factory_Upgradeable';

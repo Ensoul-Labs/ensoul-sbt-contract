@@ -1,10 +1,10 @@
 import {expect} from 'chai';
 import {ethers, getNamedAccounts, upgrades} from 'hardhat';
 import {Signer} from 'ethers';
-import {EtherEnsoulFactoryClient, EtherEnsoulClient} from '../sdk/dist';
+import {EtherEnsoulClient} from '../sdk/dist';
+import {EnsoulUpgradeable} from '../sdk/src/typechain';
 
-const factoryContractName = 'Ensoul_Factory_Upgradeable';
-const contractName = 'Ensoul';
+const contractName = 'Ensoul_Upgradeable';
 
 describe(`test ${contractName}`, function () {
   let deployer: Signer;
@@ -20,27 +20,17 @@ describe(`test ${contractName}`, function () {
 
   describe(`test sdk`, function () {
     const contractClient = new EtherEnsoulClient();
-    const factoryClient = new EtherEnsoulFactoryClient();
 
     beforeEach(`deploy and init ${contractName}`, async () => {
-      const factoryContract = await ethers.getContractFactory(
-        factoryContractName
-      );
-      const factoryContractResult = await upgrades.deployProxy(
-        factoryContract.connect(deployer),
-        [],
+      const Contract = await ethers.getContractFactory(contractName);
+      const contractResult = await upgrades.deployProxy(
+        Contract.connect(deployer),
+        [await deployer.getAddress(), 'https://', 'https://', 'ensoul'],
         {
           kind: 'uups',
         }
       );
-      await factoryClient.connect(deployer, factoryContractResult.address, 1);
-      const newOrgEvent = await factoryClient.newOrg(
-        await deployer.getAddress(),
-        'https://',
-        'https://',
-        'ensoul'
-      );
-      contractClient.connect(deployer, newOrgEvent.orgAddress, 1);
+      contractClient.connect(deployer, contractResult.address, 1);
     });
 
     it('check init data', async function () {
@@ -53,11 +43,17 @@ describe(`test ${contractName}`, function () {
 
     it('check pause', async function () {
       contractClient.connect(accountA, contractClient.address());
-      await expect(contractClient.pause()).revertedWith('ERR_NOT_SUPER_ADMIN');
+      await expect(contractClient.pause()).revertedWith(
+        'Ownable: caller is not the owner'
+      );
 
       contractClient.connect(deployer, contractClient.address());
       await contractClient.pause();
       expect(await contractClient.paused()).eq(true);
+
+      await expect(
+        contractClient.mint(await deployer.getAddress(), 1, 1)
+      ).revertedWith('ERC1155Pausable: token transfer while paused');
     });
 
     it('check unpause', async function () {
@@ -65,7 +61,9 @@ describe(`test ${contractName}`, function () {
       expect(await contractClient.paused()).eq(true);
 
       contractClient.connect(accountA, contractClient.address());
-      await expect(contractClient.pause()).revertedWith('ERR_NOT_SUPER_ADMIN');
+      await expect(contractClient.pause()).revertedWith(
+        'Ownable: caller is not the owner'
+      );
 
       contractClient.connect(deployer, contractClient.address());
       await contractClient.unpause();
@@ -474,9 +472,69 @@ describe(`test ${contractName}`, function () {
       );
     });
 
+    it('check burn', async function () {
+      await contractClient.mint(await deployer.getAddress(), 1, 1);
+      expect(await contractClient.balanceOf(await deployer.getAddress(), 1)).eq(
+        1
+      );
+      await contractClient.burn(1, 1);
+      expect(await contractClient.balanceOf(await deployer.getAddress(), 1)).eq(
+        0
+      );
+    });
+
+    it('check burnBatch', async function () {
+      await contractClient.mint(await deployer.getAddress(), 1, 1);
+      await contractClient.mint(await deployer.getAddress(), 2, 1);
+      expect(await contractClient.balanceOf(await deployer.getAddress(), 1)).eq(
+        1
+      );
+      expect(await contractClient.balanceOf(await deployer.getAddress(), 2)).eq(
+        1
+      );
+      await contractClient.burnBatch([1, 2], [1, 1]);
+      expect(await contractClient.balanceOf(await deployer.getAddress(), 1)).eq(
+        0
+      );
+      expect(await contractClient.balanceOf(await deployer.getAddress(), 2)).eq(
+        0
+      );
+    });
+
     it('check setName', async function () {
       await contractClient.setName('ensoul-test');
       expect(await contractClient.name()).eq('ensoul-test');
+    });
+  });
+
+  describe(`test contract`, function () {
+    let contract: EnsoulUpgradeable;
+
+    beforeEach('deploy and init contract', async () => {
+      const Contract = await ethers.getContractFactory(contractName);
+      contract = (await upgrades.deployProxy(
+        Contract.connect(deployer),
+        [await deployer.getAddress(), 'https://', 'https://', 'ensoul'],
+        {
+          kind: 'uups',
+        }
+      )) as EnsoulUpgradeable;
+    });
+
+    it('check upgardeable', async function () {
+      const Contract = await ethers.getContractFactory(contractName);
+      await expect(
+        upgrades.upgradeProxy(contract.address, Contract.connect(accountA), {
+          kind: 'uups',
+        })
+      ).revertedWith(`'Ownable: caller is not the owner'`);
+      await upgrades.upgradeProxy(
+        contract.address,
+        Contract.connect(deployer),
+        {
+          kind: 'uups',
+        }
+      );
     });
   });
 });

@@ -46,9 +46,9 @@ interface IEnsoul {
         uint256 amount
     ) external;
 
-    function burn(uint256 id) external;
+    function burn(uint256 id, uint256 amount) external;
 
-    function burnBatch(uint256[] memory ids) external;
+    function burnBatch(uint256[] memory ids, uint256[] memory amounts) external;
 
     /* ================ ADMIN FUNCTIONS ================ */
 
@@ -57,6 +57,8 @@ interface IEnsoul {
     function unpause() external;
 
     function setURI(string memory newuri) external;
+
+    function setName(string memory newName) external;
 
     function setContractURI(string memory contractURI_) external;
 }
