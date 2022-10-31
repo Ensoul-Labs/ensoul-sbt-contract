@@ -23,8 +23,8 @@ abstract contract ERC1155PausableUpgradeable is Initializable, ERC1155Upgradeabl
         __ERC1155Pausable_init_unchained();
     }
 
-    function __ERC1155Pausable_init_unchained() internal initializer {
-    }
+    function __ERC1155Pausable_init_unchained() internal initializer {}
+
     /**
      * @dev See {ERC1155-_beforeTokenTransfer}.
      *
@@ -44,5 +44,6 @@ abstract contract ERC1155PausableUpgradeable is Initializable, ERC1155Upgradeabl
 
         require(!paused(), "ERC1155Pausable: token transfer while paused");
     }
+
     uint256[50] private __gap;
 }

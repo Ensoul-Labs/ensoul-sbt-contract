@@ -173,7 +173,7 @@ contract Ensoul is
         _burn(_msgSender(), id, amount);
     }
 
-     function burnBatch(uint256[] memory ids,uint256[] memory amounts) external override {
+    function burnBatch(uint256[] memory ids, uint256[] memory amounts) external override {
         _burnBatch(msg.sender, ids, amounts);
     }
 

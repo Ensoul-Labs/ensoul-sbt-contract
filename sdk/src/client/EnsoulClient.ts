@@ -194,7 +194,7 @@ export interface EnsoulClient {
   ): Promise<void>;
 
   setName(
-    newName:string,
+    newName: string,
     config?: PayableOverrides,
     callback?: Function
   ): Promise<void>;

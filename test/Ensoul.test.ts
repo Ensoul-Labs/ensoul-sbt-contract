@@ -475,10 +475,8 @@ describe(`test ${contractName}`, function () {
     });
 
     it('check setName', async function () {
-      await contractClient.setName('ensoul-test')
-      expect(await contractClient.name()).eq(
-        'ensoul-test'
-      );
+      await contractClient.setName('ensoul-test');
+      expect(await contractClient.name()).eq('ensoul-test');
     });
   });
 });

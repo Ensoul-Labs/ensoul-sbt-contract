@@ -46,9 +46,9 @@ interface IEnsoul {
         uint256 amount
     ) external;
 
-    function burn(uint256 id,uint256 amount) external;
+    function burn(uint256 id, uint256 amount) external;
 
-    function burnBatch(uint256[] memory ids,uint256 [] memory amounts) external;
+    function burnBatch(uint256[] memory ids, uint256[] memory amounts) external;
 
     /* ================ ADMIN FUNCTIONS ================ */
 

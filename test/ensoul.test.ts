@@ -58,7 +58,7 @@ describe(`ERC1155主合约`, function () {
   });
 
   it('用户可以主动销毁单个SBT', async () => {
-    await EnsoulInstance.burn(1,1);
+    await EnsoulInstance.burn(1, 1);
     const deployerBalance = await EnsoulInstance.balanceOf(
       await deployer.getAddress(),
       1
@@ -77,7 +77,7 @@ describe(`ERC1155主合约`, function () {
       2,
       1
     );
-    await EnsoulInstance.burnBatch([1, 2],[1,1]);
+    await EnsoulInstance.burnBatch([1, 2], [1, 1]);
 
     const deployerBalance1 = await EnsoulInstance.balanceOf(
       await deployer.getAddress(),

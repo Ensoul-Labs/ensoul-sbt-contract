@@ -249,10 +249,10 @@ export class EtherEnsoulClient implements EnsoulClient {
     }
     const gas = await this._ensoul
       .connect(this._provider)
-      .estimateGas.burn(tokenId, amount,{ ...config });
+      .estimateGas.burn(tokenId, amount, { ...config });
     const transaction = await this._ensoul
       .connect(this._provider)
-      .burn(tokenId,amount,{
+      .burn(tokenId, amount, {
         gasLimit: gas.mul(13).div(10),
         ...config
       });
@@ -280,10 +280,10 @@ export class EtherEnsoulClient implements EnsoulClient {
     }
     const gas = await this._ensoul
       .connect(this._provider)
-      .estimateGas.burnBatch(tokenIds,amounts ,{ ...config });
+      .estimateGas.burnBatch(tokenIds, amounts, { ...config });
     const transaction = await this._ensoul
       .connect(this._provider)
-      .burnBatch(tokenIds,amounts, {
+      .burnBatch(tokenIds, amounts, {
         gasLimit: gas.mul(13).div(10),
         ...config
       });
@@ -746,7 +746,7 @@ export class EtherEnsoulClient implements EnsoulClient {
   }
 
   public async setName(
-    newName:string,
+    newName: string,
     config?: PayableOverrides,
     callback?: Function
   ): Promise<void> {
@@ -759,10 +759,10 @@ export class EtherEnsoulClient implements EnsoulClient {
     }
     const gas = await this._ensoul
       .connect(this._provider)
-      .estimateGas.setName(newName,{ ...config });
+      .estimateGas.setName(newName, { ...config });
     const transaction = await this._ensoul
       .connect(this._provider)
-      .setName(newName,{
+      .setName(newName, {
         gasLimit: gas.mul(13).div(10),
         ...config
       });

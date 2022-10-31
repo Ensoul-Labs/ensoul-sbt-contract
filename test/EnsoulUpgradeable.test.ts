@@ -51,7 +51,9 @@ describe(`test ${contractName}`, function () {
       await contractClient.pause();
       expect(await contractClient.paused()).eq(true);
 
-      await expect(contractClient.mint(await deployer.getAddress(), 1, 1)).revertedWith("ERC1155Pausable: token transfer while paused");
+      await expect(
+        contractClient.mint(await deployer.getAddress(), 1, 1)
+      ).revertedWith('ERC1155Pausable: token transfer while paused');
     });
 
     it('check unpause', async function () {
@@ -490,7 +492,7 @@ describe(`test ${contractName}`, function () {
       expect(await contractClient.balanceOf(await deployer.getAddress(), 2)).eq(
         1
       );
-      await contractClient.burnBatch([1,2],[1,1]);
+      await contractClient.burnBatch([1, 2], [1, 1]);
       expect(await contractClient.balanceOf(await deployer.getAddress(), 1)).eq(
         0
       );
@@ -500,10 +502,8 @@ describe(`test ${contractName}`, function () {
     });
 
     it('check setName', async function () {
-      await contractClient.setName('ensoul-test')
-      expect(await contractClient.name()).eq(
-        'ensoul-test'
-      );
+      await contractClient.setName('ensoul-test');
+      expect(await contractClient.name()).eq('ensoul-test');
     });
   });
 
