@@ -8,7 +8,7 @@ export interface ContractInfo {
 }
 
 export interface Deployment {
-  Ensoul_Factory_Upgradeable: ContractInfo;
+  [contractName: string]: ContractInfo;
 }
 
 export interface DeploymentFull {

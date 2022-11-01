@@ -32,7 +32,7 @@ contract Ensoul_Factory_Upgradeable is UUPSUpgradeable {
 
     /* ================ VIEW FUNCTIONS ================ */
 
-    function implementationVersion() public pure returns (string memory) {
+    function version() public pure returns (string memory) {
         return "1.0.0";
     }
 
@@ -45,7 +45,7 @@ contract Ensoul_Factory_Upgradeable is UUPSUpgradeable {
         string memory _contractURI,
         string memory _name
     ) public onlyEnsoulAdmin {
-        Ensoul org = new Ensoul(_orgOwner, address(this), _tokenURI, _contractURI, _name, implementationVersion());
+        Ensoul org = new Ensoul(_orgOwner, address(this), _tokenURI, _contractURI, _name, version());
 
         address orgAddress = address(org);
         orgs.push(orgAddress);

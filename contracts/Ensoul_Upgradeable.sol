@@ -32,6 +32,8 @@ contract Ensoul_Upgradeable is
 
     string public name;
 
+    address public superOwner;
+
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() initializer {}
 
@@ -49,6 +51,7 @@ contract Ensoul_Upgradeable is
         __Ensoul_Controller_Upgradeable_init(_owner);
         _setContractURI(_contractURI);
         name = _name;
+        superOwner = msg.sender;
     }
 
     /* ================ UTIL FUNCTIONS ================ */
@@ -89,7 +92,9 @@ contract Ensoul_Upgradeable is
         super._burnBatch(account, ids, amounts);
     }
 
-    function _authorizeUpgrade(address) internal view override onlyOwner {}
+    function _authorizeUpgrade(address) internal view override {
+        require(msg.sender == superOwner ,"ERR_NOT_SUPER_OWNER");
+    }
 
     /* ================ VIEW FUNCTIONS ================ */
 

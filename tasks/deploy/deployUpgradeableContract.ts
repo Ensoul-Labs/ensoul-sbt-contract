@@ -61,9 +61,9 @@ task(`upgradeableContract:deploy`, `Deploy upgradeableContract`)
     const contractFromBlock = deployResult.blockNumber;
     const _contract = Contract.attach(contractProxyAddress);
     const contractVersion = await ethersExecutionManager.call(
-      _contract.implementationVersion,
+      _contract.version,
       [],
-      `${contract} implementationVersion`
+      `${contract} version`
     );
     log.info(
       `${contract} deployed proxy at ${contractProxyAddress},impl at ${contractImplAddress},version ${contractVersion},fromBlock ${contractFromBlock}`
