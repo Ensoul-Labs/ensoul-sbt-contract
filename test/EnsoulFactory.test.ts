@@ -32,7 +32,7 @@ describe(`test ${contractName}`, function () {
     });
 
     it('check init data', async function () {
-      expect(await contractClient.implementationVersion()).to.be.equal('1.0.0');
+      expect(await contractClient.version()).to.be.equal('1.0.0');
       expect(await contractClient.getEnsoulAdmin()).eq(
         await deployer.getAddress()
       );

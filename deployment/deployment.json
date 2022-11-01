@@ -7,6 +7,14 @@
       "contract": "Ensoul_Factory_Upgradeable",
       "operator": "0x8e9a781d6B89303c2FD71c861084078370282D1F",
       "fromBlock": 7766947
+    },
+    "Deschool-PRD": {
+      "proxyAddress": "0x870dE9e5535b31b5b5Fd879b8C3537Fb8A2525B3",
+      "implAddress": "0xD3C3A2065CaC690E2F0C38bCC47eA6c0392709a7",
+      "version": "1.0.0",
+      "contract": "Ensoul_Upgradeable",
+      "operator": "0x8e9a781d6B89303c2FD71c861084078370282D1F",
+      "fromBlock": 7870593
     }
   },
   "137": {

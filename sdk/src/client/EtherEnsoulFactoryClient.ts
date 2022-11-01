@@ -54,11 +54,11 @@ export class EtherEnsoulFactoryClient implements EnsoulFactoryClient {
     return await this._ensoulFactory.getEnsoulAdmin({ ...config });
   }
 
-  public async implementationVersion(config?: CallOverrides): Promise<string> {
+  public async version(config?: CallOverrides): Promise<string> {
     if (!this._provider || !this._ensoulFactory) {
       throw new Error(`${this._errorTitle}: no provider`);
     }
-    return await this._ensoulFactory.implementationVersion({ ...config });
+    return await this._ensoulFactory.version({ ...config });
   }
 
   /* ================ TRANSACTION FUNCTIONS ================ */

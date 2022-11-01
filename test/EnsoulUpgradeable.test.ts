@@ -514,7 +514,7 @@ describe(`test ${contractName}`, function () {
       const Contract = await ethers.getContractFactory(contractName);
       contract = (await upgrades.deployProxy(
         Contract.connect(deployer),
-        [await deployer.getAddress(), 'https://', 'https://', 'ensoul'],
+        [await accountA.getAddress(), 'https://', 'https://', 'ensoul'],
         {
           kind: 'uups',
         }
@@ -527,7 +527,7 @@ describe(`test ${contractName}`, function () {
         upgrades.upgradeProxy(contract.address, Contract.connect(accountA), {
           kind: 'uups',
         })
-      ).revertedWith(`'Ownable: caller is not the owner'`);
+      ).revertedWith(`ERR_NOT_SUPER_OWNER`);
       await upgrades.upgradeProxy(
         contract.address,
         Contract.connect(deployer),
