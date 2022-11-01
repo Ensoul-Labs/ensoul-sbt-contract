@@ -49,9 +49,9 @@ export GAS_PRICE=10
 #### Matic
 
 ```bash
-export PRIVATE_KEY=9434ca4cf93dfd9d9bdeb5492f76a617281779caf7799ca996808545f011f46e
+export PRIVATE_KEY=
 export NETWORK_ID=89
-export GAS_PRICE=90
+export GAS_PRICE=50
 ```
 
 ### script
