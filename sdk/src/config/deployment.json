@@ -7,14 +7,6 @@
       "contract": "Ensoul_Factory_Upgradeable",
       "operator": "0x8e9a781d6B89303c2FD71c861084078370282D1F",
       "fromBlock": 7766947
-    },
-    "Deschool-PRD": {
-      "proxyAddress": "0x474A0f71D41A3Efa79D687EbFd80DE6394df4928",
-      "implAddress": "0xb4Cdd872b40DBbBD9e460b0Cff82123420A68560",
-      "version": "1.0.0",
-      "contract": "Ensoul_Upgradeable",
-      "operator": "0x8e9a781d6B89303c2FD71c861084078370282D1F",
-      "fromBlock": 7870831
     }
   },
   "137": {
@@ -33,6 +25,22 @@
       "contract": "Ensoul_Upgradeable",
       "operator": "0xC653c441d23aB3cacc1698dbc1A5B1Cf8Fa4A6EC",
       "fromBlock": 35060425
+    },
+    "Deschool-STG": {
+      "proxyAddress": "0x46D6708E1306165434FDB9D6a8b49be997784c60",
+      "implAddress": "0xd4E31328514a87A8B9E0079e8370feF03Cd2A0E8",
+      "version": "1.0.0",
+      "contract": "Ensoul_Upgradeable",
+      "operator": "0xC653c441d23aB3cacc1698dbc1A5B1Cf8Fa4A6EC",
+      "fromBlock": 35102169
+    },
+    "Deschool-DEV": {
+      "proxyAddress": "0xD1D6135e547dd17172a7B441e43Fcc85710C852F",
+      "implAddress": "0xd4E31328514a87A8B9E0079e8370feF03Cd2A0E8",
+      "version": "1.0.0",
+      "contract": "Ensoul_Upgradeable",
+      "operator": "0xC653c441d23aB3cacc1698dbc1A5B1Cf8Fa4A6EC",
+      "fromBlock": 35102342
     }
   }
 }
