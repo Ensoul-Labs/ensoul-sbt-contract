@@ -12,7 +12,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "./Auth/Ensoul_Controller_Upgradeable.sol";
 import "./Data/ContractMetadata_Upgradeable.sol";
 
-contract Ensoul_Upgradeable is
+contract Ensoul_Upgradeable_v1_1 is
     IEnsoul,
     UUPSUpgradeable,
     ERC1155Upgradeable,
