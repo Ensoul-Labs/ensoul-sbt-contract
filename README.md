@@ -63,6 +63,8 @@ yarn run hardhat upgradeableContract:deploy --contract Ensoul_Factory_Upgradeabl
 
 yarn run hardhat upgradeableContract:deploy --contract Ensoul_Upgradeable --gas-price $GAS_PRICE --args [\"0x24B5E366AADE73b12337c50C7175443DeF62b42a\",\"https://deschool-ensoul-sbt.s3.amazonaws.com/{id}.json\",\"https://deschool-sbt-example-prd.com/contractURI.json\",\"Deschool-DEV\"] --network $NETWORK_ID
 
+yarn run hardhat upgradeableContract:deploy --contract Ensoul_Factory_Upgradeable_v1_1 --gas-price $GAS_PRICE --args [] --network $NETWORK_ID
+
 yarn run hardhat beaconContract:deploy --contract Ensoul_Upgradeable_v1_1 --gas-price $GAS_PRICE --args [\"0x24B5E366AADE73b12337c50C7175443DeF62b42a\",\"https://deschool-ensoul-sbt.s3.amazonaws.com/{id}.json\",\"https://deschool-sbt-example-prd.com/contractURI.json\",\"Deschool-DEV\"] --network $NETWORK_ID
 ```
 

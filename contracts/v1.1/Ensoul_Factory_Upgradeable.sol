@@ -33,7 +33,7 @@ contract Ensoul_Factory_Upgradeable_v1_1 is UUPSUpgradeable {
     /* ================ VIEW FUNCTIONS ================ */
 
     function version() public pure returns (string memory) {
-        return "1.0.0";
+        return "1.1.0";
     }
 
     /* ================ TRANSACTION FUNCTIONS ================ */
