@@ -43,7 +43,7 @@ export GAS_PRICE=1
 
 ```bash
 export NETWORK_ID=5
-export GAS_PRICE=70
+export GAS_PRICE=10
 ```
 
 #### Matic

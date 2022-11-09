@@ -52,8 +52,8 @@ task(`beaconContract:deploy`, `Deploy beaconContract`)
     console.log("Beacon deployed to:", beacon.address);
   
     const proxy = await (<any>hre).upgrades.deployBeaconProxy(beacon, Contract, contractArgs);
-    const deployResult = await proxy.deployed();
-    console.log(`${contract} deployed to:`, deployResult.address);
+    const deployedProxy = await proxy.deployed();
+    console.log(`${contract} deployed to:`, deployedProxy.address);
 
     // let deployResult = await ethersExecutionManager.transaction(
     //     (<any>hre).upgrades.deployBeacon,
@@ -72,18 +72,11 @@ task(`beaconContract:deploy`, `Deploy beaconContract`)
     //     `deployBeaconProxy`,
     //     txConfig
     //   );
-    const contractProxyAddress = deployResult.contractAddress;
-    const contractImplAddress = await getImplementationAddress(
-      hre.ethers.provider,
-      contractProxyAddress
-    );
-    const contractFromBlock = deployResult.blockNumber;
-    const _contract = Contract.attach(contractProxyAddress);
-    const contractVersion = await ethersExecutionManager.call(
-      _contract.version,
-      [],
-      `${contract} version`
-    );
+    // console.log(deployResult)
+    const contractProxyAddress = deployedProxy.address;
+    const contractImplAddress = beacon.address;
+    const contractFromBlock = deployedProxy.blockNumber;
+    const contractVersion = await deployedProxy.version();
     log.info(
       `${contract} deployed proxy at ${contractProxyAddress},impl at ${contractImplAddress},version ${contractVersion},fromBlock ${contractFromBlock}`
     );

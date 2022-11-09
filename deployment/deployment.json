@@ -7,6 +7,16 @@
       "contract": "Ensoul_Factory_Upgradeable",
       "operator": "0x8e9a781d6B89303c2FD71c861084078370282D1F",
       "fromBlock": 7766947
+    },
+    "Ensoul_Upgradeable_v1_1": {
+      "proxyAddress": "0xa0101015987e361D16E067Dd3C84A31C2442758c",
+      "implAddress": "0x22679dFf37661F450631ee907965Af54B64b83cf",
+      "version": {
+        "contractAddress": "0xB1C5Aa4789647E7f5Cf7E2b067c6a937c2a3531B",
+        "blockNumber": 35348711
+      },
+      "contract": "Ensoul_Upgradeable_v1_1",
+      "operator": "0x8e9a781d6B89303c2FD71c861084078370282D1F"
     }
   },
   "137": {

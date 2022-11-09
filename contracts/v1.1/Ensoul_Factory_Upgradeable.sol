@@ -4,9 +4,10 @@ pragma solidity ^0.8.17;
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts/proxy/beacon/BeaconProxy.sol";
 
 contract Ensoul_Factory_Upgradeable_v1_1 is UUPSUpgradeable {
-    event NewOrg(address indexed owner, address orgAddress);
+    event NewOrg(address orgAddress);
 
     address private ensoulAdmin; // ensoul管理员
     address[] public orgs; // 所有的组织-部署完成的ERC1155
@@ -39,17 +40,12 @@ contract Ensoul_Factory_Upgradeable_v1_1 is UUPSUpgradeable {
 
     // 创建新组织
     function newOrg(
-        address _orgOwner,
-        string memory _tokenURI,
-        string memory _contractURI,
-        string memory _name
+        address beacon, bytes memory data
     ) public onlyEnsoulAdmin {
-        // Ensoul org = new Ensoul(_orgOwner, address(this), _tokenURI, _contractURI, _name, version());
+        address orgAddress = address(new BeaconProxy(beacon, data));
+        orgs.push(orgAddress);
 
-        // address orgAddress = address(org);
-        // orgs.push(orgAddress);
-
-        // emit NewOrg(_orgOwner, orgAddress);
+        emit NewOrg(orgAddress);
     }
 
     // 获取ensoul管理员地址
