@@ -7,17 +7,19 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts/proxy/beacon/BeaconProxy.sol";
 
 contract Ensoul_Factory_Upgradeable_v1_1 is UUPSUpgradeable {
-    event NewOrg(address orgAddress);
+    event NewOrg(address indexed owner, address orgAddress);
 
     address private ensoulAdmin; // ensoul管理员
+    address public beacon;
     address[] public orgs; // 所有的组织-部署完成的ERC1155
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() initializer {}
 
-    function initialize() public initializer {
+    function initialize(address _beacon) public initializer {
         __UUPSUpgradeable_init();
         ensoulAdmin = msg.sender;
+        beacon = _beacon;
     }
 
     /* ================ UTIL FUNCTIONS ================ */
@@ -40,12 +42,26 @@ contract Ensoul_Factory_Upgradeable_v1_1 is UUPSUpgradeable {
 
     // 创建新组织
     function newOrg(
-        address beacon, bytes memory data
+        address _orgOwner,
+        string memory _tokenURI,
+        string memory _contractURI,
+        string memory _name
     ) public onlyEnsoulAdmin {
-        address orgAddress = address(new BeaconProxy(beacon, data));
+        address orgAddress = address(
+            new BeaconProxy(
+                beacon,
+                abi.encodeWithSelector(
+                    bytes4(keccak256(bytes("initialize(address,string,string,string)"))),
+                    _orgOwner,
+                    _tokenURI,
+                    _contractURI,
+                    _name
+                )
+            )
+        );
         orgs.push(orgAddress);
 
-        emit NewOrg(orgAddress);
+        emit NewOrg(_orgOwner,orgAddress);
     }
 
     // 获取ensoul管理员地址
@@ -56,5 +72,9 @@ contract Ensoul_Factory_Upgradeable_v1_1 is UUPSUpgradeable {
     // 设置ensoul管理员地址
     function setEnsoulAdmin(address _ensoulAdmin) external onlyEnsoulAdmin {
         ensoulAdmin = _ensoulAdmin;
+    }
+
+    function setBeacon(address _beacon) external onlyEnsoulAdmin {
+        beacon = _beacon;
     }
 }
