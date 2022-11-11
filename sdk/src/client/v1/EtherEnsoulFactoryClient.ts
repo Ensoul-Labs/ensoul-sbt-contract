@@ -1,11 +1,11 @@
 import { Provider } from '@ethersproject/providers';
 import { BigNumberish, CallOverrides, PayableOverrides, Signer } from 'ethers';
-import { EnsoulFactoryModel } from '../model';
-import { EnsoulFactoryClient } from '..';
+import { EnsoulFactoryModel } from '../../model';
+import { EnsoulFactoryClient } from './';
 import {
   EnsoulFactoryUpgradeable,
   EnsoulFactoryUpgradeable__factory
-} from '../typechain';
+} from '../../typechain';
 
 export class EtherEnsoulFactoryClient implements EnsoulFactoryClient {
   private _ensoulFactory: EnsoulFactoryUpgradeable | undefined;

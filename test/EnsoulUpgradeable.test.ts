@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {ethers, getNamedAccounts, upgrades} from 'hardhat';
 import {Signer} from 'ethers';
-import {EtherEnsoulClient} from '../sdk/dist';
+import {v1} from '../sdk/dist';
 import {EnsoulUpgradeable} from '../sdk/src/typechain';
 
 const contractName = 'Ensoul_Upgradeable';
@@ -19,7 +19,7 @@ describe(`test ${contractName}`, function () {
   });
 
   describe(`test sdk`, function () {
-    const contractClient = new EtherEnsoulClient();
+    const contractClient = new v1.EtherEnsoulClient();
 
     beforeEach(`deploy and init ${contractName}`, async () => {
       const Contract = await ethers.getContractFactory(contractName);
