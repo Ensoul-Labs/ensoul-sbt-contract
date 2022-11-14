@@ -10,7 +10,7 @@ import {
   Signer,
   utils
 } from 'ethers';
-import { EnsoulClient } from './';
+import { EnsoulClient } from '.';
 import { EnsoulUpgradeableV11, EnsoulUpgradeableV11__factory } from '../../typechain';
 
 export class EtherEnsoulClient implements EnsoulClient {

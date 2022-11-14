@@ -1,8 +1,8 @@
 import {expect} from 'chai';
 import {ethers, getNamedAccounts, upgrades} from 'hardhat';
 import {Signer} from 'ethers';
-import {v1} from '../sdk/dist';
-import {EnsoulFactoryUpgradeable} from '../sdk/src/typechain';
+import {v1} from '../../sdk/dist';
+import {EnsoulFactoryUpgradeable} from '../../sdk/src/typechain';
 
 const contractName = 'Ensoul_Factory_Upgradeable';
 
