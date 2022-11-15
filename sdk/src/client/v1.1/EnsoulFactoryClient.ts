@@ -23,6 +23,8 @@ export interface EnsoulFactoryClient {
 
   getEnsoulAdmin(config?: CallOverrides): Promise<string>;
 
+  beacon(config?: CallOverrides): Promise<string>;
+
   version(config?: CallOverrides): Promise<string>;
 
   /* ================ TRANSACTION FUNCTIONS ================ */
@@ -38,6 +40,12 @@ export interface EnsoulFactoryClient {
 
   setEnsoulAdmin(
     ensoulAdmin: string,
+    config?: PayableOverrides,
+    callback?: Function
+  ): Promise<void>;
+
+  setBeacon(
+    beacon: string,
     config?: PayableOverrides,
     callback?: Function
   ): Promise<void>;

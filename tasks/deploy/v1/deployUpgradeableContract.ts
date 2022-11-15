@@ -10,7 +10,7 @@ import {
   LOCK_DIR,
   RETRY_NUMBER,
   log,
-} from '../utils';
+} from '../../utils';
 
 task(`upgradeableContract:deploy`, `Deploy upgradeableContract`)
   .addOptionalParam('contract', 'The contract name')

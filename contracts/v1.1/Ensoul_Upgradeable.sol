@@ -8,13 +8,11 @@ import "./ERC1155_Upgradeable/extensions/ERC1155SupplyUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/cryptography/ECDSAUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/cryptography/draft-EIP712Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "./Auth/Ensoul_Controller_Upgradeable.sol";
 import "./Data/ContractMetadata_Upgradeable.sol";
 
 contract Ensoul_Upgradeable_v1_1 is
     IEnsoul,
-    UUPSUpgradeable,
     ERC1155Upgradeable,
     ERC1155PausableUpgradeable,
     ERC1155SupplyUpgradeable,
@@ -43,7 +41,6 @@ contract Ensoul_Upgradeable_v1_1 is
         string memory _contractURI,
         string memory _name
     ) public initializer {
-        __UUPSUpgradeable_init();
         __ERC1155_init(_tokenURI);
         __ERC1155Pausable_init();
         __ERC1155Supply_init();
@@ -90,10 +87,6 @@ contract Ensoul_Upgradeable_v1_1 is
         uint256[] memory amounts
     ) internal override(ERC1155Upgradeable, ERC1155SupplyUpgradeable) {
         super._burnBatch(account, ids, amounts);
-    }
-
-    function _authorizeUpgrade(address) internal view override {
-        require(msg.sender == superOwner ,"ERR_NOT_SUPER_OWNER");
     }
 
     /* ================ VIEW FUNCTIONS ================ */

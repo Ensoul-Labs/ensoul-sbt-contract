@@ -10,7 +10,7 @@ import {
 export class EtherEnsoulFactoryClient implements EnsoulFactoryClient {
   private _ensoulFactory: EnsoulFactoryUpgradeableV11 | undefined;
   protected _provider: Provider | Signer | undefined;
-  protected _waitConfirmations = 3;
+  protected _waitConfirmations = 1;
   protected _errorTitle = 'EtherEnsoulFactoryClient';
 
   public async connect(
@@ -54,12 +54,20 @@ export class EtherEnsoulFactoryClient implements EnsoulFactoryClient {
     return await this._ensoulFactory.getEnsoulAdmin({ ...config });
   }
 
+  public async beacon(config?: CallOverrides): Promise<string> {
+    if (!this._provider || !this._ensoulFactory) {
+      throw new Error(`${this._errorTitle}: no provider`);
+    }
+    return await this._ensoulFactory.beacon({ ...config });
+  }
+
   public async version(config?: CallOverrides): Promise<string> {
     if (!this._provider || !this._ensoulFactory) {
       throw new Error(`${this._errorTitle}: no provider`);
     }
     return await this._ensoulFactory.version({ ...config });
   }
+
 
   /* ================ TRANSACTION FUNCTIONS ================ */
 
@@ -127,6 +135,36 @@ export class EtherEnsoulFactoryClient implements EnsoulFactoryClient {
     const transaction = await this._ensoulFactory
       .connect(this._provider)
       .setEnsoulAdmin(ensoulAdmin, {
+        gasLimit: gas.mul(13).div(10),
+        ...config
+      });
+    if (callback) {
+      callback(transaction);
+    }
+    const receipt = await transaction.wait(this._waitConfirmations);
+    if (callback) {
+      callback(receipt);
+    }
+  }
+
+  public async setBeacon(
+    beacon: string,
+    config?: PayableOverrides,
+    callback?: Function
+  ): Promise<void> {
+    if (
+      !this._provider ||
+      !this._ensoulFactory ||
+      this._provider instanceof Provider
+    ) {
+      throw new Error(`${this._errorTitle}: no singer`);
+    }
+    const gas = await this._ensoulFactory
+      .connect(this._provider)
+      .estimateGas.setBeacon(beacon, { ...config });
+    const transaction = await this._ensoulFactory
+      .connect(this._provider)
+      .setBeacon(beacon, {
         gasLimit: gas.mul(13).div(10),
         ...config
       });

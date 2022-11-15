@@ -16,7 +16,7 @@ import { EnsoulUpgradeableV11, EnsoulUpgradeableV11__factory } from '../../typec
 export class EtherEnsoulClient implements EnsoulClient {
   private _ensoul: EnsoulUpgradeableV11 | undefined;
   protected _provider: Provider | Signer | undefined;
-  protected _waitConfirmations = 3;
+  protected _waitConfirmations = 1;
   protected _errorTitle = 'EtherEnsoulClient';
 
   public async connect(

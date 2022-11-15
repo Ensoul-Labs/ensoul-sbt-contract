@@ -9,9 +9,9 @@ import {
   LOCK_DIR,
   RETRY_NUMBER,
   log,
-} from '../utils';
+} from '../../utils';
 
-task(`contract:deploy`, `Deploy contract`)
+task(`beaconContract:deploy`, `Deploy beaconContract`)
   .addOptionalParam('contract', 'The contract name')
   .addOptionalParam('args', 'The contract args')
   .addOptionalParam('waitNum', 'The waitNum to transaction')
@@ -45,17 +45,49 @@ task(`contract:deploy`, `Deploy contract`)
 
     log.info(`deploy ${contract}`);
     const Contract = await hre.ethers.getContractFactory(contract);
-    const deployResult = await ethersExecutionManager.transaction(
-      Contract.deploy.bind(Contract),
-      contractArgs,
-      ['contractAddress', 'blockNumber'],
-      `deploy ${contract}`,
-      txConfig
-    );
+
+    // const beacon = await hre.upgrades.deployBeacon(Contract);
+    // await beacon.deployed();
+    // console.log("Beacon deployed to:", beacon.address);
+  
+    // const proxy = await hre.upgrades.deployBeaconProxy(beacon, Contract, contractArgs);
+    // const deployedProxy = await proxy.deployed();
+    // console.log(`${contract} deployed to:`, deployedProxy.address);
+
+    let deployResult = await ethersExecutionManager.transaction(
+        hre.upgrades.deployBeacon,
+        [Contract],
+        ['contractAddress'],
+        `deployBeacon`,
+        txConfig
+      );
+    const contractImplAddress = deployResult.contractAddress;
+
+    deployResult = await ethersExecutionManager.transaction(
+        hre.upgrades.deployBeaconProxy,
+        [deployResult.contractAddress,Contract, contractArgs],
+        ['contractAddress', 'blockNumber'],
+        `deployBeaconProxy`,
+        txConfig
+      );
+
+    // const contractProxyAddress = deployedProxy.address;
+    // const contractImplAddress = beacon.address;
+    // const contractFromBlock = deployedProxy.blockNumber;
+    // const contractVersion = await deployedProxy.version();
     const contractProxyAddress = deployResult.contractAddress;
-    const contractImplAddress = contractProxyAddress;
+    
+    // const contractImplAddress = await getImplementationAddress(
+    //   hre.ethers.provider,
+    //   contractProxyAddress
+    // );
     const contractFromBlock = deployResult.blockNumber;
-    const contractVersion = '1.0.0';
+    const _contract = Contract.attach(contractProxyAddress);
+    const contractVersion = await ethersExecutionManager.call(
+      _contract.version,
+      [],
+      `${contract} version`
+    );
     log.info(
       `${contract} deployed proxy at ${contractProxyAddress},impl at ${contractImplAddress},version ${contractVersion},fromBlock ${contractFromBlock}`
     );
