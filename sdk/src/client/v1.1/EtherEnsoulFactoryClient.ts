@@ -68,7 +68,6 @@ export class EtherEnsoulFactoryClient implements EnsoulFactoryClient {
     return await this._ensoulFactory.version({ ...config });
   }
 
-
   /* ================ TRANSACTION FUNCTIONS ================ */
 
   public async newOrg(

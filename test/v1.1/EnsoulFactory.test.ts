@@ -24,7 +24,9 @@ describe(`test ${ensoulFactoryName}`, function () {
       const ensoulContractFactory = await ethers.getContractFactory(ensoulName);
       const beacon = await upgrades.deployBeacon(ensoulContractFactory);
       await beacon.deployed();
-      const ensoulFactoryContractFactory = await ethers.getContractFactory(ensoulFactoryName);
+      const ensoulFactoryContractFactory = await ethers.getContractFactory(
+        ensoulFactoryName
+      );
       const deployResult = await upgrades.deployProxy(
         ensoulFactoryContractFactory.connect(deployer),
         [beacon.address],
@@ -33,9 +35,7 @@ describe(`test ${ensoulFactoryName}`, function () {
         }
       );
       await ensoulFactoryClient.connect(deployer, deployResult.address);
-      expect(await ensoulFactoryClient.beacon()).eq(
-        beacon.address
-      );
+      expect(await ensoulFactoryClient.beacon()).eq(beacon.address);
     });
 
     it('check init data', async function () {
@@ -79,7 +79,7 @@ describe(`test ${ensoulFactoryName}`, function () {
       expect(await ensoulFactoryClient.beacon()).eq(
         await accountA.getAddress()
       );
-      ensoulFactoryClient.connect(accountA,ensoulFactoryClient.address());
+      ensoulFactoryClient.connect(accountA, ensoulFactoryClient.address());
       await expect(
         ensoulFactoryClient.setEnsoulAdmin(await accountA.getAddress())
       ).revertedWith(`ERR_NOT_ENSOUL_ADMIN`);
@@ -93,22 +93,30 @@ describe(`test ${ensoulFactoryName}`, function () {
       const ensoulContractFactory = await ethers.getContractFactory(ensoulName);
       const beacon = await upgrades.deployBeacon(ensoulContractFactory);
       await beacon.deployed();
-      const ensoulFactoryContractFactory = await ethers.getContractFactory(ensoulFactoryName);
-      ensoulFactory = await upgrades.deployProxy(
+      const ensoulFactoryContractFactory = await ethers.getContractFactory(
+        ensoulFactoryName
+      );
+      ensoulFactory = (await upgrades.deployProxy(
         ensoulFactoryContractFactory.connect(deployer),
         [beacon.address],
         {
           kind: 'uups',
         }
-      ) as EnsoulFactoryUpgradeableV11;
+      )) as EnsoulFactoryUpgradeableV11;
     });
 
     it('check upgardeable', async function () {
-      const ensoulFactoryContractFactory = await ethers.getContractFactory(ensoulFactoryName);
+      const ensoulFactoryContractFactory = await ethers.getContractFactory(
+        ensoulFactoryName
+      );
       await expect(
-        upgrades.upgradeProxy(ensoulFactory.address, ensoulFactoryContractFactory.connect(accountA), {
-          kind: 'uups',
-        })
+        upgrades.upgradeProxy(
+          ensoulFactory.address,
+          ensoulFactoryContractFactory.connect(accountA),
+          {
+            kind: 'uups',
+          }
+        )
       ).revertedWith(`ERR_NOT_ENSOUL_ADMIN`);
       await upgrades.upgradeProxy(
         ensoulFactory.address,

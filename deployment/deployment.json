@@ -7,22 +7,6 @@
       "contract": "Ensoul_Factory_Upgradeable",
       "operator": "0x8e9a781d6B89303c2FD71c861084078370282D1F",
       "fromBlock": 7766947
-    },
-    "Ensoul_Factory_Upgradeable_v1_1": {
-      "proxyAddress": "0x54db69e4b8266C7DFC67254F82179836c4EBC35F",
-      "implAddress": "0x5E23BBa3830c8c15b09E2CdD10d5D1f3eD7A2c11",
-      "version": "1.1.0",
-      "contract": "Ensoul_Factory_Upgradeable_v1_1",
-      "operator": "0x8e9a781d6B89303c2FD71c861084078370282D1F",
-      "fromBlock": 7920643
-    },
-    "Ensoul_Upgradeable_v1_1": {
-      "proxyAddress": "0x5575252235370476aa962e16EC29B0e76E3CB994",
-      "implAddress": "0xc41E7321feFd2936b78955FCfc8D043946C068B0",
-      "version": "1.1.0",
-      "contract": "Ensoul_Upgradeable_v1_1",
-      "operator": "0x8e9a781d6B89303c2FD71c861084078370282D1F",
-      "fromBlock": 7920752
     }
   },
   "137": {

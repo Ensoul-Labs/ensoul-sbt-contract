@@ -93,7 +93,7 @@ contract Ensoul_Upgradeable is
     }
 
     function _authorizeUpgrade(address) internal view override {
-        require(msg.sender == superOwner ,"ERR_NOT_SUPER_OWNER");
+        require(msg.sender == superOwner, "ERR_NOT_SUPER_OWNER");
     }
 
     /* ================ VIEW FUNCTIONS ================ */
