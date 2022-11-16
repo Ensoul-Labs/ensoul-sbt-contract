@@ -5,7 +5,7 @@ import {v1_1} from '../../sdk/dist';
 
 const ensoulFactoryName = 'Ensoul_Factory_Upgradeable_v1_1';
 const ensoulName = 'Ensoul_Upgradeable_v1_1';
-const ensoul2Name = 'Ensoul_Upgradeable_v1_2';
+const ensoulTestName = 'Ensoul_Upgradeable_v1_test';
 
 describe(`test ${ensoulName}`, function () {
   let deployer: Signer;
@@ -548,7 +548,7 @@ describe(`test ${ensoulName}`, function () {
     });
 
     it('check upgardeable', async function () {
-      const ensoul2ContractFactory = await ethers.getContractFactory(ensoul2Name);
+      const ensoul2ContractFactory = await ethers.getContractFactory(ensoulTestName);
       const beaconAddress = await ensoulFactoryClient.beacon();
       await expect(
         upgrades.upgradeBeacon(
@@ -564,7 +564,7 @@ describe(`test ${ensoulName}`, function () {
       expect(await ensoulClient.uri(0)).eq('https://');
       expect(await ensoulClient.contractURI()).eq('https://');
       expect(await ensoulClient.name()).eq('ensoul');
-      expect(await ensoulClient.version()).eq('1.2.0');
+      expect(await ensoulClient.version()).eq('1.1.test');
     });
   });
 });

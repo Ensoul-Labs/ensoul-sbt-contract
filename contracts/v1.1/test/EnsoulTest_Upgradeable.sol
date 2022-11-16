@@ -11,7 +11,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "../Auth/Ensoul_Controller_Upgradeable.sol";
 import "../Data/ContractMetadata_Upgradeable.sol";
 
-contract Ensoul_Upgradeable_v1_2 is
+contract Ensoul_Upgradeable_v1_test is
     IEnsoul,
     ERC1155Upgradeable,
     ERC1155PausableUpgradeable,
@@ -97,7 +97,7 @@ contract Ensoul_Upgradeable_v1_2 is
     }
 
     function version() public pure returns (string memory) {
-        return "1.2.0";
+        return "1.1.test";
     }
 
     /* ================ TRANSACTION FUNCTIONS ================ */
