@@ -1,11 +1,11 @@
 import {expect} from 'chai';
 import {ethers, getNamedAccounts, upgrades} from 'hardhat';
-import {Contract, Signer} from 'ethers';
+import {Signer} from 'ethers';
 import {v1_1} from '../../sdk/dist';
-import {EnsoulFactoryClient} from '../../sdk/dist/client/v1';
 
 const ensoulFactoryName = 'Ensoul_Factory_Upgradeable_v1_1';
 const ensoulName = 'Ensoul_Upgradeable_v1_1';
+const ensoul2Name = 'Ensoul_Upgradeable_v1_2';
 
 describe(`test ${ensoulName}`, function () {
   let deployer: Signer;
@@ -548,18 +548,23 @@ describe(`test ${ensoulName}`, function () {
     });
 
     it('check upgardeable', async function () {
-      const ensoulContractFactory = await ethers.getContractFactory(ensoulName);
+      const ensoul2ContractFactory = await ethers.getContractFactory(ensoul2Name);
       const beaconAddress = await ensoulFactoryClient.beacon();
       await expect(
         upgrades.upgradeBeacon(
           beaconAddress,
-          ensoulContractFactory.connect(accountA)
+          ensoul2ContractFactory.connect(accountA)
         )
       ).revertedWith(`Ownable: caller is not the owner`);
       await upgrades.upgradeBeacon(
         beaconAddress,
-        ensoulContractFactory.connect(deployer)
+        ensoul2ContractFactory.connect(deployer)
       );
+      expect(await ensoulClient.owner()).eq(await deployer.getAddress());
+      expect(await ensoulClient.uri(0)).eq('https://');
+      expect(await ensoulClient.contractURI()).eq('https://');
+      expect(await ensoulClient.name()).eq('ensoul');
+      expect(await ensoulClient.version()).eq('1.2.0');
     });
   });
 });
