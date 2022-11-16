@@ -30,8 +30,6 @@ contract Ensoul_Upgradeable_v1_1 is
 
     string public name;
 
-    address public superOwner;
-
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() initializer {}
 
@@ -48,7 +46,6 @@ contract Ensoul_Upgradeable_v1_1 is
         __Ensoul_Controller_Upgradeable_init(_owner);
         _setContractURI(_contractURI);
         name = _name;
-        superOwner = msg.sender;
     }
 
     /* ================ UTIL FUNCTIONS ================ */

@@ -5,7 +5,6 @@ import 'hardhat-deploy';
 import 'hardhat-contract-sizer';
 import '@openzeppelin/hardhat-upgrades';
 import '@typechain/hardhat';
-// import 'hardhat-gas-reporter';
 import 'solidity-coverage';
 import '@nomiclabs/hardhat-etherscan';
 import dotenv from 'dotenv';
@@ -80,10 +79,6 @@ const config: HardhatUserConfig = {
     runOnCompile: true,
     disambiguatePaths: false,
   },
-  // gasReporter: {
-  //   currency: 'CHF',
-  //   gasPrice: 1,
-  // },
   typechain: {
     outDir: './sdk/src/typechain',
     target: 'ethers-v5',

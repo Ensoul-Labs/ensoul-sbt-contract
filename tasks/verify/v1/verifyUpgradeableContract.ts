@@ -1,9 +1,9 @@
 import '@nomiclabs/hardhat-ethers';
 import {task} from 'hardhat/config';
 import {HardhatRuntimeEnvironment} from 'hardhat/types';
-import * as utils from '../utils';
+import * as utils from '../../utils';
 
-task(`contract:verify`, `verify contract`)
+task(`upgradeableContract:verify`, `verify upgradeableContract`)
   .addOptionalParam('contract', 'The contract name')
   .addOptionalParam('args', 'The contract args')
   .addOptionalParam('address', 'The contract address')
@@ -18,7 +18,7 @@ task(`contract:verify`, `verify contract`)
       : deployment[contract].implAddress;
     utils.log.info(`verify ${contract}, address: ${address}`);
     await hre.run('verify:verify', {
-      address: address,
+      address: deployment[contract].implAddress,
       constructorArguments: contractArgs,
     });
   });
