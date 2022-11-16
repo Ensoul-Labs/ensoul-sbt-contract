@@ -49,6 +49,14 @@
       "contract": "Ensoul_Upgradeable",
       "operator": "0xC653c441d23aB3cacc1698dbc1A5B1Cf8Fa4A6EC",
       "fromBlock": 35102342
+    },
+    "Ensoul_Factory_Upgradeable_v1_1": {
+      "proxyAddress": "0x5e13CF86996C2646640A96C49fB752658C7647d7",
+      "implAddress": "0xaaFD1CDD122eE7e58dd5F1801AB66E9e8791F258",
+      "version": "1.1.0",
+      "contract": "Ensoul_Factory_Upgradeable_v1_1",
+      "operator": "0xC653c441d23aB3cacc1698dbc1A5B1Cf8Fa4A6EC",
+      "fromBlock": 35673050
     }
   }
 }

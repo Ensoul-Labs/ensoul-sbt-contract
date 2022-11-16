@@ -51,7 +51,7 @@ export GAS_PRICE=5
 ```bash
 export PRIVATE_KEY=
 export NETWORK_ID=89
-export GAS_PRICE=200
+export GAS_PRICE=70
 ```
 
 ### script
