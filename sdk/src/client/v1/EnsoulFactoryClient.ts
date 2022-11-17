@@ -6,7 +6,7 @@ import {
   Signer
 } from 'ethers';
 import { Provider } from '@ethersproject/providers';
-import { EnsoulFactoryModel } from '../model';
+import { EnsoulFactoryModel } from '../../model';
 
 export interface EnsoulFactoryClient {
   connect(

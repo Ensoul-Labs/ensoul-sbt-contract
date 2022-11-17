@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {ethers, getNamedAccounts, upgrades} from 'hardhat';
 import {Signer} from 'ethers';
-import {EtherEnsoulFactoryClient, EtherEnsoulClient} from '../sdk/dist';
+import {v1} from '../../sdk/dist';
 
 const factoryContractName = 'Ensoul_Factory_Upgradeable';
 const contractName = 'Ensoul';
@@ -19,8 +19,8 @@ describe(`test ${contractName}`, function () {
   });
 
   describe(`test sdk`, function () {
-    const contractClient = new EtherEnsoulClient();
-    const factoryClient = new EtherEnsoulFactoryClient();
+    const contractClient = new v1.EtherEnsoulClient();
+    const factoryClient = new v1.EtherEnsoulFactoryClient();
 
     beforeEach(`deploy and init ${contractName}`, async () => {
       const factoryContract = await ethers.getContractFactory(

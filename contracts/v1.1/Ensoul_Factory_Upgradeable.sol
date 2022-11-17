@@ -1,7 +1,6 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.17;
 
-import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts/proxy/beacon/BeaconProxy.sol";
@@ -61,7 +60,7 @@ contract Ensoul_Factory_Upgradeable_v1_1 is UUPSUpgradeable {
         );
         orgs.push(orgAddress);
 
-        emit NewOrg(_orgOwner,orgAddress);
+        emit NewOrg(_orgOwner, orgAddress);
     }
 
     // 获取ensoul管理员地址

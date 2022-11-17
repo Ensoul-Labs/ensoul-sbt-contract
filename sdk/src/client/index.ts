@@ -1,5 +1,2 @@
-export * from './EnsoulClient';
-export * from './EnsoulFactoryClient';
-
-export * from './EtherEnsoulClient';
-export * from './EtherEnsoulFactoryClient';
+export * as v1 from "./v1"
+export * as v1_1 from "./v1.1"

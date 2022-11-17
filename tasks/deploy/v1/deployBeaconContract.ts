@@ -1,7 +1,6 @@
 import '@nomiclabs/hardhat-ethers';
 import {task} from 'hardhat/config';
 import {HardhatRuntimeEnvironment} from 'hardhat/types';
-import {getImplementationAddress} from '@openzeppelin/upgrades-core';
 import {PayableOverrides} from 'ethers';
 import {
   EthersExecutionManager,
@@ -10,7 +9,7 @@ import {
   LOCK_DIR,
   RETRY_NUMBER,
   log,
-} from '../utils';
+} from '../../utils';
 
 task(`beaconContract:deploy`, `Deploy beaconContract`)
   .addOptionalParam('contract', 'The contract name')
@@ -50,34 +49,34 @@ task(`beaconContract:deploy`, `Deploy beaconContract`)
     // const beacon = await hre.upgrades.deployBeacon(Contract);
     // await beacon.deployed();
     // console.log("Beacon deployed to:", beacon.address);
-  
+
     // const proxy = await hre.upgrades.deployBeaconProxy(beacon, Contract, contractArgs);
     // const deployedProxy = await proxy.deployed();
     // console.log(`${contract} deployed to:`, deployedProxy.address);
 
     let deployResult = await ethersExecutionManager.transaction(
-        hre.upgrades.deployBeacon,
-        [Contract],
-        ['contractAddress'],
-        `deployBeacon`,
-        txConfig
-      );
+      hre.upgrades.deployBeacon,
+      [Contract],
+      ['contractAddress'],
+      `deployBeacon`,
+      txConfig
+    );
     const contractImplAddress = deployResult.contractAddress;
 
     deployResult = await ethersExecutionManager.transaction(
-        hre.upgrades.deployBeaconProxy,
-        [deployResult.contractAddress,Contract, contractArgs],
-        ['contractAddress', 'blockNumber'],
-        `deployBeaconProxy`,
-        txConfig
-      );
+      hre.upgrades.deployBeaconProxy,
+      [deployResult.contractAddress, Contract, contractArgs],
+      ['contractAddress', 'blockNumber'],
+      `deployBeaconProxy`,
+      txConfig
+    );
 
     // const contractProxyAddress = deployedProxy.address;
     // const contractImplAddress = beacon.address;
     // const contractFromBlock = deployedProxy.blockNumber;
     // const contractVersion = await deployedProxy.version();
     const contractProxyAddress = deployResult.contractAddress;
-    
+
     // const contractImplAddress = await getImplementationAddress(
     //   hre.ethers.provider,
     //   contractProxyAddress

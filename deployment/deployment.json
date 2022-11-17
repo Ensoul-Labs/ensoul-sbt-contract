@@ -9,20 +9,12 @@
       "fromBlock": 7766947
     },
     "Ensoul_Factory_Upgradeable_v1_1": {
-      "proxyAddress": "0x54db69e4b8266C7DFC67254F82179836c4EBC35F",
-      "implAddress": "0x5E23BBa3830c8c15b09E2CdD10d5D1f3eD7A2c11",
+      "proxyAddress": "0x45f9BDf677573a2a36e56eAAE4394B90797593F5",
+      "implAddress": "0xF6cdD8A4B5210Dc3C8A3332D239191d21E60A6e0",
       "version": "1.1.0",
       "contract": "Ensoul_Factory_Upgradeable_v1_1",
       "operator": "0x8e9a781d6B89303c2FD71c861084078370282D1F",
-      "fromBlock": 7920643
-    },
-    "Ensoul_Upgradeable_v1_1": {
-      "proxyAddress": "0x5575252235370476aa962e16EC29B0e76E3CB994",
-      "implAddress": "0xc41E7321feFd2936b78955FCfc8D043946C068B0",
-      "version": "1.1.0",
-      "contract": "Ensoul_Upgradeable_v1_1",
-      "operator": "0x8e9a781d6B89303c2FD71c861084078370282D1F",
-      "fromBlock": 7920752
+      "fromBlock": 7961930
     }
   },
   "137": {
@@ -57,6 +49,14 @@
       "contract": "Ensoul_Upgradeable",
       "operator": "0xC653c441d23aB3cacc1698dbc1A5B1Cf8Fa4A6EC",
       "fromBlock": 35102342
+    },
+    "Ensoul_Factory_Upgradeable_v1_1": {
+      "proxyAddress": "0x5e13CF86996C2646640A96C49fB752658C7647d7",
+      "implAddress": "0xaaFD1CDD122eE7e58dd5F1801AB66E9e8791F258",
+      "version": "1.1.0",
+      "contract": "Ensoul_Factory_Upgradeable_v1_1",
+      "operator": "0xC653c441d23aB3cacc1698dbc1A5B1Cf8Fa4A6EC",
+      "fromBlock": 35673050
     }
   }
 }

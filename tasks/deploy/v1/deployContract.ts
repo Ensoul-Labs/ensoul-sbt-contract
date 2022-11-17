@@ -9,7 +9,7 @@ import {
   LOCK_DIR,
   RETRY_NUMBER,
   log,
-} from '../utils';
+} from '../../utils';
 
 task(`contract:deploy`, `Deploy contract`)
   .addOptionalParam('contract', 'The contract name')

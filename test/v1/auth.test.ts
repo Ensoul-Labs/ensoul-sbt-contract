@@ -2,7 +2,7 @@
 import {expect} from 'chai';
 import {ethers, getNamedAccounts, upgrades} from 'hardhat';
 import {Signer} from 'ethers';
-import {EnsoulFactoryUpgradeable, Ensoul} from '../sdk/src/typechain';
+import {EnsoulFactoryUpgradeable, Ensoul} from '../../sdk/src/typechain';
 
 const contractName = 'Ensoul_Factory_Upgradeable';
 

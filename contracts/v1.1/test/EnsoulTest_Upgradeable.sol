@@ -1,20 +1,18 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.17;
 
-import "./interfaces/IEnsoul.sol";
-import "./ERC1155_Upgradeable/ERC1155Upgradeable.sol";
-import "./ERC1155_Upgradeable/extensions/ERC1155PausableUpgradeable.sol";
-import "./ERC1155_Upgradeable/extensions/ERC1155SupplyUpgradeable.sol";
+import "../interfaces/IEnsoul.sol";
+import "../ERC1155_Upgradeable/ERC1155Upgradeable.sol";
+import "../ERC1155_Upgradeable/extensions/ERC1155PausableUpgradeable.sol";
+import "../ERC1155_Upgradeable/extensions/ERC1155SupplyUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/cryptography/ECDSAUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/cryptography/draft-EIP712Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
-import "./Auth/Ensoul_Controller_Upgradeable.sol";
-import "./Data/ContractMetadata_Upgradeable.sol";
+import "../Auth/Ensoul_Controller_Upgradeable.sol";
+import "../Data/ContractMetadata_Upgradeable.sol";
 
-contract Ensoul_Upgradeable is
+contract Ensoul_Upgradeable_v1_test is
     IEnsoul,
-    UUPSUpgradeable,
     ERC1155Upgradeable,
     ERC1155PausableUpgradeable,
     ERC1155SupplyUpgradeable,
@@ -32,8 +30,6 @@ contract Ensoul_Upgradeable is
 
     string public name;
 
-    address public superOwner;
-
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() initializer {}
 
@@ -43,7 +39,6 @@ contract Ensoul_Upgradeable is
         string memory _contractURI,
         string memory _name
     ) public initializer {
-        __UUPSUpgradeable_init();
         __ERC1155_init(_tokenURI);
         __ERC1155Pausable_init();
         __ERC1155Supply_init();
@@ -51,7 +46,6 @@ contract Ensoul_Upgradeable is
         __Ensoul_Controller_Upgradeable_init(_owner);
         _setContractURI(_contractURI);
         name = _name;
-        superOwner = msg.sender;
     }
 
     /* ================ UTIL FUNCTIONS ================ */
@@ -92,10 +86,6 @@ contract Ensoul_Upgradeable is
         super._burnBatch(account, ids, amounts);
     }
 
-    function _authorizeUpgrade(address) internal view override {
-        require(msg.sender == superOwner, "ERR_NOT_SUPER_OWNER");
-    }
-
     /* ================ VIEW FUNCTIONS ================ */
 
     function usedSignature(
@@ -107,7 +97,7 @@ contract Ensoul_Upgradeable is
     }
 
     function version() public pure returns (string memory) {
-        return "1.0.0";
+        return "1.1.test";
     }
 
     /* ================ TRANSACTION FUNCTIONS ================ */

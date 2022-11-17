@@ -10,13 +10,16 @@ import {
   Signer,
   utils
 } from 'ethers';
-import { EnsoulClient } from '..';
-import { Ensoul, Ensoul__factory } from '../typechain';
+import { EnsoulClient } from '.';
+import {
+  EnsoulUpgradeableV11,
+  EnsoulUpgradeableV11__factory
+} from '../../typechain';
 
 export class EtherEnsoulClient implements EnsoulClient {
-  private _ensoul: Ensoul | undefined;
+  private _ensoul: EnsoulUpgradeableV11 | undefined;
   protected _provider: Provider | Signer | undefined;
-  protected _waitConfirmations = 3;
+  protected _waitConfirmations = 1;
   protected _errorTitle = 'EtherEnsoulClient';
 
   public async connect(
@@ -24,7 +27,7 @@ export class EtherEnsoulClient implements EnsoulClient {
     address: string,
     waitConfirmations?: number
   ) {
-    this._ensoul = Ensoul__factory.connect(address, provider);
+    this._ensoul = EnsoulUpgradeableV11__factory.connect(address, provider);
     if (waitConfirmations) {
       this._waitConfirmations = waitConfirmations;
     }
