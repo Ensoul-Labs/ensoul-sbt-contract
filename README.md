@@ -84,4 +84,6 @@ yarn run hardhat upgradeableContract:verify --contract Ensoul_Upgradeable --args
 ## v1.1
 
 yarn run hardhat verify:v1.1 --network $NETWORK_ID
+
+yarn run hardhat verifyProxy:v1.1 --address 0x6B09D72e0420DE6D263DAfafC9853C878E269b4a --args [\"0xC653c441d23aB3cacc1698dbc1A5B1Cf8Fa4A6EC\",\"http\",\"http\",\"ensoul-test-v1.1\"] --network $NETWORK_ID
 ```
