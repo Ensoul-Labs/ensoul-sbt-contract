@@ -12,6 +12,5 @@ coverage/
 sdk/tsconfig.tsbuildinfo
 sdk/dist/
 logs/
-envs/
 
-.DS_Store
+.env
